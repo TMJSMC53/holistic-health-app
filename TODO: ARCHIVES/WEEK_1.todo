@@ -1,0 +1,109 @@
+// Shipping to production https://github.com/szymmis/vite-express
+
+✔ frontend = page @done(23-12-21 20:59)
+✔ backend = one API route @done(23-12-21 20:59)
+
+✔ install the necessary packages @done(23-12-22 11:41)
+✔ create dotenv file @done(23-12-22 11:41)
+✔ setup up MONGODB connection @done(23-12-22 14:07)
+
+// React -> Router -> Controller -> Model
+
+✔ database = can read/write to @done(23-12-30 15:46)
+    ✔ Create (/get) @done(23-12-30 15:46)
+    ✔ Read (/post) @done(23-12-30 15:46)
+
+    // React User Experience
+    ✔ create a form @done(23-12-30 15:43)
+        ✔ input field (amount) @done(23-12-29 12:51)
+        ✔ input field (type) @done(23-12-29 12:51)
+        ✔ button @done(23-12-30 15:40)
+            ✔ post -> /api/fluid @done(23-12-30 15:40)
+            ✔ create an amount parameter @done(23-12-30 15:40)
+            ✔ setup an alert that shows the fluid amount that was added -> const response = await fetch('/api/fluid') @done(23-12-30 15:40)
+        const fluidIntakeDoc = await response.json()
+        alert(`You entered ${fluidIntakeDoc.amount}`)
+
+        const [value, setValue] = useState('');
+        async function handleClick (event) {
+        const response = await fetch('/api/fluid', {
+
+        
+        method: "POST",
+        
+             headers: {
+      "Content-Type": "application/json",
+      
+    },
+           body: JSON.stringify(amount: value)
+        }
+        const waterIntakeDoc = await response.json()
+        alert(`You entered ${fluidIntakeDoc.amount}`)
+        ✔ }) @done(23-12-23 15:16)
+    }
+
+    
+    // controller
+    ✔ create the controller file for fluid intake @done(23-12-30 15:40)
+        ✔ setup the fluid intake method -> createFluidIntake @done(23-12-29 14:49)
+        ✔ create the variable -> model, then create the input that is referring to the amount input in form (amount: req.body.amount) @done(23-12-29 14:53)
+        ✔ create the type input for the different types of fluid: coffee, tea, water, carbonated water, juice, beer, wine, etc (fluidType: req.body.fluidType) @done(23-12-29 14:53)
+
+        // there's no redirect because React is going to handle that through state
+    
+    // Model
+    ✔ create the model for FluidIntake @done(23-12-29 14:17)
+        ✔ create the schema (fluidIntakeSchema) variable @done(23-12-29 14:17)
+            ✔ fluidType: {type: String, required: true} @done(23-12-29 14:17)
+            ✔ amount: {type: Number, required: true}, @done(23-12-29 14:17)
+            ✔ date: {type: Date, default: Date.now}, @done(23-12-29 14:17)
+            ✔ export default mongoose.model('FluidIntake', fluidIntakeSchema); @done(23-12-29 14:17)
+
+
+        // WEEK 1: Dec 30 - Jan 6
+    // React -> Router -> Controller -> Model
+
+    // react user experience
+    
+    ✔ create the Fluid Intake Form component @done(23-12-31 15:15)
+        ✔ move all information from App.tsx to this component @done(23-12-31 15:05)
+        ✔ add Fluid Intake Form component to the App.tsk file <FluidIntakeForm/> @done(23-12-31 15:15)
+    ✔ list that shows all of the fluid intake @done(24-01-01 10:25)
+        ✔ create fluid intake log component @done(24-01-01 15:33)
+            ✔ create the fluidList state variable that is going to .map() over the entries -> const [fluidList, setFluidList] = useState([]) @done(23-12-31 16:10)
+            ✔ create a ul > li with one li that contains <li>{item.fluidType} {item.amount} {item.date} </li> @done(23-12-31 16:10)
+            ✔ figure out how to get the items from the database to the setFluidList function @done(24-01-01 09:59)
+
+        // Extras: 
+        ✔ figure out the design for the items when they are rendered to the screen @done(24-01-05 20:01)
+        ✔ streamline the date so that it only shows day/month/year @done(24-01-04 22:44)
+        ✔ Create a table for the fluid intakes @done(24-01-05 20:01)
+    
+        // Homepage & Dashboard => Get them working and then add the Hero and Footer, etc
+    ✔ setup homepage & dashboard components @done(24-01-05 20:36)
+        ✔ homepage @done(24-01-04 23:15)
+            ✔ create homepage component inside of `pages/Home/Homepage` @done(24-01-04 22:28)
+            ✔ create route in `routes/AppRoutes` @done(24-01-04 22:28)
+
+        ✔ navbar @done(24-01-04 23:15)
+            ✔ create and import navbar component and render it in the Homepage @done(24-01-04 22:28)
+            ✔ update the daisyui/tailwind code for what is needed @done(24-01-04 22:28)
+        ✔ dashboard @done(24-01-04 23:15)
+            ✔ create dashboard component in `pages/Dashboard` @done(24-01-04 22:28)
+            ✔ render the FluidIntakeForm & FluidIntakeLog in the dashboard component @done(24-01-04 23:14)
+        
+        ✔ create the different routes in the AppRoutes section so that you can go from page to page. @done(24-01-04 23:15)
+        
+    
+    // router
+    ✔ create a GET request path @done(24-01-01 16:15)
+        ✔ setup router.get('/api/fluidIntakeLog', getFluidIntake); @done(24-01-01 16:15)
+        ✔ import the getFluidIntake function @done(24-01-01 16:15)
+    
+    // controller
+    ✔ create getFluidIntake method @done(24-01-02 10:01)
+        ✔ get all of the entries that are in the database @done(24-01-02 10:01)
+        ✔ send some res.json() that contains the entries that are in the database using .find() @done(24-01-02 10:01)
+        
+    // model
+    ✔ the model doesn't need to be updated @done(24-01-02 10:01)
