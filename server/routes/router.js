@@ -2,6 +2,7 @@ import express from 'express';
 import {
   createFluidIntake,
   getFluidIntake,
+  updateFluidIntake,
 } from '../controllers/fluidIntake.js';
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.get('/api/fluidIntakeLog', getFluidIntake);
 
 // POST
 router.post('/api/fluid', createFluidIntake);
-// router.post('/api/fluid/:id', updateFluidIntake);
+router.post('/api/fluid/:id', updateFluidIntake);
 
 // DELETE
 // router.delete('/api/fluid/:id', deleteFluidIntake);
