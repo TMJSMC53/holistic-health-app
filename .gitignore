@@ -24,7 +24,7 @@ TODO
 *.njsproj
 *.sln
 *.sw?
-*.env
+.env
 TODO_ARCHIVES
 TODO_ARCHIVES/WEEK_1.todo
 TODO_ARCHIVES/WEEK_2.todo
