@@ -30,22 +30,18 @@ export const getFluidIntake = async (req, res) => {
 };
 
 // Update a new FluidIntakeList
+export const updateFluidIntake = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateEntry = await FluidIntakeList.findByIdAndUpdate(id, {
+      fluidType: req.body.fluidType,
+      amount: req.body.amount,
+    });
+
+    res.status(200).send(updateEntry);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 // Delete a new FluidIntakeList
-
-function sumOfMinimums(arr) {
-  let total = 0;
-  for (let i = 0; i < arr.length; i++) {
-    const minNum = Math.min(...arr[i]);
-    total += minNum;
-  }
-  return total;
-}
-
-console.log(
-  sumOfMinimums([
-    [3, 5, 15, 20],
-    [5, 6, 7, 8, 9],
-    [20, 21, 34, 56, 100],
-  ])
-);
