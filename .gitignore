@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 TODO
-TODO:ARCHIVES
+
 
 # Editor directories and files
 .vscode/*
@@ -24,3 +24,6 @@ TODO:ARCHIVES
 *.njsproj
 *.sln
 *.sw?
+TODO_ARCHIVES
+TODO_ARCHIVES/WEEK_1.todo
+TODO_ARCHIVES/WEEK_2.todo
