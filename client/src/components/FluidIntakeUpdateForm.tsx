@@ -1,9 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-const FluidIntakeForm = () => {
+const FluidIntakeUpdateForm = () => {
   const [fluidAmount, setFluidAmount] = useState('');
   const [fluidType, setFluidType] = useState('');
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -14,7 +13,7 @@ const FluidIntakeForm = () => {
     e.preventDefault();
     try {
       const response = await fetch('/api/fluid/:id', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -22,7 +21,7 @@ const FluidIntakeForm = () => {
       });
 
       const fluidIntakeDoc = await response.json();
-      alert(`You entered ${fluidIntakeDoc.amount}`);
+      alert(`You updated the current amount to: ${fluidIntakeDoc.amount}`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -70,6 +69,7 @@ const FluidIntakeForm = () => {
         id="modalToggle"
         className="modal-toggle"
         checked={isModalOpen}
+        readOnly
       />
       <div className={`modal${isModalOpen ? ' open' : ''}`} role="dialog">
         <div className="modal-box">
@@ -124,4 +124,4 @@ const FluidIntakeForm = () => {
   );
 };
 
-export default FluidIntakeForm;
+export default FluidIntakeUpdateForm;

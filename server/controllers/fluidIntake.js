@@ -32,12 +32,18 @@ export const getFluidIntake = async (req, res) => {
 // Update a new FluidIntakeList
 export const updateFluidIntake = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updateEntry = await FluidIntakeList.findByIdAndUpdate(id, {
-      fluidType: req.body.fluidType,
-      amount: req.body.amount,
-    });
-
+    const id = req.params.id;
+    const updateEntry = await FluidIntakeList.findByIdAndUpdate(
+      id,
+      {
+        fluidType: req.body.fluidType,
+        amount: req.body.amount,
+      },
+      { new: true }
+    );
+    if (!updateEntry) {
+      return res.status(404).json({ message: 'Entry not found' });
+    }
     res.status(200).send(updateEntry);
   } catch (err) {
     res.status(500).json({ message: err.message });

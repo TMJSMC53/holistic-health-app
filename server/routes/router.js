@@ -15,7 +15,9 @@ router.get('/api/fluidIntakeLog', getFluidIntake);
 
 // POST
 router.post('/api/fluid', createFluidIntake);
-router.post('/api/fluid/:id', updateFluidIntake);
+
+// PUT
+router.put('/api/fluid/:id', updateFluidIntake);
 
 // DELETE
 // router.delete('/api/fluid/:id', deleteFluidIntake);
