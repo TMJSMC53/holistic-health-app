@@ -66,7 +66,7 @@ const FluidIntakeLog = () => {
                     />
                   </svg>
                 </button> */}
-                  <FluidIntakeUpdateForm />
+                  <FluidIntakeUpdateForm item={item} />
                   <button>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

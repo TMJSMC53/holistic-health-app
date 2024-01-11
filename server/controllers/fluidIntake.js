@@ -51,3 +51,16 @@ export const updateFluidIntake = async (req, res) => {
 };
 
 // Delete a new FluidIntakeList
+export const deleteFluidIntake = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleteEntry = await FluidIntakeList.findByIdAndDelete(id);
+
+    if (!deleteEntry) {
+      return res.status(404).send(`Entry with id: ${id} not found`);
+    }
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

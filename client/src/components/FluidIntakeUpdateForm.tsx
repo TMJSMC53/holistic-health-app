@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-const FluidIntakeUpdateForm = () => {
+const FluidIntakeUpdateForm = ({ ...props }) => {
   const [fluidAmount, setFluidAmount] = useState('');
   const [fluidType, setFluidType] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +12,7 @@ const FluidIntakeUpdateForm = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch('/api/fluid/:id', {
+      const response = await fetch(`/api/fluid/${props.item._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -22,6 +22,7 @@ const FluidIntakeUpdateForm = () => {
 
       const fluidIntakeDoc = await response.json();
       alert(`You updated the current amount to: ${fluidIntakeDoc.amount}`);
+      setIsModalOpen(false);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -33,11 +34,6 @@ const FluidIntakeUpdateForm = () => {
 
   function handleFluidAmount(event: ChangeEvent<HTMLInputElement>) {
     setFluidAmount(event.target.value);
-  }
-
-  function handleEditSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setIsModalOpen(false);
   }
 
   return (
@@ -101,10 +97,7 @@ const FluidIntakeUpdateForm = () => {
                 onChange={handleFluidAmount}
                 placeholder="Amount"
               />
-              <button
-                className="btn btn-sm btn-accent text-blue"
-                onClick={handleEditSubmit}
-              >
+              <button className="btn btn-sm btn-accent text-blue">
                 Update
               </button>
             </form>
