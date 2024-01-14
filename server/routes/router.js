@@ -9,13 +9,12 @@ import {
 const router = express.Router();
 
 // GET
-router.get('/message', (_, res) => res.send('Hello from express!'));
-router.get('/users', (_, res) => res.send('Hello users!'));
-
 router.get('/api/fluidIntakeLog', getFluidIntake);
+// router.get('/api/waterIntakeGoal', getWaterIntakeGoal);
 
 // POST
 router.post('/api/fluid', createFluidIntake);
+// router.post('/api/waterIntakeGoal', createWaterIntakeGoal);
 
 // PUT
 router.put('/api/fluid/:id', updateFluidIntake);
