@@ -51,7 +51,11 @@ const FluidIntakeLog = () => {
                 <td>{item.fluidType}</td>
                 <td>{item.amount}</td>
                 <td className="flex items-center">
-                  <FluidIntakeUpdateForm item={item} />
+                  <FluidIntakeUpdateForm
+                    item={item}
+                    fluidType={item.fluidType}
+                    fluidAmount={item.amount}
+                  />
                   <FluidIntakeDeleteForm item={item} />
                 </td>
               </tr>

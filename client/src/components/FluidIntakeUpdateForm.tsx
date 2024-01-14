@@ -1,8 +1,8 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState } from 'react';
 
-const FluidIntakeUpdateForm = ({ ...props }) => {
-  const [fluidAmount, setFluidAmount] = useState('');
-  const [fluidType, setFluidType] = useState('');
+const FluidIntakeUpdateForm = ({ ...item }) => {
+  const [fluidAmount, setFluidAmount] = useState(item.fluidAmount);
+  const [fluidType, setFluidType] = useState(item.fluidType);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -12,12 +12,15 @@ const FluidIntakeUpdateForm = ({ ...props }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/fluid/${props.item._id}`, {
+      const response = await fetch(`/api/fluid/${item.item._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fluidType: fluidType, amount: fluidAmount }),
+        body: JSON.stringify({
+          fluidType: fluidType,
+          amount: fluidAmount,
+        }),
       });
 
       const fluidIntakeDoc = await response.json();
@@ -67,6 +70,7 @@ const FluidIntakeUpdateForm = ({ ...props }) => {
         checked={isModalOpen}
         readOnly
       />
+
       <div className={`modal${isModalOpen ? ' open' : ''}`} role="dialog">
         <div className="modal-box">
           <div className="mt-24 mb-12">
@@ -81,7 +85,7 @@ const FluidIntakeUpdateForm = ({ ...props }) => {
                 name="fluidType"
                 value={fluidType}
                 onChange={handleFluidType}
-                type="string"
+                type="text"
               />
               <datalist id="fluids">
                 <option key="water" value="Water"></option>
@@ -97,7 +101,7 @@ const FluidIntakeUpdateForm = ({ ...props }) => {
                 onChange={handleFluidAmount}
                 placeholder="Amount"
               />
-              <button className="btn btn-sm btn-accent text-blue">
+              <button className="btn btn-sm btn-accent text-blue" type="submit">
                 Update
               </button>
             </form>
