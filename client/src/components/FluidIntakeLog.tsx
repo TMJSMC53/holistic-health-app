@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import FluidIntakeUpdateForm from './FluidIntakeUpdateForm';
 import FluidIntakeDeleteForm from './FluidIntakeDeleteForm';
+import FluidIntakeByDays from './FluidIntakeByDays';
 
 export interface LIList {
   _id: string;
@@ -62,6 +63,7 @@ const FluidIntakeLog = () => {
             ))}
           </tbody>
         </table>
+        <FluidIntakeByDays />
       </div>
     </>
   );
