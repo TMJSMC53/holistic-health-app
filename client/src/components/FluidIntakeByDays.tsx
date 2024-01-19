@@ -36,10 +36,10 @@ const FluidIntakeByDays: React.FC = () => {
 
   const waterList = fluidList.filter((item) => item.fluidType === 'Water');
 
-  const totalWaterAmount = waterList.reduce(
-    (acc, item) => acc + item.amount,
-    0
-  );
+  //   const totalWaterAmount = waterList.reduce(
+  //     (acc, item) => acc + item.amount,
+  //     0
+  //   );
 
   const groupedAndSummed: {
     date: string;
@@ -65,16 +65,10 @@ const FluidIntakeByDays: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-        <h2 className="mx-auto">Total Water Amount</h2>
-        <div className="mx-auto">
-          <p>{totalWaterAmount}</p>
-        </div>
-      </div>
       {groupedAndSummed.map(({ date, totalAmount, group }, index) => (
-        <div className="flex flex-col" key={index}>
+        <div className="flex flex-col " key={index}>
           <h2 className="mx-auto">Date: {date}</h2>
-          <div className="overflow-x-auto">
+          <div className="grid grid-cols-2 gap-4">
             <table className="table table-zebra">
               <thead>
                 <tr className="text-sm uppercase">
@@ -87,18 +81,25 @@ const FluidIntakeByDays: React.FC = () => {
                   <tr key={item._id}>
                     <td>{item.fluidType}</td>
                     <td>{item.amount}</td>
-                    <td></td>
                   </tr>
                 ))}
                 <tr>
-                  <td>Total:</td>
-                  {totalAmount < 4000 ? (
-                    <p>{`You've drunk ${totalAmount} so far. You still need ${
-                      totalAmount - 4000
-                    } to reach your daily goal`}</p>
-                  ) : (
-                    <p>Congratulations!! You've reached your daily goal!</p>
-                  )}
+                  <td className="grid row-span-full col-span-full">
+                    Total:
+                    {totalAmount < 4000 ? (
+                      <>
+                        {` Drink ${Math.abs(totalAmount - 4000)} ml more water`}
+                      </>
+                    ) : totalAmount > 4000 ? (
+                      <>
+                        {`You've drunk ${
+                          totalAmount - 4000
+                        }ml over your water goal`}
+                      </>
+                    ) : (
+                      <> Congratulations!! You've reached your daily goal!</>
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>
