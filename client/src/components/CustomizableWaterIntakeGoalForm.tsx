@@ -100,9 +100,8 @@ const CustomizableWaterIntakeGoalForm = () => {
             <form onSubmit={handleSubmit}>
               <input
                 className="input input-bordered input-sm w-2/12 max-w-xs ml-2 mr-1.5"
-                list="fluids"
-                id="fluidType"
-                name="fluidType"
+                id="water_goal"
+                name="water_goal"
                 value={waterGoalAmount}
                 onChange={handleWaterGoalAmount}
                 type="text"
