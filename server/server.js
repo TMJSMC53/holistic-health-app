@@ -9,7 +9,7 @@ import './db/conn.js';
 
 import router from './routes/router.js';
 
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 5151;
 
 const app = express();
 app.use(cors());
