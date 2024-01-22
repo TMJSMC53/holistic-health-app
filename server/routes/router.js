@@ -1,12 +1,15 @@
 import express from 'express';
 import {
   createFluidIntake,
-  createWaterIntakeGoal,
   getFluidIntake,
-  getWaterIntakeGoal,
   updateFluidIntake,
   deleteFluidIntake,
 } from '../controllers/fluidIntake.js';
+
+import {
+  createWaterIntakeGoal,
+  getWaterIntakeGoal,
+} from '../controllers/waterIntakeGoal.js';
 
 const router = express.Router();
 
