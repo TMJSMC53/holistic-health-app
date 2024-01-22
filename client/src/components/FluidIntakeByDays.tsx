@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-export interface LIList {
+type LIList = {
   _id: string;
   fluidType: string;
   amount: number;
   date: string;
-}
+};
+
+type GroupSum = {
+  date: string;
+  totalAmount: number;
+  group: LIList[];
+};
 
 const FluidIntakeByDays: React.FC = () => {
   const [fluidList, setFluidList] = useState<LIList[]>([]);
+  const [waterGoalAmount, setWaterGoalAmount] = useState<number>(4000);
 
   useEffect(() => {
     const getList = async () => {
@@ -34,34 +41,66 @@ const FluidIntakeByDays: React.FC = () => {
     getList();
   }, []);
 
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const response = await fetch('/api/waterIntakeGoal', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+        setWaterGoalAmount(data);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    };
+
+    getList();
+  }, []);
+
   const waterList = fluidList.filter((item) => item.fluidType === 'Water');
 
-  //   const totalWaterAmount = waterList.reduce(
-  //     (acc, item) => acc + item.amount,
-  //     0
-  //   );
+  const acc: Record<string, { totalAmount: number; group: LIList[] }> = {};
 
-  const groupedAndSummed: {
-    date: string;
-    totalAmount: number;
-    group: LIList[];
-  }[] = Object.entries(
-    waterList.reduce<Record<string, { totalAmount: number; group: LIList[] }>>(
-      (acc, item) => {
-        const days = new Date(item.date);
-        const formattedDate = days.toLocaleDateString();
+  for (let i = 0; i < waterList.length; i++) {
+    const item = waterList[i];
 
-        if (!acc[formattedDate]) {
-          acc[formattedDate] = { totalAmount: 0, group: [] };
-        }
+    const days = new Date(item.date);
+    const formattedDate = days.toLocaleDateString();
 
-        acc[formattedDate].totalAmount += item.amount;
-        acc[formattedDate].group.push(item);
-        return acc;
-      },
-      {}
-    )
-  ).map(([date, { totalAmount, group }]) => ({ date, totalAmount, group }));
+    if (!acc[formattedDate]) {
+      acc[formattedDate] = { totalAmount: 0, group: [] };
+    }
+
+    acc[formattedDate].totalAmount += item.amount;
+    acc[formattedDate].group.push(item);
+  }
+  console.log(acc);
+
+  const groupedAndSummed: Array<GroupSum> = [];
+
+  for (const date in acc) {
+    const { totalAmount, group } = acc[date];
+    groupedAndSummed.push({ date, totalAmount, group });
+  }
+
+  // const groupedAndSummed: Array<GroupSum> = Object.entries(
+  //   waterList.reduce((acc, item) => {
+  //     const days = new Date(item.date);
+  //     const formattedDate = days.toLocaleDateString();
+
+  //     if (!acc[formattedDate]) {
+  //       acc[formattedDate] = { totalAmount: 0, group: [] };
+  //     }
+
+  //     acc[formattedDate].totalAmount += item.amount;
+  //     acc[formattedDate].group.push(item);
+  //     return acc;
+  //   }, {} as Record<string, { totalAmount: number; group: LIList[] }>)
+  // ).map(([date, { totalAmount, group }]) => ({ date, totalAmount, group }));
 
   return (
     <>
@@ -84,9 +123,9 @@ const FluidIntakeByDays: React.FC = () => {
                   </tr>
                 ))}
                 <tr>
-                  <td className="grid row-span-full col-span-full">
+                  <td colSpan={6} className="row-span-full col-span-full">
                     Total:
-                    {totalAmount < 4000 ? (
+                    {totalAmount < waterGoalAmount ? (
                       <>
                         {` Drink ${Math.abs(totalAmount - 4000)} ml more water`}
                       </>
