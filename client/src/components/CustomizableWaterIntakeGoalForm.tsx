@@ -104,7 +104,7 @@ const CustomizableWaterIntakeGoalForm = () => {
                 name="water_goal"
                 value={waterGoalAmount}
                 onChange={handleWaterGoalAmount}
-                type="text"
+                type="number"
               />
 
               <button className="btn btn-sm btn-accent text-blue" type="submit">
