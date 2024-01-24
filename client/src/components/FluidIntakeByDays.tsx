@@ -16,6 +16,7 @@ type GroupSum = {
 const FluidIntakeByDays: React.FC = () => {
   const [fluidList, setFluidList] = useState<LIList[]>([]);
   const [waterGoalAmount, setWaterGoalAmount] = useState<number>(4000);
+  console.log(waterGoalAmount);
 
   useEffect(() => {
     const getList = async () => {
@@ -52,7 +53,8 @@ const FluidIntakeByDays: React.FC = () => {
         });
 
         const data = await response.json();
-        setWaterGoalAmount(data);
+        const goalAmount = data?.amount || 4000;
+        setWaterGoalAmount(goalAmount.toString());
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -127,16 +129,23 @@ const FluidIntakeByDays: React.FC = () => {
                     Total:
                     {totalAmount < waterGoalAmount ? (
                       <>
-                        {` Drink ${Math.abs(totalAmount - 4000)} ml more water`}
+                        {` Drink ${Math.abs(
+                          totalAmount - Number(waterGoalAmount)
+                        )} ml more water`}
                       </>
-                    ) : totalAmount > 4000 ? (
+                    ) : totalAmount > waterGoalAmount ? (
                       <>
-                        {`You've drunk ${
-                          totalAmount - 4000
+                        {` You've drunk ${
+                          totalAmount - Number(waterGoalAmount)
                         }ml over your water goal`}
                       </>
                     ) : (
-                      <> Congratulations!! You've reached your daily goal!</>
+                      <>
+                        {}
+                        {`Congratulations!! You've reached your daily goal of ${Number(
+                          waterGoalAmount
+                        )}ml!!`}
+                      </>
                     )}
                   </td>
                 </tr>
