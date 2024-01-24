@@ -20,14 +20,14 @@ export const createWaterIntakeGoal = async (req, res) => {
 export const getWaterIntakeGoal = async (req, res) => {
   try {
     const latestWaterIntakeGoal = await WaterIntakeGoal.findOne().sort({
-      date: 'asc',
+      date: 'desc',
     });
 
     let amount = 4000;
     if (latestWaterIntakeGoal) {
       amount = latestWaterIntakeGoal.amount;
     }
-    res.status(200).send(latestWaterIntakeGoal);
+    res.status(200).send({ amount });
 
     console.log(latestWaterIntakeGoal);
     console.log(amount);
