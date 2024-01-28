@@ -11,6 +11,8 @@ import {
   getWaterIntakeGoal,
 } from '../controllers/waterIntakeGoal.js';
 
+import {} from '../controllers/auth.js';
+
 const router = express.Router();
 
 // GET

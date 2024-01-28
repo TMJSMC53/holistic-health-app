@@ -1,4 +1,23 @@
-const Navbar = () => {
+type NavbarProps = {
+  user?: {
+    username: string;
+    firstName: string;
+    lastName: string;
+  };
+
+  setUser: React.Dispatch<
+    React.SetStateAction<
+      | {
+          username: string;
+          firstName: string;
+          lastName: string;
+        }
+      | undefined
+    >
+  >;
+};
+
+const Navbar = ({ user, setUser }: NavbarProps) => {
   return (
     <>
       <div className="drawer">
@@ -71,6 +90,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+
       {/* <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
