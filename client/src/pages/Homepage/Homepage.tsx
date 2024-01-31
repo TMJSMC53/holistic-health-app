@@ -1,7 +1,10 @@
+import HomepageAuthForm from './HomepageAuthForm';
+
 const Homepage = () => {
   return (
     <div>
-      <main className="pt-6">
+      <main>
+        <HomepageAuthForm />
         <h1>Welcome to the Holistic Health App</h1>
       </main>
     </div>
