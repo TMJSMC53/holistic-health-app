@@ -1,11 +1,11 @@
-import { User } from "../main.d"
+// import { User } from '../main.d';
 
-type NavbarProps = {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-};
+// type NavbarProps = {
+//   user: User | null;
+//   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+// };
 
-const Navbar = ({ user, setUser }: NavbarProps) => {
+// const Navbar = ({ user, setUser }: NavbarProps) => {
 const Navbar = () => {
   return (
     <>
