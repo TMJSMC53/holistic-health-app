@@ -1,10 +1,12 @@
 import { FormEvent } from 'react';
 
-const FluidIntakeDeleteForm = ({ ...props }) => {
+import { Fluid } from "./FluidIntakeLog"
+
+const FluidIntakeDeleteForm = ({ fluid } : { fluid: Fluid }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/fluid/${props.item._id}`, {
+      const response = await fetch(`/api/fluid/${fluid._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
