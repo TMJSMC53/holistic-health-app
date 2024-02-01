@@ -3,13 +3,12 @@ import FluidIntakeLog from './FluidIntakeLog';
 import CustomizableWaterIntakeGoalForm from './CustomizableWaterIntakeGoalForm';
 import CurrentUsername from './CurrentUsername';
 
+import { User } from "../../main.d"
+
 type DashboardProps = {
-  user?: {
-    username: string;
-    firstName: string;
-    lastName: string;
-  };
+  user: User | null;
 };
+
 const Dashboard = ({ user }: DashboardProps) => {
   return (
     <div>

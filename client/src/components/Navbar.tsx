@@ -1,23 +1,12 @@
-type NavbarProps = {
-  user?: {
-    username: string;
-    firstName: string;
-    lastName: string;
-  };
+import { User } from "../main.d"
 
-  setUser: React.Dispatch<
-    React.SetStateAction<
-      | {
-          username: string;
-          firstName: string;
-          lastName: string;
-        }
-      | undefined
-    >
-  >;
+type NavbarProps = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const Navbar = ({ user, setUser }: NavbarProps) => {
+const Navbar = () => {
   return (
     <>
       <div className="drawer">

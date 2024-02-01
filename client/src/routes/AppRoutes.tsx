@@ -1,19 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Homepage from '../pages/Homepage/Homepage';
+import Homepage from '../pages/Homepage';
 import HomepageLoginForm from '../pages/Homepage/HomepageLoginForm';
-import Dashboard from '../pages/Dashboard/Dashboard';
+import Dashboard from '../pages/Dashboard';
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 
+import { User } from "../main.d"
+
 const AppRoutes = () => {
-  const [user, setUser] = useState<
-    | {
-        username: string;
-        firstName: string;
-        lastName: string;
-      }
-    | undefined
-  >(undefined);
+  const [user, setUser] = useState<User|null>(null);
 
   return (
     <BrowserRouter>

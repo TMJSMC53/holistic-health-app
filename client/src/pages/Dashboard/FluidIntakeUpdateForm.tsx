@@ -1,8 +1,10 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
 
-const FluidIntakeUpdateForm = ({ ...item }) => {
-  const [fluidAmount, setFluidAmount] = useState(item.fluidAmount);
-  const [fluidType, setFluidType] = useState(item.fluidType);
+import { Fluid } from "./FluidIntakeLog"
+
+const FluidIntakeUpdateForm = ({ fluid } : { fluid: Fluid }) => {
+  const [fluidAmount, setFluidAmount] = useState(fluid.amount);
+  const [fluidType, setFluidType] = useState(fluid.fluidType);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -12,7 +14,7 @@ const FluidIntakeUpdateForm = ({ ...item }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/fluid/${item.item._id}`, {
+      const response = await fetch(`/api/fluid/${fluid._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ const FluidIntakeUpdateForm = ({ ...item }) => {
   }
 
   function handleFluidAmount(event: ChangeEvent<HTMLInputElement>) {
-    setFluidAmount(event.target.value);
+    setFluidAmount(parseFloat(event.target.value));
   }
 
   return (

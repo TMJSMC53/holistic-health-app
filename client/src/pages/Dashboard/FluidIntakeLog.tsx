@@ -3,7 +3,7 @@ import FluidIntakeUpdateForm from './FluidIntakeUpdateForm';
 import FluidIntakeDeleteForm from './FluidIntakeDeleteForm';
 import FluidIntakeByDays from './FluidIntakeByDays';
 
-export interface LIList {
+export interface Fluid {
   _id: string;
   fluidType: string;
   amount: number;
@@ -46,18 +46,14 @@ const FluidIntakeLog = () => {
             </tr>
           </thead>
           <tbody>
-            {fluidList.map((item) => (
-              <tr className="bg-indigo-300" key={item._id}>
-                <td>{new Date(item.date).toLocaleDateString()}</td>
-                <td>{item.fluidType}</td>
-                <td>{item.amount}</td>
+            {fluidList.map((fluid) => (
+              <tr className="bg-indigo-300" key={fluid._id}>
+                <td>{new Date(fluid.date).toLocaleDateString()}</td>
+                <td>{fluid.fluidType}</td>
+                <td>{fluid.amount}</td>
                 <td className="flex items-center">
-                  <FluidIntakeUpdateForm
-                    item={item}
-                    fluidType={item.fluidType}
-                    fluidAmount={item.amount}
-                  />
-                  <FluidIntakeDeleteForm item={item} />
+                  <FluidIntakeUpdateForm fluid={fluid} />
+                  <FluidIntakeDeleteForm fluid={fluid} />
                 </td>
               </tr>
             ))}
