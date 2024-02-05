@@ -1,12 +1,18 @@
 import HomepageAuthForm from './HomepageAuthForm';
+import ProductFeatures from './ProductFeatures';
+import { SetUser } from '../../main.d';
 
-const Homepage = () => {
+type HomepageProps = {
+  setUser: SetUser;
+};
+
+const Homepage = ({ setUser }: HomepageProps) => {
   return (
     <div>
       <main>
-        <HomepageAuthForm />
-        <h1>Welcome to the Holistic Health App</h1>
+        <HomepageAuthForm setUser={setUser} />
       </main>
+      <ProductFeatures />
     </div>
   );
 };

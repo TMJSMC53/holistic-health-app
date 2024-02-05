@@ -40,7 +40,7 @@ export const register = async (req, res) => {
         });
         res.status(201).json({
           message: 'User successfully created',
-          owner: user._id,
+          user: user,
         });
       })
       .catch((error) =>
@@ -69,7 +69,6 @@ export const login = async (req, res) => {
     if (!user) {
       res.status(400).json({
         message: 'Login unsuccessful',
-        error: 'user not found',
       });
     } else {
       // comparing given password with hashed password
@@ -94,6 +93,7 @@ export const login = async (req, res) => {
           });
           res.status(201).json({
             message: 'User successfully logged in',
+            user: user,
           });
         } else {
           res.status(400).json({ message: 'login not successful' });
@@ -112,7 +112,7 @@ export const getCurrentUser = async (req, res) => {
   try {
     if (req.user) {
       // Assuming you have a method like findById in your User model
-      const currentUser = await User.findById(req.user._id);
+      const currentUser = await User.findById(req.user.id);
 
       // Send the current user data (or null if not found)
       res.json(currentUser || null);

@@ -12,9 +12,11 @@ import {
 } from '../controllers/waterIntakeGoal.js';
 
 import { register, login, getCurrentUser } from '../controllers/auth.js';
+import { userAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+router.use(userAuth);
 // GET
 router.get('/api/fluidIntakeLog', getFluidIntake);
 router.get('/api/waterIntakeGoal', getWaterIntakeGoal);
