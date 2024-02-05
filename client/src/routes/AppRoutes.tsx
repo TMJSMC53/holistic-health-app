@@ -1,23 +1,47 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Homepage from '../pages/Homepage';
-import HomepageLoginForm from '../pages/Homepage/HomepageLoginForm';
+
 import Dashboard from '../pages/Dashboard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 
-import { User } from "../main.d"
+import { UserState } from '../main.d';
 
 const AppRoutes = () => {
-  const [user, setUser] = useState<User|null>(null);
+  const [user, setUser] = useState<UserState>(undefined);
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const response = await fetch('/currentUser', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const user = await response.json();
+        setUser(user);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    };
+
+    getList();
+  }, []);
 
   return (
     <BrowserRouter>
       <div>
-        <Navbar setUser={setUser} user={user} />
+        <Navbar user={user} setUser={setUser} />
+
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<Homepage setUser={setUser} />} />
           <Route path="/dashboard" element={<Dashboard user={user} />} />
-          <Route path="/login" element={<HomepageLoginForm />} />
         </Routes>
       </div>
     </BrowserRouter>
