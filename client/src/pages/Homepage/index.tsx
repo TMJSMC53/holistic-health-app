@@ -1,5 +1,6 @@
 import HomepageAuthForm from './HomepageAuthForm';
 import ProductFeatures from './ProductFeatures';
+import Footer from '../../components/Footer';
 import { SetUser } from '../../main.d';
 
 type HomepageProps = {
@@ -13,6 +14,9 @@ const Homepage = ({ setUser }: HomepageProps) => {
         <HomepageAuthForm setUser={setUser} />
       </main>
       <ProductFeatures />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };
