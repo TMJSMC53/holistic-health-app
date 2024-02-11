@@ -6,7 +6,30 @@ export default {
     './client/src/components/**/*.{html,js,ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          400: '#42b883',
+          500: '#347474',
+          600: '#35495e',
+          700: '#ff7e67',
+        },
+        accents: {
+          100: '#f0f2f2',
+          200: '#24b0ba',
+          300: '#ccd2c7',
+        },
+      },
+      fontFamily: {
+        playfair: ['"Playfair Display"'],
+        poppins: ['"Poppins"'],
+      },
+      fontWeight: {
+        thin: 200,
+        light: 300,
+        normal: 400,
+      },
+    },
   },
   plugins: [require('daisyui')],
 
