@@ -1,4 +1,5 @@
 import { UserState, SetUser } from '../main.d';
+
 import Logout from './Logout';
 
 type NavbarProps = {
@@ -7,14 +8,13 @@ type NavbarProps = {
 };
 
 const Navbar = ({ user, setUser }: NavbarProps) => {
-  // const Navbar = () => {
   return (
     <>
       <div className="drawer">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
-          <div className="w-full navbar bg-blue-300">
+          <div className="w-full navbar">
             <div className="flex-none lg:hidden">
               <label
                 htmlFor="my-drawer-3"
@@ -38,25 +38,28 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
             </div>
             <div className="flex-1 px-2 mx-2">HH</div>
             <div className="flex-none hidden lg:block">
-              <ul className="menu menu-horizontal">
+              <ul className="menu menu-horizontal text-primary-600 font-poppins">
                 {/* Navbar menu content here */}
-
                 <li>
-                  <a href="/">Home</a>
+                  <a className="hover:bg-transparent" href="/">
+                    Home
+                  </a>
                 </li>
                 {user ? (
-                  <li>
-                    <a href="/dashboard">Dashboard</a>
+                  <li className="text-primary-600">
+                    <a className="hover:bg-transparent" href="/dashboard">
+                      Dashboard
+                    </a>
                   </li>
                 ) : null}
                 <li>
-                  <a>About</a>
+                  <a className="hover:bg-transparent">About</a>
                 </li>
                 <li>
-                  <a>Docs</a>
+                  <a className="hover:bg-transparent">Docs</a>
                 </li>
                 <li>
-                  <Logout setUser={setUser} />
+                  <Logout isLoggedIn={!!user} setUser={setUser} />
                 </li>
               </ul>
             </div>
@@ -81,7 +84,7 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
               <a>Docs</a>
             </li>
             <li>
-              <Logout setUser={setUser} />
+              <Logout isLoggedIn={!!user} setUser={setUser} />
             </li>
           </ul>
         </div>
