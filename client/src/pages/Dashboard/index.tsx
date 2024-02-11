@@ -2,6 +2,7 @@ import FluidIntakeForm from './FluidIntakeForm';
 import FluidIntakeLog from './FluidIntakeLog';
 import CustomizableWaterIntakeGoalForm from './CustomizableWaterIntakeGoalForm';
 import CurrentUsername from './CurrentUsername';
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../main.d';
