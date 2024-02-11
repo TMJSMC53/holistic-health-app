@@ -24,12 +24,16 @@ const HomepageAuthForm = ({ setUser }: HomepageAuthFormProps) => {
   } else {
     form = <HomepageLoginForm switchForm={switchForm} setUser={setUser} />;
   }
+
   return (
     <>
-      <div className="hero min-h-screen bg-blue-100">
+      <div
+        className="hero min-h-screen bg-accents-300
+      "
+      >
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
-            <h1 className="text-5xl font-bold text-center">
+            <h1 className="text-5xl text-primary-600 font-bold text-center font-playfair">
               Welcome to the Holistic Health App
             </h1>
           </div>
