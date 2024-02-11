@@ -71,11 +71,13 @@ const HomepageRegisterForm = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="card-body">
-        <div className="form-control">
-          <h2>Register to create an account</h2>
+      <form onSubmit={handleSubmit} className="card-body font-poppins ">
+        <div className="form-control ">
+          <h2 className="text-accents-200 text-xl font-extrabold mb-6">
+            Register to create an account
+          </h2>
           <label className="label">
-            <span className="label-text">First Name</span>
+            <span className="label-text text-primary-600">First Name</span>
           </label>
           <input
             type="text"
@@ -88,7 +90,7 @@ const HomepageRegisterForm = ({
         </div>
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Last Name</span>
+            <span className="label-text text-primary-600">Last Name</span>
           </label>
           <input
             type="text"
@@ -101,11 +103,11 @@ const HomepageRegisterForm = ({
         </div>
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Username</span>
+            <span className="label-text text-primary-600">Username</span>
           </label>
           <input
             type="text"
-            placeholder="username"
+            placeholder="Username"
             className="input input-bordered"
             value={username}
             onChange={handleUsername}
@@ -114,27 +116,33 @@ const HomepageRegisterForm = ({
         </div>
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Password</span>
+            <span className="label-text text-primary-600">Password</span>
           </label>
           <input
             type="password"
-            placeholder="password"
+            placeholder="Password"
             className="input input-bordered"
             value={password}
             onChange={handlePassword}
             required
           />
           <label className="label">
-            <a href="#" className="label-text-alt" onClick={switchForm}>
+            <a
+              href="#"
+              className="label-text-alt text-primary-600"
+              onClick={switchForm}
+            >
               Already have an account?
-              <span className="link link-hover text-indigo-500 font-extrabold pl-1">
+              <span className="link link-hover text-accents-200 font-extrabold pl-1">
                 Login
               </span>
             </a>
           </label>
         </div>
         <div className="form-control mt-6">
-          <button className="btn btn-primary">Register</button>
+          <button className="btn bg-primary-600 hover:bg-primary-700 text-accents-100">
+            Register
+          </button>
         </div>
       </form>
     </>
