@@ -5,7 +5,9 @@ export const createFluidIntake = async (req, res) => {
   const newItem = new FluidIntakeList({
     fluidType: req.body.fluidType,
     amount: req.body.amount,
+    user_id: req.user.id,
   });
+  console.log(newItem);
   try {
     await newItem.save();
     console.log(newItem);
@@ -20,7 +22,7 @@ export const createFluidIntake = async (req, res) => {
 
 export const getFluidIntake = async (req, res) => {
   try {
-    const getItems = await FluidIntakeList.find();
+    const getItems = await FluidIntakeList.find({ user_id: req.user.id });
     res.status(200).send(getItems);
 
     console.log(getItems);
