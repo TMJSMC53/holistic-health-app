@@ -57,8 +57,12 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="card-body">
+      <form onSubmit={handleSubmit} className="card-body font-poppins">
         <div className="form-control">
+          <h2 className="text-accents-200 text-4xl font-extrabold mb-6">
+            Welcome Back!
+          </h2>
+          <span className="text-primary-600 text-lg mb-3">Log In</span>
           <label className="label">
             <span className="label-text">Username</span>
           </label>
@@ -86,14 +90,16 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
           <label className="label">
             <a href="#" className="label-text-alt" onClick={switchForm}>
               Don't have an account?
-              <span className="link link-hover text-indigo-500 font-extrabold pl-1">
+              <span className="link link-hover text-accents-200 font-extrabold pl-1">
                 Register
               </span>
             </a>
           </label>
         </div>
         <div className="form-control mt-6">
-          <button className="btn btn-primary ">Login</button>
+          <button className="btn bg-primary-600 hover:bg-accents-300 hover:text-primary-600 text-accents-100">
+            Login
+          </button>
         </div>
       </form>
     </>
