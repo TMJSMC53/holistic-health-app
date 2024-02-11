@@ -3,6 +3,7 @@ import WaterIntakeGoal from '../models/waterIntakeGoal.js';
 // Create a new WaterIntakeGoal
 export const createWaterIntakeGoal = async (req, res) => {
   const newItem = new WaterIntakeGoal({
+    user_id: req.user.id,
     amount: req.body.amount,
   });
   try {
@@ -19,7 +20,9 @@ export const createWaterIntakeGoal = async (req, res) => {
 
 export const getWaterIntakeGoal = async (req, res) => {
   try {
-    const latestWaterIntakeGoal = await WaterIntakeGoal.findOne().sort({
+    const latestWaterIntakeGoal = await WaterIntakeGoal.findOne({
+      user_id: req.user.id,
+    }).sort({
       date: 'desc',
     });
 
