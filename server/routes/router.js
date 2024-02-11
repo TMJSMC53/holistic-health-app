@@ -22,16 +22,20 @@ router.get('/api/fluidIntakeLog', getFluidIntake);
 router.get('/api/waterIntakeGoal', getWaterIntakeGoal);
 
 router.get('/currentUser', getCurrentUser);
-router.get('/logout', (req, res) => {
-  res.cookie('jwt', '', { maxAge: '1' });
-  res.redirect('/');
-});
+
 // POST
 router.post('/api/fluid', createFluidIntake);
 router.post('/api/waterIntakeGoal', createWaterIntakeGoal);
 
 router.post('/register', register);
 router.post('/login', login);
+router.post('/logout', (req, res) => {
+  res.cookie('jwt', '', { maxAge: '1' });
+  // res.redirect('/');
+  res.status(201).json({
+    message: 'User successfully logged out',
+  });
+});
 
 // PUT
 router.put('/api/fluid/:id', updateFluidIntake);
