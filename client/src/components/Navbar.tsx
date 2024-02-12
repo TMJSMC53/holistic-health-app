@@ -36,7 +36,13 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                 </svg>
               </label>
             </div>
-            <div className="flex-1 px-2 mx-2">HH</div>
+            <div className="flex-1 px-2 mx-2">
+              <img
+                className="block max-w-full rounded-full w-20 h-20"
+                src="/images/HH_logo_nav.jpeg"
+                alt="Navbar Holistic Health Logo"
+              />
+            </div>
             <div className="flex-none hidden lg:block">
               <ul className="menu menu-horizontal text-primary-600 font-poppins">
                 {/* Navbar menu content here */}
