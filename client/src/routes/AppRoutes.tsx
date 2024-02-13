@@ -9,9 +9,8 @@ import Navbar from '../components/Navbar';
 import { UserState } from '../main.d';
 
 const AppRoutes = () => {
-  const [user, setUser] = useState<UserState>(undefined);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [user, setUser] = useState<UserState>(null);
+  const isLoggedIn = user !== null;
   useEffect(() => {
     const getList = async () => {
       try {
@@ -28,7 +27,6 @@ const AppRoutes = () => {
 
         const user = await response.json();
         setUser(user);
-        setIsLoggedIn(!!user);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -36,11 +34,6 @@ const AppRoutes = () => {
 
     getList();
   }, []);
-
-  // const handleLogout = (event: MouseEvent<HTMLButtonElement>) => {
-  //   setUser(null);
-  //   setIsLoggedIn(false);
-  // };
 
   return (
     <BrowserRouter>
