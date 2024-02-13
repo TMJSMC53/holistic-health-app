@@ -20,13 +20,11 @@ const Logout = ({ setUser, isLoggedIn }: LogoutProps) => {
       console.log({ response });
       if (response.ok) {
         // Registration successful
-
         const logoutResponse = await response.json();
         alert(logoutResponse.message);
 
-        // setUser(loginResponse.user);
         setUser(null);
-        navigate(`/`);
+        navigate('/');
       } else {
         // Registration failed
         const errorMessage = await response.text();
@@ -36,15 +34,11 @@ const Logout = ({ setUser, isLoggedIn }: LogoutProps) => {
       console.error('Error:', error);
     }
   }
+
   return (
     <button
       className="btn btn-xs sm:btn-sm md:btn-md bg-primary-500"
       onClick={handleSubmit}
-      // onClick={() => {
-
-      //   // navigate('/');
-      //   // setUser(null);
-      // }}
     >
       {isLoggedIn ? 'Logout' : 'Login'}
     </button>
