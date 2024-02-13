@@ -31,10 +31,10 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', (req, res) => {
   res.cookie('jwt', '', { maxAge: '1' });
-  // res.redirect('/');
   res.status(201).json({
     message: 'User successfully logged out',
   });
+  // res.redirect('/');
 });
 
 // PUT
