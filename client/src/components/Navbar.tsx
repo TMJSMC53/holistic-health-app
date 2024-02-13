@@ -1,5 +1,5 @@
 import { UserState, SetUser } from '../main.d';
-
+import { Link } from 'react-router-dom';
 import Logout from './Logout';
 
 type NavbarProps = {
@@ -47,22 +47,26 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
               <ul className="menu menu-horizontal text-primary-600 font-poppins">
                 {/* Navbar menu content here */}
                 <li>
-                  <a className="hover:bg-transparent" href="/">
+                  <Link to="/" className="hover:bg-transparent">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 {user ? (
                   <li className="text-primary-600">
-                    <a className="hover:bg-transparent" href="/dashboard">
+                    <Link to="/dashboard" className="hover:bg-transparent">
                       Dashboard
-                    </a>
+                    </Link>
                   </li>
                 ) : null}
                 <li>
-                  <a className="hover:bg-transparent">About</a>
+                  <Link to="/about" className="hover:bg-transparent">
+                    About
+                  </Link>
                 </li>
                 <li>
-                  <a className="hover:bg-transparent">Docs</a>
+                  <Link to="/docs" className="hover:bg-transparent">
+                    Docs
+                  </Link>
                 </li>
                 <li>
                   <Logout isLoggedIn={!!user} setUser={setUser} />
@@ -81,13 +85,20 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
           <ul className="menu p-4 w-80 min-h-full bg-base-200">
             {/* Sidebar content here */}
             <li>
-              <a>Home</a>
+              <Link to="/">Home</Link>
+            </li>
+            {user ? (
+              <li className="text-primary-600">
+                <Link to="/dashboard" className="hover:bg-transparent">
+                  Dashboard
+                </Link>
+              </li>
+            ) : null}
+            <li>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <a>About</a>
-            </li>
-            <li>
-              <a>Docs</a>
+              <Link to="/docs">Docs</Link>
             </li>
             <li>
               <Logout isLoggedIn={!!user} setUser={setUser} />
