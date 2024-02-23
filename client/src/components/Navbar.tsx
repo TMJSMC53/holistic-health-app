@@ -68,9 +68,12 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                     Docs
                   </Link>
                 </li>
-                <li>
-                  <Logout isLoggedIn={!!user} setUser={setUser} />
-                </li>
+
+                {user ? (
+                  <li className="text-primary-600">
+                    <Logout setUser={setUser} />
+                  </li>
+                ) : null}
               </ul>
             </div>
           </div>
@@ -100,9 +103,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
             <li>
               <Link to="/docs">Docs</Link>
             </li>
-            <li>
-              <Logout isLoggedIn={!!user} setUser={setUser} />
-            </li>
+            {user ? (
+              <li className="text-primary-600">
+                <Logout setUser={setUser} />
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>
