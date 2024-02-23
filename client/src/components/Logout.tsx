@@ -3,9 +3,8 @@ import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 type LogoutProps = {
   setUser: SetUser;
-  isLoggedIn: boolean;
 };
-const Logout = ({ setUser, isLoggedIn }: LogoutProps) => {
+const Logout = ({ setUser }: LogoutProps) => {
   const navigate = useNavigate();
 
   async function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
@@ -40,7 +39,7 @@ const Logout = ({ setUser, isLoggedIn }: LogoutProps) => {
       className="btn btn-xs sm:btn-sm md:btn-md bg-primary-500"
       onClick={handleSubmit}
     >
-      {isLoggedIn ? 'Logout' : 'Login'}
+      Logout
     </button>
   );
 };
