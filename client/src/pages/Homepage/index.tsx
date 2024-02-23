@@ -19,7 +19,7 @@ const Homepage = ({ setUser, isLoggedIn }: HomepageProps) => {
           >
             <div className="hero-content flex-col lg:flex-row-reverse py-14">
               <div className="text-center lg:text-left">
-                <h1 className="text-14 text-48  text-accents-100 font-bold text-center font-playfair">
+                <h1 className="text-14 lg:text-48 text-accents-100 font-bold text-center font-playfair">
                   Welcome Back to Holistic Health
                 </h1>
               </div>
