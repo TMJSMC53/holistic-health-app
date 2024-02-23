@@ -59,10 +59,10 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
     <>
       <form onSubmit={handleSubmit} className="card-body font-poppins">
         <div className="form-control">
-          <h2 className="text-accents-200 text-4xl font-extrabold mb-6">
+          <h2 className="text-accents-200 text-36 font-extrabold mb-6">
             Welcome Back!
           </h2>
-          <span className="text-primary-600 text-lg mb-3">Log In</span>
+          <span className="text-primary-600 text-18 mb-3">Log In</span>
           <label className="label">
             <span className="label-text">Username</span>
           </label>

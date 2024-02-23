@@ -11,7 +11,7 @@ export interface Fluid {
 }
 
 const FluidIntakeLog = () => {
-  const [fluidList, setFluidList] = useState<LIList[]>([]);
+  const [fluidList, setFluidList] = useState<Fluid[]>([]);
 
   useEffect(() => {
     const getList = async () => {
@@ -38,7 +38,7 @@ const FluidIntakeLog = () => {
       <div className="overflow-x-auto">
         <table className="table table-zebra">
           <thead>
-            <tr className="text-xl uppercase">
+            <tr className="text-20 uppercase">
               <th>Date</th>
               <th>Fluid Type</th>
               <th>Amount (ml)</th>

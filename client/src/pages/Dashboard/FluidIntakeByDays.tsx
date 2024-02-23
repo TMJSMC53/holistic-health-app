@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
-
-type LIList = {
-  _id: string;
-  fluidType: string;
-  amount: number;
-  date: string;
-};
+import { Fluid } from './FluidIntakeLog';
 
 type GroupSum = {
   date: string;
   totalAmount: number;
-  group: LIList[];
+  group: Fluid[];
 };
 
 const FluidIntakeByDays: React.FC = () => {
-  const [fluidList, setFluidList] = useState<LIList[]>([]);
+  const [fluidList, setFluidList] = useState<Fluid[]>([]);
   const [waterGoalAmount, setWaterGoalAmount] = useState<number>(4000);
   console.log(waterGoalAmount);
 
@@ -65,7 +59,7 @@ const FluidIntakeByDays: React.FC = () => {
 
   const waterList = fluidList.filter((item) => item.fluidType === 'Water');
 
-  const acc: Record<string, { totalAmount: number; group: LIList[] }> = {};
+  const acc: Record<string, { totalAmount: number; group: Fluid[] }> = {};
 
   for (let i = 0; i < waterList.length; i++) {
     const item = waterList[i];
@@ -112,7 +106,7 @@ const FluidIntakeByDays: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <table className="table table-zebra">
               <thead>
-                <tr className="text-sm uppercase">
+                <tr className="text-14 uppercase">
                   <th>Fluid Type</th>
                   <th>Amount (ml)</th>
                 </tr>

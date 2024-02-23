@@ -73,7 +73,7 @@ const HomepageRegisterForm = ({
     <>
       <form onSubmit={handleSubmit} className="card-body font-poppins ">
         <div className="form-control ">
-          <h2 className="text-accents-200 text-xl font-extrabold mb-6">
+          <h2 className="text-accents-200 text-20 font-extrabold mb-6">
             Register to create an account
           </h2>
           <label className="label">

@@ -13,7 +13,7 @@ const ProductFeatures = () => {
             size="2xl"
             style={{ color: '#4e8eca' }}
           />
-          <h3 className="text-xl font-semibold mb-4 mt-4">Log Fluids</h3>
+          <h3 className="text-20 font-semibold mb-4 mt-4">Log Fluids</h3>
           <p className="text-gray-600">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec
             justo vel ligula consectetur tristique.
@@ -27,7 +27,7 @@ const ProductFeatures = () => {
             size="2xl"
             style={{ color: '#4e8eca' }}
           />
-          <h3 className="text-xl font-semibold mb-4 mt-4">Group By Days</h3>
+          <h3 className="text-20 font-semibold mb-4 mt-4">Group By Days</h3>
           <p className="text-gray-600">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec
             justo vel ligula consectetur tristique.
@@ -41,7 +41,7 @@ const ProductFeatures = () => {
             size="2xl"
             style={{ color: '#4e8eca' }}
           />
-          <h3 className="text-xl font-semibold mb-4 mt-4">Update Goal</h3>
+          <h3 className="text-20 font-semibold mb-4 mt-4">Update Goal</h3>
           <p className="text-gray-600">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec
             justo vel ligula consectetur tristique.

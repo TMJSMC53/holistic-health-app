@@ -33,7 +33,7 @@ const HomepageAuthForm = ({ setUser }: HomepageAuthFormProps) => {
       >
         <div className="hero-content flex-col lg:flex-row-reverse py-14">
           <div className="text-center lg:text-left">
-            <h1 className="text-5xl text-primary-600 font-bold text-center font-playfair">
+            <h1 className="text-48 text-primary-600 font-bold text-center font-playfair">
               Welcome to the Holistic Health App
             </h1>
           </div>
