@@ -1,4 +1,22 @@
 /** @type {import('tailwindcss').Config} */
+
+const pxToRem = (px, base = 16) => {
+  return `${px / base}rem`;
+};
+
+const generateFontSize = () => {
+  const fontSize = {};
+
+  const minFontSize = 12;
+  const maxFontSize = 100;
+
+  for (let i = minFontSize; i <= maxFontSize; i += 2) {
+    fontSize[i] = pxToRem(i);
+  }
+
+  return fontSize;
+};
+
 export default {
   content: [
     './client/src/**/*.{js,ts,jsx,tsx}',
@@ -6,6 +24,7 @@ export default {
     './client/src/components/**/*.{html,js,ts,tsx}',
   ],
   theme: {
+    fontSize: generateFontSize(),
     extend: {
       colors: {
         primary: {
