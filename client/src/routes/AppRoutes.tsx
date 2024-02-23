@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-// import { MouseEvent } from 'react';
+
 import Homepage from '../pages/Homepage';
 
 import Dashboard from '../pages/Dashboard';
@@ -9,8 +9,9 @@ import Navbar from '../components/Navbar';
 import { UserState } from '../main.d';
 
 const AppRoutes = () => {
-  const [user, setUser] = useState<UserState>(null);
+  const [user, setUser] = useState<UserState>(undefined);
   const isLoggedIn = user !== null;
+
   useEffect(() => {
     const getList = async () => {
       try {
@@ -34,6 +35,10 @@ const AppRoutes = () => {
 
     getList();
   }, []);
+
+  if (user === undefined) {
+    return null;
+  }
 
   return (
     <BrowserRouter>
