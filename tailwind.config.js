@@ -17,6 +17,20 @@ const generateFontSize = () => {
   return fontSize;
 };
 
+const generateBorderRadius = (max = 24) => {
+  const borderRadius = Array.from(Array(max + 1).keys()).reduce((acc, cur) => {
+    if (cur % 2 !== 0) {
+      return acc;
+    }
+
+    acc[cur] = pxToRem(cur);
+    return acc;
+  }, {});
+  borderRadius['full'] = '9999px';
+
+  return borderRadius;
+};
+
 export default {
   content: [
     './client/src/**/*.{js,ts,jsx,tsx}',
@@ -24,6 +38,7 @@ export default {
     './client/src/components/**/*.{html,js,ts,tsx}',
   ],
   theme: {
+    borderRadius: generateBorderRadius(),
     fontSize: generateFontSize(),
     extend: {
       colors: {
