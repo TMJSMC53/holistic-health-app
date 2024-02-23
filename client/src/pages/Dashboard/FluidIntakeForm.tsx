@@ -6,6 +6,7 @@ const FluidIntakeForm = () => {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     try {
       const response = await fetch('/api/fluid', {
         method: 'POST',
@@ -17,6 +18,7 @@ const FluidIntakeForm = () => {
 
       const fluidIntakeDoc = await response.json();
       alert(`You entered ${fluidIntakeDoc.amount}`);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
