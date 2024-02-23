@@ -6,7 +6,6 @@ import { SetUser } from '../../main.d';
 type HomepageProps = {
   setUser: SetUser;
   isLoggedIn: boolean;
-  // handleLogout: () => void;
 };
 
 const Homepage = ({ setUser, isLoggedIn }: HomepageProps) => {
