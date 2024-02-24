@@ -5,9 +5,10 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 const ProductFeatures = () => {
   return (
     <div className="container mx-auto py-24">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"> */}
+      <div className="mx-4 md:mx-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {/* Feature 1 */}
-        <div className="bg-white p-6 rounded-8 shadow-md">
+        <div className="bg-white p-4 md:p-6 border border-gray-100 rounded-8 shadow-custom">
           <FontAwesomeIcon
             icon={faDroplet}
             size="2xl"
@@ -21,7 +22,7 @@ const ProductFeatures = () => {
         </div>
 
         {/* Feature 2 */}
-        <div className="bg-white p-6 rounded-8 shadow-md">
+        <div className="bg-white p-6 border border-gray-100 rounded-8 shadow-custom">
           <FontAwesomeIcon
             icon={faPenToSquare}
             size="2xl"
@@ -35,7 +36,7 @@ const ProductFeatures = () => {
         </div>
 
         {/* Feature 3 */}
-        <div className="bg-white p-6 rounded-8 shadow-md">
+        <div className="bg-white p-6 border border-gray-100 rounded-8 shadow-custom">
           <FontAwesomeIcon
             icon={faPenToSquare}
             size="2xl"
