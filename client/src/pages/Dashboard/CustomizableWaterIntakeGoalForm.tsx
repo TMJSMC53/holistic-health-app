@@ -24,6 +24,7 @@ const CustomizableWaterIntakeGoalForm = () => {
       const fluidIntakeDoc = await response.json();
       alert(`You updated the current amount to: ${fluidIntakeDoc.amount}`);
       setIsModalOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
