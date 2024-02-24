@@ -27,17 +27,14 @@ const HomepageAuthForm = ({ setUser }: HomepageAuthFormProps) => {
 
   return (
     <>
-      <div
-        className="hero min-h-screen bg-accents-300
-      "
-      >
-        <div className="hero-content flex-col lg:flex-row-reverse py-14">
-          <div className="text-center lg:text-left">
-            <h1 className="text-14 lg:text-48 text-primary-600 font-bold text-center font-playfair">
+      <div className="min-h-screen bg-accents-300">
+        <div className="flex flex-col lg:flex-row-reverse lg:justify-center lg:items-center px-4 py-14">
+          <div className="text-center lg:text-left lg:pl-6">
+            <h1 className="text-18 md:text-36 lg:text-48 text-primary-600 font-bold text-center font-playfair">
               Welcome to the Holistic Health App
             </h1>
           </div>
-          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div className="card mt-4 mx-auto lg:mx-0 shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             {form}
           </div>
         </div>
