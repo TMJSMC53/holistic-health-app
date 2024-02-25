@@ -14,12 +14,12 @@ const Homepage = ({ setUser, isLoggedIn }: HomepageProps) => {
       <main>
         {isLoggedIn ? (
           <div
-            className="hero min-h-screen bg-primary-500
+            className="hero min-h-full bg-primary-500 pb-10
       "
           >
-            <div className="hero-content flex-col lg:flex-row-reverse py-14">
+            <div className="hero-content flex-col lg:flex-row-reverse lg:pt-10">
               <div className="text-center lg:text-left">
-                <h1 className="text-14 lg:text-48 text-accents-100 font-bold text-center font-playfair">
+                <h1 className="my-5 mx-6 text-32 md:text-40 lg:text-48 text-accents-100 font-bold text-center font-playfair">
                   Welcome Back to Holistic Health
                 </h1>
               </div>
