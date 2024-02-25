@@ -1,20 +1,18 @@
 import { FormEvent } from 'react';
 
-import { Fluid } from "./FluidIntakeLog"
+import { Fluid } from './FluidIntakeLog';
 
-const FluidIntakeDeleteForm = ({ fluid } : { fluid: Fluid }) => {
+const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/fluid/${fluid._id}`, {
+      await fetch(`/api/fluid/${fluid._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
-      const fluidIntakeDoc = await response.json();
-      alert(`You entered ${fluidIntakeDoc.amount}`);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
