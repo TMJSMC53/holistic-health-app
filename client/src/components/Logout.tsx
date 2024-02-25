@@ -36,7 +36,7 @@ const Logout = ({ setUser }: LogoutProps) => {
 
   return (
     <button
-      className="btn btn-xs sm:btn-sm md:btn-md bg-primary-500"
+      className="flex items-center justify-center btn btn-md text-center sm:btn-sm md:btn-md bg-primary-500 text-accents-100 hover:bg-primary-700"
       onClick={handleSubmit}
     >
       Logout
