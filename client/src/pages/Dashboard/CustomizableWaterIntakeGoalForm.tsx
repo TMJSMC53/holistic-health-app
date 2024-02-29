@@ -55,10 +55,7 @@ const CustomizableWaterIntakeGoalForm = () => {
   }
   return (
     <>
-      <div
-        className="tooltip tooltip-right"
-        data-tip="Default water goal: 4000ml"
-      >
+      <div className="tooltip tooltip-left" data-tip="Update Water Intake Goal">
         <label
           htmlFor="gearButton"
           className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent"
