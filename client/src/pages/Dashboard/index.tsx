@@ -24,9 +24,11 @@ const Dashboard = ({ user }: DashboardProps) => {
 
   return (
     <div>
-      <CurrentUsername firstName={user?.firstName || ''} />
-      <>
+      <section className="flex items-center justify-between">
+        <CurrentUsername firstName={user?.firstName || ''} />
         <CustomizableWaterIntakeGoalForm />
+      </section>
+      <>
         <FluidIntakeForm />
         <FluidIntakeLog />
       </>
