@@ -8,7 +8,7 @@ const FluidIntakeForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/fluid', {
+      await fetch('/api/fluid', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -16,8 +16,6 @@ const FluidIntakeForm = () => {
         body: JSON.stringify({ fluidType: fluidType, amount: fluidAmount }),
       });
 
-      const fluidIntakeDoc = await response.json();
-      alert(`You entered ${fluidIntakeDoc.amount}`);
       window.location.reload();
     } catch (error) {
       console.error('Error:', error);
@@ -32,35 +30,39 @@ const FluidIntakeForm = () => {
   }
   return (
     <>
-      <div className="mt-6 mb-12">
+      <div className="mt-6 mb-12 w-full">
         <form onSubmit={handleSubmit}>
-          <label htmlFor="fluidType">Choose a fluid type from this list:</label>
-          <input
-            className="input input-bordered input-sm w-2/12 max-w-xs ml-2 mr-1.5"
-            list="fluids"
-            id="fluidType"
-            name="fluidType"
-            value={fluidType}
-            onChange={handleFluidType}
-            type="string"
-          />
-          <datalist id="fluids">
-            <option value="Water"></option>
-            <option value="Coffee"></option>
-            <option value="Tea"></option>
-            <option value="Carbonated Water"></option>
-            <option value="Juice"></option>
-          </datalist>
-          <input
-            className="input input-bordered input-sm w-2/12 max-w-xs mr-1.5"
-            value={fluidAmount}
-            type="number"
-            onChange={handleFluidAmount}
-            placeholder="Amount"
-          />
-          <button className="btn btn-sm bg-primary-600 text-accents-100 hover:bg-accents-300 hover:text-primary-600">
-            Enter Amount
-          </button>
+          <label className="ml-4 font-poppins font-light" htmlFor="fluidType">
+            Choose a fluid type from the list below:
+          </label>
+          <div className="flex sm:flex-none mt-4 font-poppins">
+            <input
+              className="w-1/3 input input-bordered input-sm max-w-xs ml-4 mr-1.5"
+              list="fluids"
+              id="fluidType"
+              name="fluidType"
+              value={fluidType}
+              onChange={handleFluidType}
+              type="string"
+            />
+            <datalist className="sm:w-1/3" id="fluids">
+              <option value="Water"></option>
+              <option value="Coffee"></option>
+              <option value="Tea"></option>
+              <option value="Carbonated Water"></option>
+              <option value="Juice"></option>
+            </datalist>
+            <input
+              className="input input-bordered input-sm w-1/3 md:w-2/12 max-w-xs mr-1.5"
+              value={fluidAmount}
+              type="number"
+              onChange={handleFluidAmount}
+              placeholder="Amount"
+            />
+            <button className="text-12 lg:text-14 btn btn-sm bg-primary-600 text-accents-100 hover:bg-accents-300 hover:text-primary-600 mr-4">
+              Enter Amount
+            </button>
+          </div>
         </form>
       </div>
     </>
