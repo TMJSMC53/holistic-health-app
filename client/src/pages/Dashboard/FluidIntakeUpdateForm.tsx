@@ -1,8 +1,8 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
 
-import { Fluid } from "./FluidIntakeLog"
+import { Fluid } from './FluidIntakeLog';
 
-const FluidIntakeUpdateForm = ({ fluid } : { fluid: Fluid }) => {
+const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
   const [fluidAmount, setFluidAmount] = useState(fluid.amount);
   const [fluidType, setFluidType] = useState(fluid.fluidType);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +14,7 @@ const FluidIntakeUpdateForm = ({ fluid } : { fluid: Fluid }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/fluid/${fluid._id}`, {
+      await fetch(`/api/fluid/${fluid._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -25,9 +25,8 @@ const FluidIntakeUpdateForm = ({ fluid } : { fluid: Fluid }) => {
         }),
       });
 
-      const fluidIntakeDoc = await response.json();
-      alert(`You updated the current amount to: ${fluidIntakeDoc.amount}`);
       setIsModalOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
