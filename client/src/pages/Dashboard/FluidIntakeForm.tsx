@@ -32,7 +32,7 @@ const FluidIntakeForm = () => {
   }
   return (
     <>
-      <div className="mt-24 mb-12">
+      <div className="mt-6 mb-12">
         <form onSubmit={handleSubmit}>
           <label htmlFor="fluidType">Choose a fluid type from this list:</label>
           <input
@@ -58,7 +58,7 @@ const FluidIntakeForm = () => {
             onChange={handleFluidAmount}
             placeholder="Amount"
           />
-          <button className="btn btn-sm btn-accent text-blue">
+          <button className="btn btn-sm bg-primary-600 text-accents-100 hover:bg-accents-300 hover:text-primary-600">
             Enter Amount
           </button>
         </form>
