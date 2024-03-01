@@ -115,7 +115,7 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
           <div className="modal-action">
             <label
               htmlFor="modalToggle"
-              className="btn"
+              className="btn bg-primary-600 text-accents-100 hover:bg-primary-700"
               onClick={handleModalToggle}
             >
               Close
