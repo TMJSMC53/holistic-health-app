@@ -93,30 +93,39 @@ const CustomizableWaterIntakeGoalForm = () => {
       />
 
       <div className={`modal${isModalOpen ? ' open' : ''}`} role="dialog">
-        <div className="modal-box">
-          <div className="mt-24 mb-12">
+        <div className="modal-box h-64 md:w-1/2">
+          <h3 className="text-22 text-primary-600 font-medium font-poppins">
+            Update Water Intake Goal
+          </h3>
+          <div className="mt-12 mb-12">
             <form onSubmit={handleSubmit}>
-              <input
-                className="input input-bordered input-sm w-2/12 max-w-xs ml-2 mr-1.5"
-                id="water_goal"
-                name="water_goal"
-                value={waterGoalAmount}
-                onChange={handleWaterGoalAmount}
-                type="number"
-              />
+              <section className="flex">
+                <input
+                  className="input input-bordered input-sm w-1/2 md:w-1/3 max-w-xs ml-2 mr-1.5"
+                  id="water_goal"
+                  name="water_goal"
+                  value={waterGoalAmount}
+                  onChange={handleWaterGoalAmount}
+                  placeholder="Amount"
+                  type="number"
+                />
 
-              <button className="btn btn-sm btn-accent text-blue" type="submit">
-                Update Goal
-              </button>
+                <button
+                  className="w-auto btn btn-sm btn-accent text-blue"
+                  type="submit"
+                >
+                  Update Goal
+                </button>
+              </section>
             </form>
           </div>
           <div className="modal-action">
             <label
               htmlFor="modalToggle"
-              className="btn"
+              className="btn text-accents-100 bg-primary-600"
               onClick={handleModalToggle}
             >
-              Close!
+              Close
             </label>
           </div>
         </div>
