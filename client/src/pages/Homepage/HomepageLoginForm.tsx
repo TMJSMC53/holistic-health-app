@@ -33,7 +33,6 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
         // Registration successful
 
         const loginResponse = await response.json();
-        alert(loginResponse.message);
 
         setUser(loginResponse.user);
 
@@ -59,10 +58,9 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
     <>
       <form onSubmit={handleSubmit} className="card-body font-poppins">
         <div className="form-control">
-          <h2 className="text-accents-200 text-36 font-extrabold mb-6">
-            Welcome Back!
+          <h2 className="text-accents-200 text-24 font-extrabold mb-6">
+            Log In
           </h2>
-          <span className="text-primary-600 text-18 mb-3">Log In</span>
           <label className="label">
             <span className="label-text">Username</span>
           </label>
@@ -97,7 +95,7 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
           </label>
         </div>
         <div className="form-control mt-6">
-          <button className="btn bg-primary-600 hover:bg-accents-300 hover:text-primary-600 text-accents-100">
+          <button className="btn bg-primary-600 hover:bg-primary-700 hover:text-accents-100 text-accents-100">
             Login
           </button>
         </div>
