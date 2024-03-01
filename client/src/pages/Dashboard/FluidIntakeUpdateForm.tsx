@@ -53,7 +53,7 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-4 h-4 md:w-6  md:h-6"
           >
             <path
               strokeLinecap="round"
@@ -74,37 +74,42 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
 
       <div className={`modal${isModalOpen ? ' open' : ''}`} role="dialog">
         <div className="modal-box">
-          <div className="mt-24 mb-12">
+          <div className="my-12">
             <form onSubmit={handleSubmit}>
-              <label htmlFor="fluidType">
-                Choose a fluid type from this list:
+              <label className="text-18 font-medium w-full" htmlFor="fluidType">
+                Update your fluid
               </label>
-              <input
-                className="input input-bordered input-sm w-2/12 max-w-xs ml-2 mr-1.5"
-                list="fluids"
-                id="fluidType"
-                name="fluidType"
-                value={fluidType}
-                onChange={handleFluidType}
-                type="text"
-              />
-              <datalist id="fluids">
-                <option key="water" value="Water"></option>
-                <option key="coffee" value="Coffee"></option>
-                <option key="tea" value="Tea"></option>
-                <option key="carbonatedWater" value="Carbonated Water"></option>
-                <option key="juice" value="Juice"></option>
-              </datalist>
-              <input
-                className="input input-bordered input-sm w-2/12 max-w-xs mr-1.5"
-                value={fluidAmount}
-                type="number"
-                onChange={handleFluidAmount}
-                placeholder="Amount"
-              />
-              <button className="btn btn-sm btn-accent text-blue" type="submit">
-                Update
-              </button>
+              <section className="flex mt-6">
+                <input
+                  className="input input-bordered input-sm w-1/3 max-w-xs ml-2 mr-1.5"
+                  list="fluids"
+                  id="fluidType"
+                  name="fluidType"
+                  value={fluidType}
+                  onChange={handleFluidType}
+                  type="text"
+                />
+                <datalist id="fluids">
+                  <option key="water" value="Water"></option>
+                  <option key="coffee" value="Coffee"></option>
+                  <option key="tea" value="Tea"></option>
+                  <option key="mineralWater" value="Mineral Water"></option>
+                  <option key="juice" value="Juice"></option>
+                </datalist>
+                <input
+                  className="input input-bordered input-sm w-1/3 max-w-xs mr-1.5"
+                  value={fluidAmount}
+                  type="number"
+                  onChange={handleFluidAmount}
+                  placeholder="Amount"
+                />
+                <button
+                  className="w-1/3 btn btn-sm btn-accent text-blue"
+                  type="submit"
+                >
+                  Update
+                </button>
+              </section>
             </form>
           </div>
           <div className="modal-action">
@@ -113,7 +118,7 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
               className="btn"
               onClick={handleModalToggle}
             >
-              Close!
+              Close
             </label>
           </div>
         </div>
