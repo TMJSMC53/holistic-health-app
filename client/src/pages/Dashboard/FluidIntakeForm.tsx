@@ -49,7 +49,7 @@ const FluidIntakeForm = () => {
               <option value="Water"></option>
               <option value="Coffee"></option>
               <option value="Tea"></option>
-              <option value="Carbonated Water"></option>
+              <option value="Mineral Water"></option>
               <option value="Juice"></option>
             </datalist>
             <input
