@@ -11,7 +11,7 @@ const CustomizableWaterIntakeGoalForm = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/waterIntakeGoal`, {
+      await fetch(`/api/waterIntakeGoal`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,8 +21,6 @@ const CustomizableWaterIntakeGoalForm = () => {
         }),
       });
 
-      const fluidIntakeDoc = await response.json();
-      alert(`You updated the current amount to: ${fluidIntakeDoc.amount}`);
       setIsModalOpen(false);
       window.location.reload();
     } catch (error) {
