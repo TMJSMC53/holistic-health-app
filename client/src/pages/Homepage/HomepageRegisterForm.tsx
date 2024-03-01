@@ -35,17 +35,10 @@ const HomepageRegisterForm = ({
       if (response.ok) {
         // Registration successful
         const registerResponse = await response.json();
-        console.log('User object:', registerResponse);
 
-        const userId = registerResponse.user;
-        console.log('User ID:', userId);
-        alert(registerResponse.message);
-
-        console.log('setUser exists', setUser);
         setUser(registerResponse.user);
 
-        navigate(`/dashboard/${userId}`);
-        console.log('Navigating to Dashboard');
+        navigate(`/dashboard`);
       } else {
         // Registration failed
         const errorMessage = await response.text();
