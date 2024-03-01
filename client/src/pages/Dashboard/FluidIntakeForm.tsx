@@ -59,7 +59,7 @@ const FluidIntakeForm = () => {
               onChange={handleFluidAmount}
               placeholder="Amount"
             />
-            <button className="text-12 lg:text-14 btn btn-sm bg-primary-600 text-accents-100 hover:bg-accents-300 hover:text-primary-600 mr-4">
+            <button className="text-12 lg:text-14 btn btn-sm bg-primary-600 text-accents-100 hover:bg-primary-700 hover:text-accents-100 mr-4">
               Enter Amount
             </button>
           </div>
