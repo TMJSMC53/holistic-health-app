@@ -10,25 +10,15 @@ const Logout = ({ setUser }: LogoutProps) => {
   async function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
-      const response = await fetch(`/logout`, {
+      await fetch(`/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      console.log({ response });
-      if (response.ok) {
-        // Registration successful
-        const logoutResponse = await response.json();
-        alert(logoutResponse.message);
-
-        setUser(null);
-        navigate('/');
-      } else {
-        // Registration failed
-        const errorMessage = await response.text();
-        alert(`Logout failed: ${errorMessage}`);
-      }
+      setUser(null);
+      navigate('/');
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
