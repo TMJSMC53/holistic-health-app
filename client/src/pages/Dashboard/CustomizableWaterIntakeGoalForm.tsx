@@ -120,7 +120,8 @@ const CustomizableWaterIntakeGoalForm = () => {
           <div className="modal-action">
             <label
               htmlFor="modalToggle"
-              className="btn text-accents-100 bg-primary-600"
+              className="btn text-accents-100 bg-primary-600
+              hover:bg-primary-700"
               onClick={handleModalToggle}
             >
               Close
