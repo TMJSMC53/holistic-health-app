@@ -83,35 +83,25 @@ const FluidIntakeByDays: React.FC = () => {
     groupedAndSummed.push({ date, totalAmount, group });
   }
 
-  // const groupedAndSummed: Array<GroupSum> = Object.entries(
-  //   waterList.reduce((acc, item) => {
-  //     const days = new Date(item.date);
-  //     const formattedDate = days.toLocaleDateString();
-
-  //     if (!acc[formattedDate]) {
-  //       acc[formattedDate] = { totalAmount: 0, group: [] };
-  //     }
-
-  //     acc[formattedDate].totalAmount += item.amount;
-  //     acc[formattedDate].group.push(item);
-  //     return acc;
-  //   }, {} as Record<string, { totalAmount: number; group: LIList[] }>)
-  // ).map(([date, { totalAmount, group }]) => ({ date, totalAmount, group }));
-
   return (
     <>
       {groupedAndSummed.map(({ date, totalAmount, group }, index) => (
-        <div className="flex flex-col " key={index}>
-          <h2 className="mx-auto">Date: {date}</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <table className="table table-zebra">
+        <div
+          className="flex flex-col  my-4 mx-6 md:my-8 md:mx-16 lg:mx-36 border border-accents-300 rounded-t-12"
+          key={index}
+        >
+          <h2 className="text-14 md:text-20 lg:text-28 my-6 mx-auto  text-primary-700 font-poppins font-medium">
+            Date: {date}
+          </h2>
+          <div className="grid grid-cols-1 gap-4">
+            <table className="table table-zebra font-poppins">
               <thead>
-                <tr className="text-14 uppercase">
+                <tr className="text-14 md:text-18 lg:text-24 text-primary-600 bg-accents-300 uppercase font-playfair">
                   <th>Fluid Type</th>
-                  <th>Amount (ml)</th>
+                  <th>ML</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-12 md:text-16 lg:text-20">
                 {group.map((item) => (
                   <tr key={item._id}>
                     <td>{item.fluidType}</td>
@@ -119,7 +109,10 @@ const FluidIntakeByDays: React.FC = () => {
                   </tr>
                 ))}
                 <tr>
-                  <td colSpan={6} className="row-span-full col-span-full">
+                  <td
+                    colSpan={6}
+                    className="row-span-full col-span-full bg-primary-600 text-accents-300"
+                  >
                     Total:
                     {totalAmount < waterGoalAmount ? (
                       <>
