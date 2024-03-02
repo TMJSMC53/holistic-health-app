@@ -1,8 +1,9 @@
 //e.g server.js
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
+import path from 'path';
 import ViteExpress from 'vite-express';
 
 import 'dotenv/config';
@@ -17,6 +18,8 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // routes
 app.use('/', router);
 connect()
@@ -24,6 +27,9 @@ connect()
     console.log('Connected to MongoDB');
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static('dist'));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+      });
       app.listen(PORT, () => {
         console.log(`Server is listening on PORT ${PORT} `);
       });
