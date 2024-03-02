@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import ViteExpress from 'vite-express';
 
 import 'dotenv/config';
-import './db/conn.js';
+import connect from './db/conn';
 
 import router from './routes/router.js';
 
@@ -19,7 +19,13 @@ app.use(cookieParser());
 
 // routes
 app.use('/', router);
-
-ViteExpress.listen(app, PORT, () =>
-  console.log(`Server is listening on PORT ${PORT} `)
-);
+connect()
+  .then(() => {
+    console.log('Connected to MongoDB');
+    ViteExpress.listen(app, PORT, () =>
+      console.log(`Server is listening on PORT ${PORT} `)
+    );
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB', error);
+  });
