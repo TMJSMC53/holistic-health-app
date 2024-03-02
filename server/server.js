@@ -22,9 +22,16 @@ app.use('/', router);
 connect()
   .then(() => {
     console.log('Connected to MongoDB');
-    ViteExpress.listen(app, PORT, () =>
-      console.log(`Server is listening on PORT ${PORT} `)
-    );
+    if (process.env.NODE_ENV === 'production') {
+      app.use(express.static('dist'));
+      app.listen(PORT, () => {
+        console.log(`Server is listening on PORT ${PORT} `);
+      });
+    } else {
+      ViteExpress.listen(app, PORT, () =>
+        console.log(`Server is listening on PORT ${PORT} `)
+      );
+    }
   })
   .catch((error) => {
     console.error('Error connecting to MongoDB', error);
