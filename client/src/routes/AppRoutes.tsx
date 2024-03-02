@@ -5,7 +5,8 @@ import Homepage from '../pages/Homepage';
 import Dashboard from '../pages/Dashboard';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-
+import About from '../pages/About/About';
+import Docs from '../pages/Docs/Docs';
 import { UserState } from '../main.d';
 
 const AppRoutes = () => {
@@ -51,6 +52,8 @@ const AppRoutes = () => {
             element={<Homepage setUser={setUser} isLoggedIn={isLoggedIn} />}
           />
           <Route path="/dashboard" element={<Dashboard user={user} />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/docs" element={<Docs />} />
         </Routes>
       </div>
     </BrowserRouter>
