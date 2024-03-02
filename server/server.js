@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import ViteExpress from 'vite-express';
 
 import 'dotenv/config';
-import connect from './db/conn';
+import connect from './db/conn.js';
 
 import router from './routes/router.js';
 
