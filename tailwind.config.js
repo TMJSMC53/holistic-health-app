@@ -67,6 +67,7 @@ export default {
         light: 300,
         normal: 400,
         medium: 500,
+        xtraBold: 700,
       },
     },
   },
