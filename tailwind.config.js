@@ -33,6 +33,7 @@ const generateBorderRadius = (max = 24) => {
 
 export default {
   content: [
+    './index.html',
     './client/src/**/*.{js,ts,jsx,tsx}',
     './client/src/pages/**/*.{html,js,ts,tsx}',
     './client/src/components/**/*.{html,js,ts,tsx}',
