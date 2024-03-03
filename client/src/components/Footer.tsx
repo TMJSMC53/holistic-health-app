@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="footer p-10 bg-neutral text-neutral-content font-poppins">
+    <footer className="footer p-10 bg-neutral text-neutral-content font-poppins mt-auto">
       <aside>
         <img
           className="block max-w-full rounded-full w-20 h-20"
