@@ -1,7 +1,6 @@
 import FluidIntakeForm from './FluidIntakeForm';
 import FluidIntakeLog from './FluidIntakeLog';
 import CustomizableWaterIntakeGoalForm from './CustomizableWaterIntakeGoalForm';
-import Footer from '../../components/Footer';
 import CurrentUsername from './CurrentUsername';
 
 import { useEffect } from 'react';
@@ -32,9 +31,6 @@ const Dashboard = ({ user }: DashboardProps) => {
         <FluidIntakeForm />
         <FluidIntakeLog />
       </>
-      <footer>
-        <Footer />
-      </footer>
     </div>
   );
 };
