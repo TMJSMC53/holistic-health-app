@@ -5,6 +5,7 @@ import Homepage from '../pages/Homepage';
 import Dashboard from '../pages/Dashboard';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import About from '../pages/About/About';
 import Docs from '../pages/Docs/Docs';
 import { UserState } from '../main.d';
@@ -43,19 +44,18 @@ const AppRoutes = () => {
 
   return (
     <BrowserRouter>
-      <div>
-        <Navbar user={user} setUser={setUser} />
+      <Navbar user={user} setUser={setUser} />
 
-        <Routes>
-          <Route
-            path="/"
-            element={<Homepage setUser={setUser} isLoggedIn={isLoggedIn} />}
-          />
-          <Route path="/dashboard" element={<Dashboard user={user} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/docs" element={<Docs />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={<Homepage setUser={setUser} isLoggedIn={isLoggedIn} />}
+        />
+        <Route path="/dashboard" element={<Dashboard user={user} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/docs" element={<Docs />} />
+      </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };
