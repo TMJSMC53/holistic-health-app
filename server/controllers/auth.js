@@ -74,7 +74,7 @@ export const login = async (req, res) => {
       // comparing given password with hashed password
       bcrypt.compare(password, user.password).then(function (result) {
         if (result) {
-          const maxAge = 3 * 60 * 60;
+          const maxAge = 24 * 60 * 60;
           const token = jwt.sign(
             {
               id: user._id,
@@ -89,7 +89,7 @@ export const login = async (req, res) => {
           );
           res.cookie('jwt', token, {
             httpOnly: true,
-            maxAge: maxAge * 1000, // 3hrs in ms
+            maxAge: maxAge * 1000, // 24hrs in ms
           });
           res.status(201).json({
             message: 'User successfully logged in',
