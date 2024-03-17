@@ -48,6 +48,14 @@ const CustomizableWaterIntakeGoalForm = () => {
     getList();
   }, []);
 
+  // Back btn
+  // useEffect(() => {
+  //   if (modalIsClosed) return;
+  //   const onBackArrow = (e: PopStateEvent) => {};
+
+  //   // include modal open state
+  // }, []);
+
   function handleWaterGoalAmount(event: ChangeEvent<HTMLInputElement>) {
     setWaterGoalAmount(event.target.value);
   }
@@ -91,7 +99,7 @@ const CustomizableWaterIntakeGoalForm = () => {
       />
 
       <div className={`modal${isModalOpen ? ' open' : ''}`} role="dialog">
-        <div className="modal-box h-64 md:w-1/2">
+        <div className="modal-box h-64 md:w-1/2 overflow-y-hidden">
           <h3 className="text-22 text-primary-600 font-medium font-poppins">
             Update Water Intake Goal
           </h3>
