@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, useState, useEffect } from 'react';
+import { FormEvent, ChangeEvent, useState, useEffect, useRef } from 'react';
 
 const CustomizableWaterIntakeGoalForm = () => {
   const [waterGoalAmount, setWaterGoalAmount] = useState('');
@@ -56,6 +56,14 @@ const CustomizableWaterIntakeGoalForm = () => {
   //   // include modal open state
   // }, []);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isModalOpen]);
+
   function handleWaterGoalAmount(event: ChangeEvent<HTMLInputElement>) {
     setWaterGoalAmount(event.target.value);
   }
@@ -107,6 +115,7 @@ const CustomizableWaterIntakeGoalForm = () => {
             <form onSubmit={handleSubmit}>
               <section className="flex">
                 <input
+                  ref={inputRef}
                   className="input input-bordered input-sm w-1/2 md:w-1/3 max-w-xs ml-2 mr-1.5"
                   id="water_goal"
                   name="water_goal"
