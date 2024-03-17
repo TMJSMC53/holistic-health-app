@@ -22,7 +22,9 @@ export const createFluidIntake = async (req, res) => {
 
 export const getFluidIntake = async (req, res) => {
   try {
-    const getItems = await FluidIntakeList.find({ user_id: req.user.id });
+    const getItems = await FluidIntakeList.find({ user_id: req.user.id }).sort({
+      date: 'desc',
+    });
     res.status(200).send(getItems);
 
     console.log(getItems);
