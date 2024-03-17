@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
 
 import { Fluid } from './FluidIntakeLog';
 
@@ -39,6 +39,14 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
   function handleFluidAmount(event: ChangeEvent<HTMLInputElement>) {
     setFluidAmount(parseFloat(event.target.value));
   }
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isModalOpen]);
 
   return (
     <>
@@ -81,6 +89,7 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
               </label>
               <section className="flex mt-6">
                 <input
+                  ref={inputRef}
                   className="input input-bordered input-sm w-1/3 max-w-xs ml-2 mr-1.5"
                   list="fluids"
                   id="fluidType"
