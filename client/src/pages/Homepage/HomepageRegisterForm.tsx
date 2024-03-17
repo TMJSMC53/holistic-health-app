@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { SetUser } from '../../main.d';
 
 type HomepageRegisterFormProps = {
@@ -119,17 +119,17 @@ const HomepageRegisterForm = ({
             onChange={handlePassword}
             required
           />
-          <label className="label">
-            <a
-              href="#"
-              className="label-text-alt text-primary-600"
+          <label className="flex mt-2">
+            <span className="text-12 text-primary-600">
+              Already have an account?
+            </span>
+            <Link
+              to="#"
+              className=" link link-hover hover:underline text-12 text-accents-200 font-extrabold pl-1"
               onClick={switchForm}
             >
-              Already have an account?
-              <span className="link link-hover text-accents-200 font-extrabold pl-1">
-                Login
-              </span>
-            </a>
+              Login
+            </Link>
           </label>
         </div>
         <div className="form-control mt-6">
