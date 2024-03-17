@@ -21,7 +21,7 @@ export const register = async (req, res) => {
       // TODO add firstName and lastName here
     })
       .then((user) => {
-        const maxAge = 3 * 60 * 60;
+        const maxAge = 24 * 60 * 60;
         const token = jwt.sign(
           {
             id: user._id,
@@ -31,7 +31,7 @@ export const register = async (req, res) => {
           },
           jwtSecret,
           {
-            expiresIn: maxAge, // 3hrs
+            expiresIn: maxAge, // 24hrs
           }
         );
         res.cookie('jwt', token, {
