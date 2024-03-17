@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { SetUser } from '../../main.d';
 
 type HomepageLoginFormProps = {
@@ -66,7 +66,7 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
           </label>
           <input
             type="text"
-            placeholder="username"
+            placeholder="Username"
             className="input input-bordered"
             value={username}
             onChange={handleUsername}
@@ -79,19 +79,21 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
           </label>
           <input
             type="password"
-            placeholder="password"
+            placeholder="Password"
             className="input input-bordered"
             value={password}
             onChange={handlePassword}
             required
           />
-          <label className="label">
-            <a href="#" className="label-text-alt" onClick={switchForm}>
-              Don't have an account?
-              <span className="link link-hover text-accents-200 font-extrabold pl-1">
-                Register
-              </span>
-            </a>
+          <label className="flex mt-2">
+            <span className="text-12">Don't have an account?</span>
+            <Link
+              to="#"
+              className="link link-hover hover:underline text-12 text-accents-200 font-extrabold pl-1"
+              onClick={switchForm}
+            >
+              Register
+            </Link>
           </label>
         </div>
         <div className="form-control mt-6">
