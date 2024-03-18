@@ -98,15 +98,7 @@ const CustomizableWaterIntakeGoalForm = () => {
         </label>
       </div>
 
-      <input
-        type="checkbox"
-        id="modalToggle"
-        className="modal-toggle"
-        checked={isModalOpen}
-        readOnly
-      />
-
-      <div className={`modal${isModalOpen ? ' open' : ''}`} role="dialog">
+      <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
         <div className="modal-box h-64 md:w-1/2 overflow-y-hidden">
           <h3 className="text-22 text-primary-600 font-medium font-poppins">
             Update Water Intake Goal
@@ -144,6 +136,11 @@ const CustomizableWaterIntakeGoalForm = () => {
               Close
             </label>
           </div>
+        </div>
+        <div className="modal-backdrop">
+          <button type="button" onClick={() => setIsModalOpen(false)}>
+            Close
+          </button>
         </div>
       </div>
     </>
