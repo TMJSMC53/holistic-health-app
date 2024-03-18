@@ -131,6 +131,11 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
             </label>
           </div>
         </div>
+        <div className="modal-backdrop">
+          <button type="button" onClick={() => setIsModalOpen(false)}>
+            Close
+          </button>
+        </div>
       </div>
     </>
   );
