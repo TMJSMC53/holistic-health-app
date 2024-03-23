@@ -59,6 +59,7 @@ const CustomizableWaterIntakeGoalForm = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!isModalOpen) return;
     if (inputRef.current) {
       inputRef.current.focus();
     }
