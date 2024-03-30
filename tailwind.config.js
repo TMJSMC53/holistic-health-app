@@ -62,6 +62,7 @@ export default {
       fontFamily: {
         playfair: ['"Playfair Display"'],
         poppins: ['"Poppins"'],
+        cedarville: ['"Cedarville Cursive"'],
       },
       fontWeight: {
         thin: 200,
