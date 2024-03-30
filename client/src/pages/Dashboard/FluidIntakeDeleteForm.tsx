@@ -5,16 +5,18 @@ import { Fluid } from './FluidIntakeLog';
 const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      await fetch(`/api/fluid/${fluid._id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error('Error:', error);
+    if (confirm('Are you sure you want to delete')) {
+      try {
+        await fetch(`/api/fluid/${fluid._id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        window.location.reload();
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   }
 
