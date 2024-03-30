@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Fluid } from './FluidIntakeLog';
+import Confetti from 'react-confetti';
 
 type GroupSum = {
   date: string;
@@ -10,7 +11,8 @@ type GroupSum = {
 const FluidIntakeByDays: React.FC = () => {
   const [fluidList, setFluidList] = useState<Fluid[]>([]);
   const [waterGoalAmount, setWaterGoalAmount] = useState<number>(4000);
-  console.log(waterGoalAmount);
+
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     const getList = async () => {
@@ -74,14 +76,43 @@ const FluidIntakeByDays: React.FC = () => {
     acc[formattedDate].totalAmount += item.amount;
     acc[formattedDate].group.push(item);
   }
-  console.log(acc);
+  // console.log(acc);
 
   const groupedAndSummed: Array<GroupSum> = [];
 
+  // console.log({ todaysDate: new Date().toLocaleDateString() });
   for (const date in acc) {
     const { totalAmount, group } = acc[date];
     groupedAndSummed.push({ date, totalAmount, group });
   }
+
+  useEffect(() => {
+    const dateToday = new Date().toLocaleDateString();
+    const waterIntakeToday = acc[dateToday] ? acc[dateToday].totalAmount : 0;
+    const goalReached = waterIntakeToday >= waterGoalAmount;
+    let confettiShownDates = [];
+
+    try {
+      const localStorageConfetti = localStorage.getItem('confetti');
+      if (localStorageConfetti) {
+        confettiShownDates = JSON.parse(localStorageConfetti);
+      }
+    } catch (e) {
+      localStorage.removeItem('confetti');
+    }
+
+    const confettiShown = confettiShownDates.includes(dateToday);
+
+    if (goalReached && !confettiShown) {
+      setShowConfetti(true);
+      confettiShownDates.push(dateToday);
+      localStorage.setItem('confetti', JSON.stringify(confettiShownDates));
+
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 5000);
+    }
+  }, [waterGoalAmount, acc]);
 
   return (
     <>
@@ -128,8 +159,7 @@ const FluidIntakeByDays: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        {}
-                        {`Congratulations!! You've reached your daily goal of ${Number(
+                        {` Congratulations!! You've reached your daily goal of ${Number(
                           waterGoalAmount
                         )}ml!!`}
                       </>
@@ -141,6 +171,11 @@ const FluidIntakeByDays: React.FC = () => {
           </div>
         </div>
       ))}
+      {showConfetti && (
+        <div className="fixed top-0 left-0 inset-0 z-10">
+          <Confetti />
+        </div>
+      )}
     </>
   );
 };
