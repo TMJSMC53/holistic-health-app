@@ -1,17 +1,21 @@
 const About = () => {
   return (
     <div>
-      <h2>Holistic Health</h2>
-
       <p>
-        We know how important water is for our overall health, and with the
-        daily comings and goings of life, we don't consume as much water as we
-        should on a daily basis. Our app aims to make such an important aspect
-        of our daily life as easy as possible with this app. Whether you're on
-        the go, on vacation, or at home vibing, you are able to track your
-        fluids and water. At the end of the day, you will have a clear and easy
-        way of knowing that you are consuming the right amount of fluids each
-        day in one place.
+        At Holistic Health, we're dedicated to empowering individuals to lead
+        healthier lives. Our app is a comprehensive tool designed to help you
+        track various aspects of your well-being, including fluid and water
+        intake, sleep patterns, meditation practices, and daily notes. More than
+        just a tracker, our app is a personalized health companion that keeps
+        you motivated and focused on your wellness journey.
+      </p>
+      <p>
+        Whether you're looking to stay hydrated, improve your sleep quality, or
+        enhance your mindfulness practices, our app provides the tools and
+        insights you need to achieve your goals. Whether you're on the go, on
+        vacation, or at home, managing your health lifestyle is easy and
+        convenient with the Holistic Health app. Join us in embracing a
+        healthier lifestyle today.
       </p>
     </div>
   );
