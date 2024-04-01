@@ -1,9 +1,9 @@
 const About = () => {
   return (
-    <div className="text-20 mt-12 mx-10 text-justify font-poppins">
+    <div className="text-16 my-8 md:text-20 md:mt-12 mx-6 md:mx-10 text-justify font-poppins">
       <p className="mb-4">
         At
-        <span className="text-24 font-cedarville text-primary-700 ml-2">
+        <span className="text-20 md:text-24 font-cedarville text-primary-700 ml-2">
           Holistic Health
         </span>
         , we're dedicated to empowering individuals to lead healthier lives. Our
