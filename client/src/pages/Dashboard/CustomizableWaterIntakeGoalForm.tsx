@@ -5,7 +5,12 @@ const CustomizableWaterIntakeGoalForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen);
+    if (isModalOpen) {
+      setIsModalOpen(false);
+    } else {
+      window.history.pushState(null, '', window.location.pathname);
+      setIsModalOpen(true);
+    }
   };
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -49,12 +54,19 @@ const CustomizableWaterIntakeGoalForm = () => {
   }, []);
 
   // Back btn
-  // useEffect(() => {
-  //   if (modalIsClosed) return;
-  //   const onBackArrow = (e: PopStateEvent) => {};
+  useEffect(() => {
+    const onBackArrow = () => {
+      if (isModalOpen) {
+        setIsModalOpen(false);
+      }
+    };
 
-  //   // include modal open state
-  // }, []);
+    window.addEventListener('popstate', onBackArrow);
+
+    return () => {
+      window.removeEventListener('popstate', onBackArrow);
+    };
+  }, [isModalOpen]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
