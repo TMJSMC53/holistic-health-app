@@ -39,7 +39,7 @@ const CustomizableWaterIntakeGoalForm = () => {
         });
 
         const data = await response.json();
-        setWaterGoalAmount(data);
+        setWaterGoalAmount(data.amount);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
