@@ -1,5 +1,6 @@
 import { UserState, SetUser } from '../main.d';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import Logout from './Logout';
 
 type NavbarProps = {
@@ -8,10 +9,22 @@ type NavbarProps = {
 };
 
 const Navbar = ({ user, setUser }: NavbarProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <>
       <div className="drawer">
-        <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+        <input
+          id="my-drawer-3"
+          type="checkbox"
+          className="drawer-toggle"
+          checked={isOpen}
+          onChange={() => setIsOpen(!isOpen)}
+        />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
           <div className="w-full navbar">
@@ -79,30 +92,45 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
           </div>
           {/* Page content here */}
         </div>
-        <div className="drawer-side z-50">
+
+        <div className={`drawer-side z-50 ${isOpen ? 'open' : ''}`}>
           <label
             htmlFor="my-drawer-3"
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
+
           <ul className="menu p-4 w-80 min-h-full bg-base-200">
             {/* Sidebar content here */}
+
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/" onClick={toggleSidebar}>
+                Home
+              </Link>
             </li>
+
             {user ? (
               <li className="text-primary-600">
-                <Link to="/dashboard" className="hover:bg-transparent">
+                <Link
+                  to="/dashboard"
+                  className="hover:bg-transparent"
+                  onClick={toggleSidebar}
+                >
                   Dashboard
                 </Link>
               </li>
             ) : null}
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/about" onClick={toggleSidebar}>
+                About
+              </Link>
             </li>
             <li>
-              <Link to="/docs">Docs</Link>
+              <Link to="/docs" onClick={toggleSidebar}>
+                Docs
+              </Link>
             </li>
+
             {user ? (
               <li className="text-primary-600">
                 <Logout setUser={setUser} />
