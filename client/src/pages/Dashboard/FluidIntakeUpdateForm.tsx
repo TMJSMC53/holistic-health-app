@@ -7,8 +7,17 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
   const [fluidType, setFluidType] = useState(fluid.fluidType);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // const handleModalToggle = () => {
+  //   setIsModalOpen(!isModalOpen);
+  // };
+
   const handleModalToggle = () => {
-    setIsModalOpen(!isModalOpen);
+    if (isModalOpen) {
+      setIsModalOpen(false);
+    } else {
+      window.history.pushState(null, '', window.location.pathname);
+      setIsModalOpen(true);
+    }
   };
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -39,6 +48,21 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
   function handleFluidAmount(event: ChangeEvent<HTMLInputElement>) {
     setFluidAmount(parseFloat(event.target.value));
   }
+
+  // Back btn
+  useEffect(() => {
+    const onBackArrow = () => {
+      if (isModalOpen) {
+        setIsModalOpen(false);
+      }
+    };
+
+    window.addEventListener('popstate', onBackArrow);
+
+    return () => {
+      window.removeEventListener('popstate', onBackArrow);
+    };
+  }, [isModalOpen]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
