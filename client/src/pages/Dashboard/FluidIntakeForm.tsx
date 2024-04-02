@@ -51,6 +51,7 @@ const FluidIntakeForm = () => {
               <option value="Tea"></option>
               <option value="Mineral Water"></option>
               <option value="Juice"></option>
+              <option value="Other"></option>
             </datalist>
             <input
               className="input input-bordered input-sm w-1/3 md:w-2/12 max-w-xs mr-1.5"
