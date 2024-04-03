@@ -16,6 +16,7 @@ const HomepageRegisterForm = ({
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [duplicateError, setDuplicateError] = useState<string>('');
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
@@ -63,7 +64,12 @@ const HomepageRegisterForm = ({
         } else {
           // Registration failed
           const errorMessage = await response.text();
-          alert(`Registration failed: ${errorMessage}`);
+
+          if (errorMessage.includes('duplicate key error')) {
+            setDuplicateError(
+              'Username already exists. Please choose a different username.'
+            );
+          }
         }
       } catch (error) {
         console.error('Error:', error);
@@ -97,6 +103,10 @@ const HomepageRegisterForm = ({
         username: '',
       }));
     }
+
+    if (duplicateError) {
+      setDuplicateError('');
+    }
   }
   function handlePassword(event: ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
@@ -110,6 +120,13 @@ const HomepageRegisterForm = ({
 
   return (
     <>
+      <div>
+        {duplicateError && (
+          <div className="bg-primary-700 text-red-100 p-4 mb-4">
+            {duplicateError}
+          </div>
+        )}
+      </div>
       <form onSubmit={handleSubmit} className="card-body font-poppins ">
         <div className="form-control ">
           <h2 className="text-accents-200 text-20 font-extrabold mb-6">
@@ -175,7 +192,9 @@ const HomepageRegisterForm = ({
           <input
             type="text"
             placeholder="Username"
-            className="input input-bordered"
+            className={`input input-bordered ${
+              errors.username ? 'border-primary-700' : ''
+            }`}
             value={username}
             onChange={handleUsername}
             required
@@ -188,7 +207,9 @@ const HomepageRegisterForm = ({
             }}
           />
           {errors.username && (
-            <span className="text-12 mt-1 text-red-500">{errors.username}</span>
+            <span className="text-12 mt-1 text-primary-700">
+              {errors.username}
+            </span>
           )}
         </div>
         <div className="form-control">
@@ -198,7 +219,9 @@ const HomepageRegisterForm = ({
           <input
             type="password"
             placeholder="Password"
-            className="input input-bordered"
+            className={`input input-bordered ${
+              errors.password ? 'border-primary-700' : ''
+            }`}
             value={password}
             onChange={handlePassword}
             required
@@ -211,8 +234,7 @@ const HomepageRegisterForm = ({
             }}
           />
           {errors.password && (
-            <span className="text-12 mt-1 text-red-500 outline-red-500">
-              {' '}
+            <span className="text-12 mt-1 text-primary-700">
               {errors.password}
             </span>
           )}
