@@ -15,51 +15,97 @@ const HomepageRegisterForm = ({
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+    if (!firstName.trim()) {
+      errors.firstName = 'First Name is required';
+    }
+    if (!lastName.trim()) {
+      errors.lastName = 'Last Name is required';
+    }
+    if (!username.trim()) {
+      errors.username = 'Username is required';
+    }
+    if (password.length < 6) {
+      errors.password = 'Password must be at least 6 characters long';
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const navigate = useNavigate();
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      const response = await fetch(`/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          firstName: firstName,
-          lastName: lastName,
-          password: password,
-        }),
-      });
-      console.log(response);
-      if (response.ok) {
-        // Registration successful
-        const registerResponse = await response.json();
+    if (validateForm()) {
+      try {
+        const response = await fetch(`/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            password: password,
+          }),
+        });
+        console.log(response);
+        if (response.ok) {
+          // Registration successful
+          const registerResponse = await response.json();
 
-        setUser(registerResponse.user);
+          setUser(registerResponse.user);
 
-        navigate(`/dashboard`);
-      } else {
-        // Registration failed
-        const errorMessage = await response.text();
-        alert(`Registration failed: ${errorMessage}`);
+          navigate(`/dashboard`);
+        } else {
+          // Registration failed
+          const errorMessage = await response.text();
+          alert(`Registration failed: ${errorMessage}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
     }
   }
 
   function handleFirstName(event: ChangeEvent<HTMLInputElement>) {
     setFirstName(event.target.value);
+    if (errors.firstName) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        firstName: '',
+      }));
+    }
   }
   function handleLastName(event: ChangeEvent<HTMLInputElement>) {
     setLastName(event.target.value);
+    if (errors.lastName) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        lastName: '',
+      }));
+    }
   }
   function handleUsername(event: ChangeEvent<HTMLInputElement>) {
     setUsername(event.target.value);
+    if (errors.username) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        username: '',
+      }));
+    }
   }
   function handlePassword(event: ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
+    if (errors.password) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: '',
+      }));
+    }
   }
 
   return (
@@ -75,11 +121,25 @@ const HomepageRegisterForm = ({
           <input
             type="text"
             placeholder="First Name"
-            className="input input-bordered"
+            className={`input input-bordered ${
+              errors.firstName ? 'border-primary-700' : ''
+            }`}
             value={firstName}
             onChange={handleFirstName}
             required
+            onInvalid={(e) => {
+              e.preventDefault();
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                firstName: 'First Name is required',
+              }));
+            }}
           />
+          {errors.firstName && (
+            <span className="text-12 mt-1 text-primary-700">
+              {errors.firstName}
+            </span>
+          )}
         </div>
         <div className="form-control">
           <label className="label">
@@ -88,11 +148,25 @@ const HomepageRegisterForm = ({
           <input
             type="text"
             placeholder="Last Name"
-            className="input input-bordered"
+            className={`input input-bordered ${
+              errors.lastName ? 'border-primary-700' : ''
+            }`}
             value={lastName}
             onChange={handleLastName}
             required
+            onInvalid={(e) => {
+              e.preventDefault();
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                lastName: 'Last Name is required',
+              }));
+            }}
           />
+          {errors.lastName && (
+            <span className="text-12 mt-1 text-primary-700">
+              {errors.lastName}
+            </span>
+          )}
         </div>
         <div className="form-control">
           <label className="label">
@@ -105,7 +179,17 @@ const HomepageRegisterForm = ({
             value={username}
             onChange={handleUsername}
             required
+            onInvalid={(e) => {
+              e.preventDefault();
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                username: 'Username is required',
+              }));
+            }}
           />
+          {errors.username && (
+            <span className="text-12 mt-1 text-red-500">{errors.username}</span>
+          )}
         </div>
         <div className="form-control">
           <label className="label">
@@ -118,7 +202,20 @@ const HomepageRegisterForm = ({
             value={password}
             onChange={handlePassword}
             required
+            onInvalid={(e) => {
+              e.preventDefault();
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: 'Password must be at least 6 characters long',
+              }));
+            }}
           />
+          {errors.password && (
+            <span className="text-12 mt-1 text-red-500 outline-red-500">
+              {' '}
+              {errors.password}
+            </span>
+          )}
           <label className="flex mt-2">
             <span className="text-12 text-primary-600">
               Already have an account?
