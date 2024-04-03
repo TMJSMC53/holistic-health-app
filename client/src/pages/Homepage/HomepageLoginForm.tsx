@@ -11,44 +11,67 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
   console.log('All Props:', setUser, switchForm);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [incorrectCredentials, setIncorrectCredentials] =
+    useState<boolean>(false);
+
+  const validateLoginForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!username.trim()) {
+      errors.username = 'Username must not be empty';
+    }
+    if (password.length < 6) {
+      errors.password = 'Password must not be empty';
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const navigate = useNavigate();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      console.log('Submitting form with username', username);
-      console.log('Submitting form with password', password);
-      const response = await fetch(`/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      });
-      console.log(response);
-      if (response.ok) {
-        // Registration successful
+    if (validateLoginForm()) {
+      try {
+        const response = await fetch(`/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+        });
+        console.log(response);
+        if (response.ok) {
+          // Registration successful
 
-        const loginResponse = await response.json();
+          const loginResponse = await response.json();
 
-        setUser(loginResponse.user);
+          setUser(loginResponse.user);
 
-        navigate(`/dashboard`);
-      } else {
-        // Registration failed
-        const errorMessage = await response.text();
-        alert(`Login failed: ${errorMessage}`);
+          navigate(`/dashboard`);
+        } else {
+          // Registration failed
+          setIncorrectCredentials(true);
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
     }
   }
 
   function handleUsername(event: ChangeEvent<HTMLInputElement>) {
     setUsername(event.target.value);
+    if (errors.username) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        username: '',
+      }));
+    }
   }
   function handlePassword(event: ChangeEvent<HTMLInputElement>) {
     setPassword(event.target.value);
@@ -56,6 +79,11 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
 
   return (
     <>
+      {incorrectCredentials && (
+        <div className="bg-primary-700 text-red-100 p-4 mb-4">
+          Incorrect username or password. Please try again.
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="card-body font-poppins">
         <div className="form-control">
           <h2 className="text-accents-200 text-24 font-extrabold mb-6">
@@ -67,11 +95,25 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
           <input
             type="text"
             placeholder="Username"
-            className="input input-bordered"
+            className={`input input-bordered ${
+              errors.username ? 'border-primary-700' : ''
+            }`}
             value={username}
             onChange={handleUsername}
             required
+            onInvalid={(e) => {
+              e.preventDefault();
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                username: 'Username must not be empty',
+              }));
+            }}
           />
+          {errors.username && (
+            <span className="text-12 mt-1 text-primary-700">
+              {errors.username}
+            </span>
+          )}
         </div>
         <div className="form-control">
           <label className="label">
@@ -80,11 +122,26 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
           <input
             type="password"
             placeholder="Password"
-            className="input input-bordered"
+            className={`input input-bordered ${
+              errors.password ? 'border-primary-700' : ''
+            }`}
             value={password}
             onChange={handlePassword}
             required
+            onInvalid={(e) => {
+              e.preventDefault();
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: 'Password must not be empty',
+              }));
+            }}
           />
+          {errors.password && (
+            <span className="text-12 mt-1 text-primary-700">
+              {errors.password}
+            </span>
+          )}
+
           <label className="flex mt-2">
             <span className="text-12">Don't have an account?</span>
             <Link
