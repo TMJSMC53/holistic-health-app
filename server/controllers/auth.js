@@ -75,7 +75,7 @@ export const login = async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) {
       res.status(400).json({
-        message: 'Login unsuccessful',
+        message: 'Incorrect username or password. Please try again.',
       });
     } else {
       // comparing given password with hashed password
@@ -103,7 +103,9 @@ export const login = async (req, res) => {
             user: user,
           });
         } else {
-          res.status(400).json({ message: 'login not successful' });
+          res.status(400).json({
+            message: 'Incorrect username or password. Please try again.',
+          });
         }
       });
     }

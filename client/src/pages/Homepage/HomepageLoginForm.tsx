@@ -13,8 +13,7 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [incorrectCredentials, setIncorrectCredentials] =
-    useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string>('');
 
   const validateLoginForm = () => {
     const errors: { [key: string]: string } = {};
@@ -47,7 +46,7 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
         });
         console.log(response);
         if (response.ok) {
-          // Registration successful
+          // Login successful
 
           const loginResponse = await response.json();
 
@@ -55,8 +54,9 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
 
           navigate(`/dashboard`);
         } else {
-          // Registration failed
-          setIncorrectCredentials(true);
+          // Login failed
+          const errorResponse = await response.json();
+          setLoginError(errorResponse.message);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -79,10 +79,8 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
 
   return (
     <>
-      {incorrectCredentials && (
-        <div className="bg-primary-700 text-red-100 p-4 mb-4">
-          Incorrect username or password. Please try again.
-        </div>
+      {loginError && (
+        <div className="bg-primary-700 text-red-100 p-4 mb-4">{loginError}</div>
       )}
       <form onSubmit={handleSubmit} className="card-body font-poppins">
         <div className="form-control">
