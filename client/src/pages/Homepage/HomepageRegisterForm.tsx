@@ -16,7 +16,7 @@ const HomepageRegisterForm = ({
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [duplicateError, setDuplicateError] = useState<string>('');
+  const [registerError, setRegisterError] = useState<string>('');
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
@@ -63,13 +63,9 @@ const HomepageRegisterForm = ({
           navigate(`/dashboard`);
         } else {
           // Registration failed
-          const errorMessage = await response.text();
+          const errorResponse = await response.json();
 
-          if (errorMessage.includes('duplicate key error')) {
-            setDuplicateError(
-              'Username already exists. Please choose a different username.'
-            );
-          }
+          setRegisterError(errorResponse.message);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -104,8 +100,8 @@ const HomepageRegisterForm = ({
       }));
     }
 
-    if (duplicateError) {
-      setDuplicateError('');
+    if (registerError) {
+      setRegisterError('');
     }
   }
   function handlePassword(event: ChangeEvent<HTMLInputElement>) {
@@ -121,9 +117,9 @@ const HomepageRegisterForm = ({
   return (
     <>
       <div>
-        {duplicateError && (
+        {registerError && (
           <div className="bg-primary-700 text-red-100 p-4 mb-4">
-            {duplicateError}
+            {registerError}
           </div>
         )}
       </div>

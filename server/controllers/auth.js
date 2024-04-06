@@ -43,12 +43,19 @@ export const register = async (req, res) => {
           user: user,
         });
       })
-      .catch((error) =>
-        res.status(400).json({
-          message: 'User not successfully created',
-          error: error.message,
-        })
-      );
+      .catch((error) => {
+        if (error.message.includes('duplicate key error')) {
+          res.status(409).json({
+            message:
+              'Username already exists. Please choose a different username.',
+          });
+        } else {
+          res.status(400).json({
+            message: 'User not successfully created',
+            error: error.message,
+          });
+        }
+      });
   });
 };
 
