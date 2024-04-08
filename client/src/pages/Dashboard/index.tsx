@@ -6,6 +6,7 @@ import CurrentUsername from './CurrentUsername';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../main.d';
+import DailyMotivationalQuote from '../../components/DailyMotivationalQuote';
 
 type DashboardProps = {
   user: UserState;
@@ -25,8 +26,10 @@ const Dashboard = ({ user }: DashboardProps) => {
     <div>
       <section className="flex items-center justify-between">
         <CurrentUsername firstName={user?.firstName || ''} />
+
         <CustomizableWaterIntakeGoalForm />
       </section>
+      <DailyMotivationalQuote />
       <>
         <FluidIntakeForm />
         <FluidIntakeLog />
