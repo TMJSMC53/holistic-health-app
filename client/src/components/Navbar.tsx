@@ -1,6 +1,6 @@
 import { UserState, SetUser } from '../main.d';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Logout from './Logout';
 
 type NavbarProps = {
@@ -12,8 +12,29 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    console.log('sidebar is toggled', toggleSidebar);
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      window.history.pushState(null, '', window.location.pathname);
+      setIsOpen(true);
+    }
   };
+
+  //Back btn
+  useEffect(() => {
+    const onBackArrow = () => {
+      if (isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('popstate', onBackArrow);
+
+    return () => {
+      window.removeEventListener('popstate', onBackArrow);
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -23,7 +44,8 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
           type="checkbox"
           className="drawer-toggle"
           checked={isOpen}
-          onChange={() => setIsOpen(!isOpen)}
+          onChange={toggleSidebar}
+          // onChange={() => setIsOpen(!isOpen)}
         />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
