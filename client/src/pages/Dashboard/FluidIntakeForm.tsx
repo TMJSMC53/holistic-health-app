@@ -16,7 +16,9 @@ const FluidIntakeForm = () => {
         body: JSON.stringify({ fluidType: fluidType, amount: fluidAmount }),
       });
 
-      window.location.reload();
+      // window.location.reload();
+      setFluidAmount('');
+      setFluidType('');
     } catch (error) {
       console.error('Error:', error);
     }
