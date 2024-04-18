@@ -7,10 +7,6 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
   const [fluidType, setFluidType] = useState(fluid.fluidType);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const handleModalToggle = () => {
-  //   setIsModalOpen(!isModalOpen);
-  // };
-
   const handleModalToggle = () => {
     if (isModalOpen) {
       setIsModalOpen(false);
@@ -129,7 +125,9 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
                   <option key="tea" value="Tea"></option>
                   <option key="mineralWater" value="Mineral Water"></option>
                   <option key="juice" value="Juice"></option>
+                  <option key="other" value="Other"></option>
                 </datalist>
+
                 <input
                   className="input input-bordered input-sm w-1/3 max-w-xs mr-1.5"
                   value={fluidAmount}
