@@ -6,7 +6,7 @@ import CurrentUsername from './CurrentUsername';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../main.d';
-import DailyMotivationalQuote from '../../components/DailyMotivationalQuote';
+import DailyMotivationalQuote from './DailyMotivationalQuote';
 
 type DashboardProps = {
   user: UserState;
