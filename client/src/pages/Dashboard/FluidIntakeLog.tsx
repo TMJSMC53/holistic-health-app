@@ -46,7 +46,7 @@ const FluidIntakeLog = () => {
             </tr>
           </thead>
           <tbody>
-            {fluidList.slice(0, 30).map((fluid) => (
+            {fluidList.slice(0, 15).map((fluid) => (
               <tr
                 className="text-12 md:text-16 lg:text-20 bg-accents-200 font-poppins"
                 key={fluid._id}
