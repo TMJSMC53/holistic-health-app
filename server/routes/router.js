@@ -11,6 +11,9 @@ import {
   getWaterIntakeGoal,
 } from '../controllers/waterIntakeGoal.js';
 
+// Notes
+import { createNote, getNote } from '../controllers/note.js';
+
 import { register, login, getCurrentUser } from '../controllers/auth.js';
 import { userAuth } from '../middleware/auth.js';
 
@@ -42,5 +45,12 @@ router.put('/api/fluid/:id', updateFluidIntake);
 
 // DELETE
 router.delete('/api/fluid/:id', deleteFluidIntake);
+
+// NOTES Routes
+
+//GET
+router.get('/api/note', getNote);
+// POST
+router.post('/api/note', createNote);
 
 export default router;

@@ -94,6 +94,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                   </li>
                 ) : null}
                 <li>
+                  <Link to="/note" className="hover:bg-transparent">
+                    Notes
+                  </Link>
+                </li>
+                <li>
                   <Link to="/about" className="hover:bg-transparent">
                     About
                   </Link>
@@ -142,6 +147,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                 </Link>
               </li>
             ) : null}
+            <li>
+              <Link to="/note" onClick={toggleSidebar}>
+                Notes
+              </Link>
+            </li>
             <li>
               <Link to="/about" onClick={toggleSidebar}>
                 About

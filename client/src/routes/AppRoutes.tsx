@@ -3,15 +3,18 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Homepage from '../pages/Homepage';
 
 import Dashboard from '../pages/Dashboard';
+
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import About from '../pages/About/About';
+import Notes from '../pages/Notes/Notes';
 import Docs from '../pages/Docs/Docs';
 import { UserState } from '../main.d';
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserState>(undefined);
+
   const isLoggedIn = user !== null;
 
   useEffect(() => {
@@ -52,6 +55,7 @@ const AppRoutes = () => {
           element={<Homepage setUser={setUser} isLoggedIn={isLoggedIn} />}
         />
         <Route path="/dashboard" element={<Dashboard user={user} />} />
+        <Route path="/note" element={<Notes />} />
         <Route path="/about" element={<About />} />
         <Route path="/docs" element={<Docs />} />
       </Routes>
