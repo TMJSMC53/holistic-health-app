@@ -1,25 +1,14 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Textarea from './Textarea';
-import NotesUpdateForm from './NotesUpdateForm';
-import NotesDeleteForm from './NotesDeleteForm';
-
-export interface Notes {
-  _id: string;
-  date: string;
-  note: string;
-  tag: string;
-}
+import NotesAside from './NotesAside';
 
 const Notes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [text, setText] = useState('');
   const [tag, setTag] = useState('');
-
-  const [notes, setNotes] = useState<Notes[]>([]);
-  const [selectedNote, setSelectedNote] = useState<Notes | null>(null);
 
   const handleModalToggle = () => {
     if (isModalOpen) {
@@ -50,24 +39,6 @@ const Notes = () => {
     }
   }
 
-  useEffect(() => {
-    const getNotesList = async () => {
-      try {
-        const response = await fetch(`/api/note`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
-
-        const data = await response.json();
-        setNotes(data);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-      }
-    };
-
-    getNotesList();
-  }, []);
-
   const handleDateChange = (date: Date | [Date, Date] | null) => {
     if (date instanceof Date) {
       setStartDate(date);
@@ -78,9 +49,6 @@ const Notes = () => {
     setTag(event.target.value);
   }
 
-  const handleDateClick = (note: Notes) => {
-    setSelectedNote(note);
-  };
   return (
     <>
       <div>
@@ -122,10 +90,7 @@ const Notes = () => {
               />
             </div>
           </div>
-          <div className="flex justify-end">
-            <NotesUpdateForm />
-            <NotesDeleteForm />
-          </div>
+
           <form onSubmit={handleSubmit}>
             <Textarea setText={setText} />
 
@@ -160,33 +125,7 @@ const Notes = () => {
           </button>
         </div>
       </div>
-      <aside className="flex justify-end mr-6">
-        <div className="max-w-xl  bg-accents-300 px-4 ">
-          <p className="text-18 font-poppins">Notes:</p>
-          {notes.map((note) => (
-            <div
-              className="flex gap-2 mb-4"
-              key={note._id}
-              onClick={() => handleDateClick(note)}
-            >
-              <div className="flex gap-1">
-                <a>{new Date(note.date).toLocaleDateString()}</a>
-                <span className="text-12 rounded-full py-0.5 px-2 bg-primary-600 text-accents-100">
-                  {note.tag}
-                </span>
-              </div>
-            </div>
-          ))}
-
-          {selectedNote && (
-            <div>
-              <p>Date: {new Date(selectedNote.date).toLocaleDateString()}</p>
-              <p>Note: {selectedNote.note}</p>
-              <p>Tag: {selectedNote.tag}</p>
-            </div>
-          )}
-        </div>
-      </aside>
+      <NotesAside />
     </>
   );
 };
