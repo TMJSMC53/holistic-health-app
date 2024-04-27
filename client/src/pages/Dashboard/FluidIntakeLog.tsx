@@ -10,15 +10,20 @@ export interface Fluid {
   date: string;
 }
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 1;
 
 const FluidIntakeLog = () => {
   const [fluidList, setFluidList] = useState<Fluid[]>([]);
+
+  // PAGINATION
   const [page, setPage] = useState<number>(0);
 
   const totalPages = Math.ceil(fluidList.length / PAGE_SIZE) - 1;
   const sliceStart = page * PAGE_SIZE;
   const sliceEnd = sliceStart + PAGE_SIZE;
+
+  const disableLeftArrow = page === 0;
+  const disableRightArrow = page === totalPages;
 
   useEffect(() => {
     const getList = async () => {
@@ -39,6 +44,13 @@ const FluidIntakeLog = () => {
 
     getList();
   }, []);
+
+  function handleLeftArrowClick() {
+    setPage(Math.max(page - 1, 0));
+  }
+  function handleRightArrowClick() {
+    setPage(Math.min(page + 1, totalPages));
+  }
 
   return (
     <>
@@ -70,13 +82,10 @@ const FluidIntakeLog = () => {
           </tbody>
           <tfoot>
             <div className="flex mt-2">
-              {/* left btn */}
+              {/* left arrow btn */}
               <button
-                className={page === 0 ? `btn-disabled btn-primary` : ''}
-                disabled={page === 0}
-                onClick={() => {
-                  setPage(Math.max(page - 1, 0));
-                }}
+                className={disableLeftArrow ? `btn-disabled btn-primary` : ''}
+                onClick={handleLeftArrowClick}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -94,15 +103,10 @@ const FluidIntakeLog = () => {
                 </svg>
               </button>
               {page + 1} / {totalPages + 1}
-              {/* right btn */}
+              {/* right arrow btn */}
               <button
-                className={
-                  page === totalPages ? `btn-disabled btn-primary` : ''
-                }
-                disabled={page === totalPages}
-                onClick={() => {
-                  setPage(Math.min(page + 1, totalPages));
-                }}
+                className={disableRightArrow ? `btn-disabled btn-primary` : ''}
+                onClick={handleRightArrowClick}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
