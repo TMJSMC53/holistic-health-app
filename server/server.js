@@ -25,6 +25,7 @@ app.use('/', router);
 connect()
   .then(() => {
     console.log('Connected to MongoDB');
+    return;
     if (process.env.NODE_ENV === 'production') {
       app.use(express.static('dist'));
       app.get('*', (req, res) => {
@@ -42,3 +43,11 @@ connect()
   .catch((error) => {
     console.error('Error connecting to MongoDB', error);
   });
+app.use(express.static('dist'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+});
+app.listen(PORT, () => {
+  console.log(`Server is listening on PORT ${PORT} `);
+});
+export default app;
