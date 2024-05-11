@@ -12,7 +12,12 @@ import {
 } from '../controllers/waterIntakeGoal.js';
 
 // Notes
-import { createNote, getNote } from '../controllers/note.js';
+import {
+  createNote,
+  getNote,
+  updateNote,
+  deleteNote,
+} from '../controllers/note.js';
 
 import { register, login, getCurrentUser } from '../controllers/auth.js';
 import { userAuth } from '../middleware/auth.js';
@@ -52,5 +57,9 @@ router.delete('/api/fluid/:id', deleteFluidIntake);
 router.get('/api/note', getNote);
 // POST
 router.post('/api/note', createNote);
+// PUT
+router.put('/api/note/:id', updateNote);
+// DELETE
+router.delete('/api/note/:id', deleteNote);
 
 export default router;
