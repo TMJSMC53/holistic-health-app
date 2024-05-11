@@ -87,17 +87,19 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                   </Link>
                 </li>
                 {user ? (
-                  <li className="text-primary-600">
-                    <Link to="/dashboard" className="hover:bg-transparent">
-                      Dashboard
-                    </Link>
-                  </li>
+                  <>
+                    <li className="text-primary-600">
+                      <Link to="/dashboard" className="hover:bg-transparent">
+                        Dashboard
+                      </Link>
+                    </li>
+                    <li className="text-primary-600">
+                      <Link to="/note" className="hover:bg-transparent">
+                        Notes
+                      </Link>
+                    </li>
+                  </>
                 ) : null}
-                <li>
-                  <Link to="/note" className="hover:bg-transparent">
-                    Notes
-                  </Link>
-                </li>
                 <li>
                   <Link to="/about" className="hover:bg-transparent">
                     About
@@ -137,21 +139,20 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
             </li>
 
             {user ? (
-              <li className="text-primary-600">
-                <Link
-                  to="/dashboard"
-                  className="hover:bg-transparent"
-                  onClick={toggleSidebar}
-                >
-                  Dashboard
-                </Link>
-              </li>
+              <>
+                <li className="text-primary-600">
+                  <Link to="/dashboard" onClick={toggleSidebar}>
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="text-primary-600">
+                  <Link to="/note" onClick={toggleSidebar}>
+                    Notes
+                  </Link>
+                </li>
+              </>
             ) : null}
-            <li>
-              <Link to="/note" onClick={toggleSidebar}>
-                Notes
-              </Link>
-            </li>
+
             <li>
               <Link to="/about" onClick={toggleSidebar}>
                 About
