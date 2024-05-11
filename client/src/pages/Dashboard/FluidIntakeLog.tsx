@@ -10,8 +10,20 @@ export interface Fluid {
   date: string;
 }
 
+const PAGE_SIZE = 1;
+
 const FluidIntakeLog = () => {
   const [fluidList, setFluidList] = useState<Fluid[]>([]);
+
+  // PAGINATION
+  const [page, setPage] = useState<number>(0);
+
+  const totalPages = Math.ceil(fluidList.length / PAGE_SIZE) - 1;
+  const sliceStart = page * PAGE_SIZE;
+  const sliceEnd = sliceStart + PAGE_SIZE;
+
+  const disableLeftArrow = page === 0;
+  const disableRightArrow = page === totalPages;
 
   useEffect(() => {
     const getList = async () => {
@@ -33,6 +45,13 @@ const FluidIntakeLog = () => {
     getList();
   }, []);
 
+  function handleLeftArrowClick() {
+    setPage(Math.max(page - 1, 0));
+  }
+  function handleRightArrowClick() {
+    setPage(Math.min(page + 1, totalPages));
+  }
+
   return (
     <>
       <div className="overflow-x-auto">
@@ -46,7 +65,7 @@ const FluidIntakeLog = () => {
             </tr>
           </thead>
           <tbody>
-            {fluidList.slice(0, 15).map((fluid) => (
+            {fluidList.slice(sliceStart, sliceEnd).map((fluid) => (
               <tr
                 className="text-12 md:text-16 lg:text-20 bg-accents-200 font-poppins"
                 key={fluid._id}
@@ -61,6 +80,51 @@ const FluidIntakeLog = () => {
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <div className="flex mt-2">
+              {/* left arrow btn */}
+              <button
+                className={disableLeftArrow ? `btn-disabled btn-primary` : ''}
+                onClick={handleLeftArrowClick}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 19.5 8.25 12l7.5-7.5"
+                  />
+                </svg>
+              </button>
+              {page + 1} / {totalPages + 1}
+              {/* right arrow btn */}
+              <button
+                className={disableRightArrow ? `btn-disabled btn-primary` : ''}
+                onClick={handleRightArrowClick}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            </div>
+          </tfoot>
         </table>
         <FluidIntakeByDays />
       </div>
