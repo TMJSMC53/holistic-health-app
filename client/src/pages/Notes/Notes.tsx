@@ -77,14 +77,14 @@ const Notes = () => {
       </div>
 
       <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
-        <div className="modal-box h-96 md:w-96 overflow-y-hidden px-4">
+        <div className="modal-box h-90 md:w-96 overflow-y-hidden px-4">
           <div className="flex">
             <div className="flex items-center gap-2">
-              <h3 className="text-16 md:text-18 text-primary-600 font-poppins mb-0">
+              <h3 className="text-14 md:text-18 text-primary-600 font-poppins mb-0 font-bold">
                 Date:
               </h3>
               <DatePicker
-                className="text-14 font-poppins"
+                className="text-14 md:text-18 text-primary-600 font-poppins"
                 selected={startDate}
                 onChange={handleDateChange}
               />
@@ -95,11 +95,13 @@ const Notes = () => {
             <Textarea setText={setText} />
 
             <div className="flex gap-2">
-              <p className="text-12 font-poppins">add tag:</p>
+              <p className="text-12 md:text-14 text-primary-600 font-poppins font-bold">
+                add tag:
+              </p>
               <input
                 value={tag}
                 onChange={handleTag}
-                className="border w-24"
+                className="text-12 md:text-16 text-primary-600 font-poppins border w-24"
                 type="string"
               />
             </div>
