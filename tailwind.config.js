@@ -71,6 +71,13 @@ export default {
         medium: 500,
         xtraBold: 700,
       },
+      screens: {
+        xs: '400px',
+        sm: '401px',
+      },
+      fontSize: {
+        xs: '0.75rem',
+      },
     },
   },
   plugins: [require('daisyui')],

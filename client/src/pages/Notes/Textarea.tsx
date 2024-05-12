@@ -15,7 +15,7 @@ const Textarea: React.FC<TextareaProps> = ({ setText, initialTextValue }) => {
     <div>
       <label htmlFor="myTextarea"></label>
       <textarea
-        className="border"
+        className="text-14 md:text-18 text-primary-600 font-poppins border w-full mt-6 mb-4"
         id="myTextarea"
         value={textValue}
         onChange={handleChange}
