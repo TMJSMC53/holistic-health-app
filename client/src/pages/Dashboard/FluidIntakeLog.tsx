@@ -10,7 +10,7 @@ export interface Fluid {
   date: string;
 }
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 15;
 
 const FluidIntakeLog = () => {
   const [fluidList, setFluidList] = useState<Fluid[]>([]);
