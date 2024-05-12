@@ -63,28 +63,30 @@ const NotesUpdateForm = ({
 
       <div className={`modal open`} role="dialog">
         <div className="modal-box">
-          <div className="flex">
-            <div className="flex items-center gap-2">
-              <h3 className="text-16 md:text-18 text-primary-600 font-poppins mb-0">
+          <div className="flex justify-between items-center">
+            <div className="flex  items-center gap-2">
+              <h3 className="text-14 md:text-18 text-primary-600 font-poppins font-bold mb-0">
                 Date:
               </h3>
               <DatePicker
-                className="text-14 font-poppins"
+                className="text-14  md:text-18 text-primary-600 font-poppins"
                 selected={startDate}
                 onChange={handleDateChange}
               />
-              <NotesDeleteForm note={note} />
             </div>
+            <NotesDeleteForm note={note} />
           </div>
           <form onSubmit={handleSubmit}>
             <Textarea initialTextValue={text} setText={setText} />
 
             <div className="flex gap-2">
-              <p className="text-12 font-poppins">add tag:</p>
+              <p className="text-12 md:text-14 text-primary-600 font-poppins font-bold">
+                add tag:
+              </p>
               <input
                 value={tag}
                 onChange={handleTag}
-                className="border w-24"
+                className="text-12 md:text-16 text-primary-600 font-poppins border w-24"
                 type="string"
               />
             </div>
