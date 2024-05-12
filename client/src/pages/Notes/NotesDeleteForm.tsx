@@ -33,7 +33,7 @@ const NotesDeleteForm = ({ note }: { note: Notes }) => {
           htmlFor="deleteButton"
           className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent"
         > */}
-        <button id="deleteButton" onClick={handleModalToggle}>
+        <button id="deleteButton" onClick={handleModalToggle} className="flex ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -61,7 +61,7 @@ const NotesDeleteForm = ({ note }: { note: Notes }) => {
           <form onSubmit={handleDelete}>
             <div className="relative flex">
               <label
-                className="text-16 text-center text-primary-600 font-poppins font-semibold w-full"
+                className="text-xs sm:text-14 md:text-16  text-primary-600 font-poppins font-semibold w-full"
                 htmlFor="note"
               >
                 Are you sure you want to delete this?
