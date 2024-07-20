@@ -3,12 +3,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Textarea from './Textarea';
 import NotesAside from './NotesAside';
+import SuccessModal from './SuccessModal';
 
 const Notes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [text, setText] = useState('');
   const [tag, setTag] = useState('');
+  const [isShowSuccessModalOpen, setIsShowSuccessModalOpen] = useState(false);
 
   const handleModalToggle = () => {
     if (isModalOpen) {
@@ -32,8 +34,13 @@ const Notes = () => {
           tag: tag,
         }),
       });
+
       setIsModalOpen(false);
-      window.location.reload();
+      setIsShowSuccessModalOpen(true);
+      // alert('Successfully created');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -128,6 +135,7 @@ const Notes = () => {
         </div>
       </div>
       <NotesAside />
+      {isShowSuccessModalOpen && <SuccessModal />}
     </>
   );
 };
