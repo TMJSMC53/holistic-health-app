@@ -10,6 +10,7 @@ import Footer from '../components/Footer';
 import About from '../pages/About/About';
 import Notes from '../pages/Notes/Notes';
 import Docs from '../pages/Docs/Docs';
+import Fluids from '../pages/Fluids/Fluids';
 import { UserState } from '../main.d';
 
 const AppRoutes = () => {
@@ -58,6 +59,7 @@ const AppRoutes = () => {
         <Route path="/note" element={<Notes />} />
         <Route path="/about" element={<About />} />
         <Route path="/docs" element={<Docs />} />
+        <Route path="/fluids" element={<Fluids />} />
       </Routes>
       <Footer />
     </BrowserRouter>

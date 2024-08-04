@@ -1,12 +1,13 @@
-import FluidIntakeForm from './FluidIntakeForm';
-import FluidIntakeLog from './FluidIntakeLog';
-import CustomizableWaterIntakeGoalForm from './CustomizableWaterIntakeGoalForm';
+import FluidIntakeForm from '../Fluids/FluidIntakeForm';
+import CustomizableWaterIntakeGoalForm from '../Fluids/CustomizableWaterIntakeGoalForm';
 import CurrentUsername from './CurrentUsername';
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../main.d';
 import DailyMotivationalQuote from './DailyMotivationalQuote';
+import NotesDashboard from './NotesDashboard';
+
+import FluidIntakeDashboard from './FluidIntakeDashboard';
 
 type DashboardProps = {
   user: UserState;
@@ -30,10 +31,13 @@ const Dashboard = ({ user }: DashboardProps) => {
         <CustomizableWaterIntakeGoalForm />
       </section>
       <DailyMotivationalQuote />
-      <>
+      <section>
         <FluidIntakeForm />
-        <FluidIntakeLog />
-      </>
+      </section>
+      <section className="flex justify-between">
+        <FluidIntakeDashboard />
+        <NotesDashboard />
+      </section>
     </div>
   );
 };

@@ -94,6 +94,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                       </Link>
                     </li>
                     <li className="text-primary-600">
+                      <Link to="/fluids" className="hover:bg-transparent">
+                        Fluids
+                      </Link>
+                    </li>
+                    <li className="text-primary-600">
                       <Link to="/note" className="hover:bg-transparent">
                         Notes
                       </Link>
