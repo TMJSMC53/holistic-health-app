@@ -34,7 +34,7 @@ const Dashboard = ({ user }: DashboardProps) => {
       <section>
         <FluidIntakeForm />
       </section>
-      <section className="flex justify-between">
+      <section className="flex flex-col justify-between md:flex-row">
         <FluidIntakeDashboard />
         <NotesDashboard />
       </section>

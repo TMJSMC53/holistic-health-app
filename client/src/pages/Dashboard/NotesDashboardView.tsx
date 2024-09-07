@@ -35,38 +35,38 @@ const NotesDashboardView = () => {
   }, []);
 
   return (
-    <aside className="flex outline-dashed justify-end mr-6">
-      <section className="flex flex-col items-center">
-        <div className="max-w-xl  bg-accents-300 px-4 ">
-          <p className="text-18 font-poppins">Notes</p>
-
-          {notes.slice(0, 5).map((note) => (
-            <div className="flex gap-2 mb-4" key={note._id}>
-              <div className="flex gap-1">
-                <a
-                  className="cursor-pointer underline hover:underline-offset-4"
-                  onClick={() => handleDateClick(note)}
-                >
-                  {new Date(note.date).toLocaleDateString()}
-                </a>
-                <span className="text-12 rounded-full py-0.5 px-2 bg-primary-600 text-accents-100">
-                  {note.tag}
-                </span>
+    <>
+      <aside className="flex justify-center">
+        <section className="w-10/12">
+          <div className="flex flex-col bg-accents-300 px-4 ">
+            {notes.slice(0, 5).map((note) => (
+              <div className="flex gap-2 my-4" key={note._id}>
+                <div className="flex gap-1">
+                  <a
+                    className="lg:text-20 cursor-pointer underline hover:underline-offset-4"
+                    onClick={() => handleDateClick(note)}
+                  >
+                    {new Date(note.date).toLocaleDateString()}
+                  </a>
+                  <span className="text-12 lg:text-14 rounded-full py-0.5 px-2 bg-primary-600 text-accents-100">
+                    {note.tag}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
-          {selectedNote && (
-            <NotesUpdateForm
-              note={selectedNote}
-              setSelectedNote={setSelectedNote}
-            />
-          )}
-        </div>
-        <div>
-          <Link to="/note">View All</Link>
-        </div>
-      </section>
-    </aside>
+            ))}
+            {selectedNote && (
+              <NotesUpdateForm
+                note={selectedNote}
+                setSelectedNote={setSelectedNote}
+              />
+            )}
+          </div>
+        </section>
+      </aside>
+      <div className="lg:text-20 text-center text-primary-600 my-4 hover:underline hover:scale-125">
+        <Link to="/note">View All</Link>
+      </div>
+    </>
   );
 };
 
