@@ -9,7 +9,7 @@ export interface Fluid {
   date: string;
 }
 
-const FluidIntakeLog = () => {
+const FluidIntakeLogDashboardView = () => {
   const [fluidList, setFluidList] = useState<Fluid[]>([]);
 
   useEffect(() => {
@@ -32,16 +32,22 @@ const FluidIntakeLog = () => {
     getList();
   }, []);
 
+  const options: Intl.DateTimeFormatOptions = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  };
+
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto ">
         <table className="table table-zebra">
           <thead>
-            <tr className="text-14 md:text-18 lg:text-22 text-primary-600 uppercase font-playfair">
-              <th>Date</th>
+            <tr className="text-14 md:text-18 lg:text-22 text-primary-600 font-playfair">
               <th>Fluid</th>
               <th>ML</th>
-              <th>edit/delete</th>
+              <th>Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -50,10 +56,12 @@ const FluidIntakeLog = () => {
                 className="text-12 md:text-16 lg:text-20 bg-accents-200 font-poppins"
                 key={fluid._id}
               >
-                <td>{new Date(fluid.date).toLocaleDateString()}</td>
                 <td>{fluid.fluidType}</td>
                 <td>{fluid.amount}</td>
-                <td className="flex place-items-center">
+                <td>
+                  {new Date(fluid.date).toLocaleDateString('es-ES', options)}
+                </td>
+                <td className="flex place-items-center px-0">
                   <FluidIntakeUpdateForm fluid={fluid} />
                   <FluidIntakeDeleteForm fluid={fluid} />
                 </td>
@@ -67,4 +75,4 @@ const FluidIntakeLog = () => {
   );
 };
 
-export default FluidIntakeLog;
+export default FluidIntakeLogDashboardView;
