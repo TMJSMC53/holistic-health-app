@@ -1,4 +1,4 @@
-import FluidIntakeList from '../models/fluidIntakeList.js';
+import FluidIntakeList from '../models/fluidIntake.js';
 
 // Create a new FluidIntakeList
 export const createFluidIntake = async (req, res) => {
@@ -11,7 +11,7 @@ export const createFluidIntake = async (req, res) => {
   try {
     await newItem.save();
     console.log(newItem);
-    res.json(newItem);
+    res.status(201).json(newItem);
   } catch (err) {
     if (err) return res.status(500).send(err);
     res.redirect('/');
@@ -25,7 +25,7 @@ export const getFluidIntake = async (req, res) => {
     const getItems = await FluidIntakeList.find({ user_id: req.user.id }).sort({
       date: 'desc',
     });
-    res.status(200).send(getItems);
+    res.status(200).json(getItems);
 
     console.log(getItems);
   } catch (err) {
@@ -48,7 +48,7 @@ export const updateFluidIntake = async (req, res) => {
     if (!updateEntry) {
       return res.status(404).json({ message: 'Entry not found' });
     }
-    res.status(200).send(updateEntry);
+    res.status(200).json(updateEntry);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

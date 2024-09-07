@@ -18,7 +18,7 @@ const NotesAside = () => {
   useEffect(() => {
     const getNotesList = async () => {
       try {
-        const response = await fetch(`/api/note`, {
+        const response = await fetch(`/api/notes`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });

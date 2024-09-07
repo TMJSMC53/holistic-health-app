@@ -4,7 +4,7 @@ import {
   getFluidIntake,
   updateFluidIntake,
   deleteFluidIntake,
-} from '../controllers/fluidIntake.js';
+} from '../controllers/fluidIntakes.js';
 
 import {
   createWaterIntakeGoal,
@@ -14,10 +14,10 @@ import {
 // Notes
 import {
   createNote,
-  getNote,
+  getNotes,
   updateNote,
   deleteNote,
-} from '../controllers/note.js';
+} from '../controllers/notes.js';
 
 import { register, login, getCurrentUser } from '../controllers/auth.js';
 import { userAuth } from '../middleware/auth.js';
@@ -25,16 +25,22 @@ import { userAuth } from '../middleware/auth.js';
 const router = express.Router();
 
 router.use(userAuth);
-// GET
-router.get('/api/fluidIntakeLog', getFluidIntake);
+
+// FLUID INTAKES Routes
+
+router.get('/api/fluidIntakes', getFluidIntake);
+
+router.post('/api/fluidIntakes', createFluidIntake);
+
+router.put('/api/fluidIntakes/:id', updateFluidIntake);
+
+router.delete('/api/fluidIntakes/:id', deleteFluidIntake);
+
+// WATER INTAKE GOALS Routes
 router.get('/api/waterIntakeGoal', getWaterIntakeGoal);
-
-router.get('/currentUser', getCurrentUser);
-
-// POST
-router.post('/api/fluid', createFluidIntake);
 router.post('/api/waterIntakeGoal', createWaterIntakeGoal);
 
+router.get('/currentUser', getCurrentUser);
 router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', (req, res) => {
@@ -45,21 +51,14 @@ router.post('/logout', (req, res) => {
   // res.redirect('/');
 });
 
-// PUT
-router.put('/api/fluid/:id', updateFluidIntake);
-
-// DELETE
-router.delete('/api/fluid/:id', deleteFluidIntake);
-
 // NOTES Routes
 
-//GET
-router.get('/api/note', getNote);
-// POST
-router.post('/api/note', createNote);
-// PUT
-router.put('/api/note/:id', updateNote);
-// DELETE
-router.delete('/api/note/:id', deleteNote);
+router.get('/api/notes', getNotes);
+
+router.post('/api/notes', createNote);
+
+router.put('/api/notes/:id', updateNote);
+
+router.delete('/api/notes/:id', deleteNote);
 
 export default router;

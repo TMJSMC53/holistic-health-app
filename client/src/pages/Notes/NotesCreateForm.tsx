@@ -23,7 +23,7 @@ const NotesCreateForm = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await fetch(`/api/note`, {
+      await fetch(`/api/notes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

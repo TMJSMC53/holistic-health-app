@@ -17,7 +17,7 @@ const FluidIntakeByDays: React.FC = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch('/api/fluidIntakeLog', {
+        const response = await fetch('/api/fluidIntakes', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

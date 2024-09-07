@@ -12,7 +12,7 @@ export const createNote = async (req, res) => {
   try {
     await newNote.save();
     console.log(newNote);
-    res.json(newNote);
+    res.status(201).json(newNote);
   } catch (err) {
     if (err) return res.status(500).send(err);
     res.redirect('/');
@@ -20,14 +20,14 @@ export const createNote = async (req, res) => {
 };
 
 // Read a new Note
-export const getNote = async (req, res) => {
+export const getNotes = async (req, res) => {
   try {
     const getNotes = await Note.find({
       user_id: req.user.id,
     }).sort({
       date: 'desc',
     });
-    res.status(200).send(getNotes);
+    res.status(200).json(getNotes);
   } catch (err) {
     if (err) return res.status(500).send(err);
   }
@@ -49,7 +49,7 @@ export const updateNote = async (req, res) => {
     if (!updateNote) {
       return res.status(404).json({ message: 'Note not found' });
     }
-    res.status(200).send(updateNote);
+    res.status(200).json(updateNote);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

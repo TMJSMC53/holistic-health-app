@@ -15,7 +15,7 @@ const NotesDeleteForm = ({ note }: { note: Notes }) => {
 
   async function handleDelete() {
     try {
-      await fetch(`/api/note/${note._id}`, {
+      await fetch(`/api/notes/${note._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

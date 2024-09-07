@@ -19,7 +19,7 @@ const FluidIntakeUpdateForm = ({ fluid }: { fluid: Fluid }) => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await fetch(`/api/fluid/${fluid._id}`, {
+      await fetch(`/api/fluidIntakes/${fluid._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

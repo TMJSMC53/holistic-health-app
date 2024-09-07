@@ -16,7 +16,7 @@ const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
 
   async function handleDelete() {
     try {
-      await fetch(`/api/fluid/${fluid._id}`, {
+      await fetch(`/api/fluidIntakes/${fluid._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

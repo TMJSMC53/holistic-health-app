@@ -35,7 +35,7 @@ const NotesUpdateForm = ({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await fetch(`/api/note/${note._id}`, {
+      await fetch(`/api/notes/${note._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

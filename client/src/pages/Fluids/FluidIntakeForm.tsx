@@ -8,7 +8,7 @@ const FluidIntakeForm = () => {
     e.preventDefault();
 
     try {
-      await fetch('/api/fluid', {
+      await fetch('/api/fluidIntakes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
