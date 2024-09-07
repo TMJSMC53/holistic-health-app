@@ -74,6 +74,8 @@ export default {
       screens: {
         xs: '400px',
         sm: '401px',
+        md: '1024px',
+        lg: '1440px',
       },
       fontSize: {
         xs: '0.75rem',
