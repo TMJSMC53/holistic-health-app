@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tab-active {
+  border-bottom: 2px solid #000;
+}

@@ -1,38 +1,57 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import FluidIntakeLogDashboardView from '../Dashboard/FluidIntakeLogDashboardView';
 import FluidIntakeByDaysDashboardView from './FluidIntakeByDaysDashboardView';
 const FluidIntakeDashboard = () => {
+  const [activeTab, setActiveTab] = useState('List');
   return (
-    <div className="ml-4">
-      <section className="flex gap-8 font-poppins">
-        <h6>Water Intake</h6>
-        <div role="tablist" className="tabs tabs-bordered">
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab text-16"
-            aria-label="List"
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            <FluidIntakeLogDashboardView />
-          </div>
+    <>
+      <section className="md:w-3/4">
+        <div className="flex items-center text-16 font-poppins gap-4 ml-4">
+          <h6>Water Intake</h6>
+          <div className="tabs font-poppins pb-1">
+            <a
+              className={`tab tab-bordered text-16 md:text-18 ${
+                activeTab === 'List'
+                  ? 'bg-primary-600 text-white border rounded-t-12'
+                  : 'border rounded-t-12 border-primary-600'
+              }`}
+              onClick={() => setActiveTab('List')}
+            >
+              List
+            </a>
 
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab text-16"
-            aria-label="By Day"
-            defaultChecked
-          />
-          <div role="tabpanel" className="tab-content p-10">
-            <FluidIntakeByDaysDashboardView />
+            <a
+              className={`tab tab-bordered text-16 md:text-18 ${
+                activeTab === 'By Day'
+                  ? 'bg-primary-600 text-white border rounded-t-12'
+                  : 'border rounded-t-12 border-primary-600'
+              }`}
+              onClick={() => setActiveTab('By Day')}
+            >
+              By Day
+            </a>
           </div>
+          <Link className="cursor-pointer hover:underline " to="/fluids">
+            View All
+          </Link>
         </div>
-        <Link to="/fluids">View All</Link>
+        <section className="flex font-poppins my-10">
+          <div className="w-full">
+            {activeTab === 'List' && (
+              <div>
+                <FluidIntakeLogDashboardView />
+              </div>
+            )}
+            {activeTab === 'By Day' && (
+              <div>
+                <FluidIntakeByDaysDashboardView />
+              </div>
+            )}
+          </div>
+        </section>
       </section>
-    </div>
+    </>
   );
 };
 
