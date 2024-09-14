@@ -14,8 +14,7 @@ export const createNote = async (req, res) => {
     console.log(newNote);
     res.status(201).json(newNote);
   } catch (err) {
-    if (err) return res.status(500).send(err);
-    res.redirect('/');
+    return res.status(500).send(err);
   }
 };
 

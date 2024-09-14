@@ -37,7 +37,7 @@ const NotesDashboardView = () => {
   return (
     <>
       <aside className="flex justify-center">
-        <section className="w-10/12">
+        <section className="w-10/12 md:w-full md:ml-4">
           <div className="flex flex-col bg-accents-300 px-4 ">
             {notes.slice(0, 5).map((note) => (
               <div className="flex gap-2 my-4" key={note._id}>
