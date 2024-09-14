@@ -72,10 +72,12 @@ export default {
         xtraBold: 700,
       },
       screens: {
-        xs: '400px',
-        sm: '401px',
-        md: '1024px',
-        lg: '1440px',
+        // xs: '400px',
+        sm: '375px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        xxl: '1536px',
       },
       fontSize: {
         xs: '0.75rem',
