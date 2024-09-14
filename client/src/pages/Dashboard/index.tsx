@@ -5,9 +5,12 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../main.d';
 import DailyMotivationalQuote from './DailyMotivationalQuote';
+import QuickLinksCreateForm from '../QuickLinks/QuickLinksCreateForm';
 import NotesDashboard from './NotesDashboard';
 
 import FluidIntakeDashboard from './FluidIntakeDashboard';
+
+import QuickLinks from './QuickLinksDashboardView';
 
 type DashboardProps = {
   user: UserState;
@@ -32,9 +35,16 @@ const Dashboard = ({ user }: DashboardProps) => {
       </section>
       <DailyMotivationalQuote />
       <section>
+        <QuickLinksCreateForm />
+        <QuickLinks />
+      </section>
+      <div className="inset-0 mx-2">
+        <div className="inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-primary-400 to-primary-700" />
+      </div>
+      <section>
         <FluidIntakeForm />
       </section>
-      <section className="flex flex-col justify-between md:flex-row">
+      <section className="w-screen flex flex-col md:flex-row">
         <FluidIntakeDashboard />
         <NotesDashboard />
       </section>

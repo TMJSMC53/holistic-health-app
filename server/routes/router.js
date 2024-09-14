@@ -1,4 +1,6 @@
 import express from 'express';
+
+// Fluids
 import {
   createFluidIntake,
   getFluidIntake,
@@ -6,6 +8,7 @@ import {
   deleteFluidIntake,
 } from '../controllers/fluidIntakes.js';
 
+// Water Intake Goal
 import {
   createWaterIntakeGoal,
   getWaterIntakeGoal,
@@ -19,6 +22,16 @@ import {
   deleteNote,
 } from '../controllers/notes.js';
 
+// Quick Links
+
+import {
+  createQuickLink,
+  getQuickLinks,
+  updateQuickLink,
+  deleteQuickLink,
+} from '../controllers/quickLinks.js';
+
+// Auth
 import { register, login, getCurrentUser } from '../controllers/auth.js';
 import { userAuth } from '../middleware/auth.js';
 
@@ -60,5 +73,11 @@ router.post('/api/notes', createNote);
 router.put('/api/notes/:id', updateNote);
 
 router.delete('/api/notes/:id', deleteNote);
+
+// QUICK LINKS Routes
+router.post('/api/quickLinks', createQuickLink);
+router.get('/api/quickLinks', getQuickLinks);
+router.put('/api/quickLinks/:id', updateQuickLink);
+router.delete('/api/quickLinks/:id', deleteQuickLink);
 
 export default router;

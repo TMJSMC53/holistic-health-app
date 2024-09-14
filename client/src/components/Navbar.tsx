@@ -103,6 +103,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                         Notes
                       </Link>
                     </li>
+                    <li className="text-primary-600">
+                      <Link to="/quickLinks" className="hover:bg-transparent">
+                        Quick Links
+                      </Link>
+                    </li>
                   </>
                 ) : null}
                 <li>
@@ -151,8 +156,18 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                   </Link>
                 </li>
                 <li className="text-primary-600">
+                  <Link to="/fluids" onClick={toggleSidebar}>
+                    Fluids
+                  </Link>
+                </li>
+                <li className="text-primary-600">
                   <Link to="/note" onClick={toggleSidebar}>
                     Notes
+                  </Link>
+                </li>
+                <li className="text-primary-600">
+                  <Link to="/quickLinks" onClick={toggleSidebar}>
+                    Quick Links
                   </Link>
                 </li>
               </>

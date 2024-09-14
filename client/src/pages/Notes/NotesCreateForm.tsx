@@ -2,7 +2,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Textarea from '../Notes/Textarea';
-import SuccessModal from '../Notes/SuccessModal';
+import SuccessModal from '../../components/SuccessModal';
 
 const NotesCreateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +36,7 @@ const NotesCreateForm = () => {
 
       setIsModalOpen(false);
       setIsShowSuccessModalOpen(true);
-      // alert('Successfully created');
+
       setTimeout(() => {
         window.location.reload();
       }, 2000);
@@ -133,7 +133,9 @@ const NotesCreateForm = () => {
           </button>
         </div>
       </div>
-      {isShowSuccessModalOpen && <SuccessModal />}
+      {isShowSuccessModalOpen && (
+        <SuccessModal message="Note successfully created" />
+      )}
     </>
   );
 };
