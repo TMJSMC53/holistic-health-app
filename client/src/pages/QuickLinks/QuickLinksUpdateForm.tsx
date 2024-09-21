@@ -1,10 +1,18 @@
-import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
+import {
+  FormEvent,
+  ChangeEvent,
+  MouseEvent,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 
 import { QuickLinks } from './QuickLinksViewAll';
 
 const QuickLinksUpdateForm = ({ link }: { link: QuickLinks }) => {
   const [name, setName] = useState(link.name);
   const [url, setUrl] = useState(link.url);
+  const [isFavorite, setIsFavorite] = useState(link.isFavorite);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -27,6 +35,7 @@ const QuickLinksUpdateForm = ({ link }: { link: QuickLinks }) => {
         body: JSON.stringify({
           name: name,
           url: url,
+          isFavorite: isFavorite,
         }),
       });
 
@@ -45,11 +54,17 @@ const QuickLinksUpdateForm = ({ link }: { link: QuickLinks }) => {
     setUrl(event.target.value);
   }
 
+  const toggleFavorite = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsFavorite(!isFavorite);
+  };
+
   // Back btn
   useEffect(() => {
     const onBackArrow = () => {
       if (isModalOpen) {
         setIsModalOpen(false);
+        setIsFavorite(false);
       }
     };
 
@@ -105,12 +120,69 @@ const QuickLinksUpdateForm = ({ link }: { link: QuickLinks }) => {
         <div className="modal-box">
           <div className="my-6">
             <form onSubmit={handleSubmit}>
-              <label
-                className="text-20 font-poppins font-light w-full "
-                htmlFor="name"
-              >
-                Update your quick link
-              </label>
+              <div className="flex justify-between">
+                <label
+                  className="text-20 font-poppins font-light w-full "
+                  htmlFor="name"
+                >
+                  Update your quick link
+                </label>
+                <button onClick={toggleFavorite}>
+                  {isFavorite ? (
+                    <svg
+                      fill="#ff0000"
+                      viewBox="0 0 32 32"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      height="20px"
+                      stroke="#ff0000"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke="#ff0000"
+                        stroke-width="3.072"
+                      >
+                        <title>hearts</title>
+                        <path d="M27.267 11.489c0.21 6.687-10.266 11.384-11.25 15.056-1.075-4.011-11.060-8.078-11.283-15.056-0.214-6.701 8.047-8.155 11.283-2.55 3.316-5.743 11.043-4.039 11.25 2.55z"></path>
+                      </g>
+                      <g id="SVGRepo_iconCarrier">
+                        <title>hearts</title>
+                        <path d="M27.267 11.489c0.21 6.687-10.266 11.384-11.25 15.056-1.075-4.011-11.060-8.078-11.283-15.056-0.214-6.701 8.047-8.155 11.283-2.55 3.316-5.743 11.043-4.039 11.25 2.55z"></path>
+                      </g>
+                    </svg>
+                  ) : (
+                    <svg
+                      fill="#ffffff"
+                      viewBox="0 0 32 32"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20px"
+                      height="20px"
+                      stroke="#ffffff"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke="#ff0000"
+                        stroke-width="3.072"
+                      >
+                        <title>hearts</title>
+                        <path d="M27.267 11.489c0.21 6.687-10.266 11.384-11.25 15.056-1.075-4.011-11.060-8.078-11.283-15.056-0.214-6.701 8.047-8.155 11.283-2.55 3.316-5.743 11.043-4.039 11.25 2.55z"></path>
+                      </g>
+                      <g id="SVGRepo_iconCarrier">
+                        <title>hearts</title>
+                        <path d="M27.267 11.489c0.21 6.687-10.266 11.384-11.25 15.056-1.075-4.011-11.060-8.078-11.283-15.056-0.214-6.701 8.047-8.155 11.283-2.55 3.316-5.743 11.043-4.039 11.25 2.55z"></path>
+                      </g>
+                    </svg>
+                  )}
+                </button>
+              </div>
               <div className="flex flex-col gap-2">
                 <p className="text-12 md:text-14 text-primary-600 font-poppins font-bold mt-6">
                   Name
@@ -151,7 +223,12 @@ const QuickLinksUpdateForm = ({ link }: { link: QuickLinks }) => {
           </div>
         </div>
         <div className="modal-backdrop">
-          <button type="button" onClick={() => setIsModalOpen(false)}>
+          <button
+            type="button"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+          >
             Close
           </button>
         </div>

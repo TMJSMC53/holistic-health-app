@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import QuickLinksUpdateForm from '../QuickLinks/QuickLinksUpdateForm';
 import QuickLinksDeleteForm from './QuickLinksDeleteForm';
+import QuickLinksCreateForm from './QuickLinksCreateForm';
 
 export interface QuickLinks {
   _id: string;
   name: string;
   url: string;
+  isFavorite: boolean;
 }
 const QuickLinksViewAll = () => {
   const [links, setLinks] = useState<QuickLinks[]>([]);
-  // const [selectedLink, setSelectedLink] = useState<QuickLinks | null>(null);
+  const [favorites, setFavorites] = useState<QuickLinks[]>([]);
 
   useEffect(() => {
     const getQuickLinksList = async () => {
@@ -22,6 +24,9 @@ const QuickLinksViewAll = () => {
         const data = await response.json();
         console.log('Fetched Links:', data);
         setLinks(data);
+        setFavorites(
+          data.filter((favorite: QuickLinks) => favorite.isFavorite)
+        );
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -32,7 +37,35 @@ const QuickLinksViewAll = () => {
 
   return (
     <>
-      <div className="">
+      <div>
+        <div className="flex justify-end">
+          <QuickLinksCreateForm />
+        </div>
+        <section className="p-[4px] mx-2 bg-gradient-to-r from-primary-400 via-primary-600 to-primary-700 border-gradient">
+          <div className="bg-white border-gradient">
+            <p className="text-14 text-primary-600 font-poppins font-medium pt-2 mx-4">
+              Favorites:
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 mx-2">
+              {favorites.map((favoriteLink) => (
+                <div className="" key={favoriteLink._id}>
+                  <div className="flex place-items-center">
+                    <a
+                      href={favoriteLink.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-12 py-0.5 px-2 text-primary-600 font-poppins hover:underline"
+                    >
+                      {favoriteLink.name}
+                    </a>
+                    <QuickLinksUpdateForm link={favoriteLink} />
+                    <QuickLinksDeleteForm link={favoriteLink} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
         <div className="grid grid-cols-2 md:grid-cols-3 mx-2 my-8">
           {links.map((link) => (
             <div className=" mb-4" key={link._id}>

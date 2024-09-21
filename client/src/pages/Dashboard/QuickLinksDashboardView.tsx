@@ -7,10 +7,10 @@ export interface QuickLinks {
   _id: string;
   name: string;
   url: string;
+  isFavorite: boolean;
 }
 const QuickLinks = () => {
   const [links, setLinks] = useState<QuickLinks[]>([]);
-  // const [selectedLink, setSelectedLink] = useState<QuickLinks | null>(null);
 
   useEffect(() => {
     const getQuickLinksList = async () => {
@@ -21,8 +21,8 @@ const QuickLinks = () => {
         });
 
         const data = await response.json();
-        console.log('Fetched Links:', data);
-        setLinks(data);
+
+        setLinks(data.filter((link: QuickLinks) => link.isFavorite));
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -54,7 +54,6 @@ const QuickLinks = () => {
             <QuickLinksDeleteForm link={link} />
           </div>
         ))}
-        {/* {selectedLink}  */}
       </div>
       <div className="lg:text-20 text-center text-primary-600 mt-4 mb-8 hover:underline">
         <Link className="view-all p-2" to="/quickLinks">

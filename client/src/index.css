@@ -11,6 +11,10 @@
   border-top-right-radius: 8px;
 }
 
+.border-gradient {
+  border-radius: 24px;
+}
+
 .view-all {
   border: 1px solid #347474;
   border-radius: 8px;

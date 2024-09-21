@@ -6,6 +6,7 @@ export const createQuickLink = async (req, res) => {
   const newQuickLink = new QuickLink({
     name: req.body.name,
     url: req.body.url,
+    isFavorite: req.body.isFavorite,
     user_id: req.user.id,
   });
   console.log(newQuickLink);
@@ -40,6 +41,7 @@ export const updateQuickLink = async (req, res) => {
       {
         name: req.body.name,
         url: req.body.url,
+        isFavorite: req.body.isFavorite,
       },
       { new: true }
     );
