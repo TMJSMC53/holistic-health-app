@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import FluidIntakeUpdateForm from './FluidIntakeUpdateForm';
 import FluidIntakeDeleteForm from './FluidIntakeDeleteForm';
-import FluidIntakeByDays from './FluidIntakeByDays';
 
 export interface Fluid {
   _id: string;
@@ -126,7 +125,6 @@ const FluidIntakeLog = () => {
             </div>
           </tfoot>
         </table>
-        <FluidIntakeByDays />
       </div>
     </>
   );
