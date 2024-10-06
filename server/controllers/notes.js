@@ -41,6 +41,7 @@ export const updateNote = async (req, res) => {
     const updateNote = await Note.findByIdAndUpdate(
       id,
       {
+        title: req.body.title,
         note: req.body.note,
         tag: req.body.tag,
         date: req.body.date,
