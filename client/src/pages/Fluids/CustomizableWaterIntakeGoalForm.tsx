@@ -1,5 +1,10 @@
 import { FormEvent, ChangeEvent, useState, useEffect, useRef } from 'react';
 
+export interface WaterGoal {
+  _id: string;
+  amount: number;
+  date: string;
+}
 const CustomizableWaterIntakeGoalForm = () => {
   const [waterGoalAmount, setWaterGoalAmount] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,7 +49,7 @@ const CustomizableWaterIntakeGoalForm = () => {
         });
 
         const data = await response.json();
-        setWaterGoalAmount(data.amount);
+        setWaterGoalAmount(data[0].amount);
       } catch (err) {
         console.error('Error fetching data:', err);
       }

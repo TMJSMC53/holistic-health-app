@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Fluid } from '../Fluids/FluidIntakeLog';
+import { WaterGoal } from '../Fluids/CustomizableWaterIntakeGoalForm';
 import Confetti from 'react-confetti';
 
 type GroupSum = {
   date: string;
   totalAmount: number;
+  waterGoalAmountDate: number;
   group: Fluid[];
 };
 
 const FluidIntakeByDays: React.FC = () => {
   const [fluidList, setFluidList] = useState<Fluid[]>([]);
   const [waterGoalAmount, setWaterGoalAmount] = useState<number>(4000);
+  const [historicalWaterGoals, setHistoricalWaterGoalAmount] = useState<
+    WaterGoal[]
+  >([]);
 
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -49,7 +54,8 @@ const FluidIntakeByDays: React.FC = () => {
         });
 
         const data = await response.json();
-        const goalAmount = data?.amount || 4000;
+        const goalAmount = data[0]?.amount || 4000;
+        setHistoricalWaterGoalAmount(data.reverse());
         setWaterGoalAmount(goalAmount.toString());
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -76,14 +82,29 @@ const FluidIntakeByDays: React.FC = () => {
     acc[formattedDate].totalAmount += item.amount;
     acc[formattedDate].group.push(item);
   }
-  // console.log(acc);
 
   const groupedAndSummed: Array<GroupSum> = [];
 
-  // console.log({ todaysDate: new Date().toLocaleDateString() });
   for (const date in acc) {
     const { totalAmount, group } = acc[date];
-    groupedAndSummed.push({ date, totalAmount, group });
+
+    let waterGoalAmountDate = 4000;
+
+    for (let historicalWaterGoal of historicalWaterGoals) {
+      if (
+        new Date(historicalWaterGoal.date).toISOString().split('T')[0] <=
+        new Date(date).toISOString().split('T')[0]
+      ) {
+        waterGoalAmountDate = historicalWaterGoal.amount;
+      }
+    }
+    console.log(waterGoalAmountDate);
+    groupedAndSummed.push({
+      date,
+      totalAmount,
+      group,
+      waterGoalAmountDate,
+    });
   }
 
   useEffect(() => {
@@ -118,7 +139,7 @@ const FluidIntakeByDays: React.FC = () => {
     <>
       {groupedAndSummed
         .slice(0, 2)
-        .map(({ date, totalAmount, group }, index) => (
+        .map(({ date, totalAmount, group, waterGoalAmountDate }, index) => (
           <div
             className="flex flex-col  my-4 mx-6 md:my-8 md:mx-16 lg:mx-36 border border-accents-300 rounded-t-12"
             key={index}
@@ -147,22 +168,22 @@ const FluidIntakeByDays: React.FC = () => {
                       className="row-span-full col-span-full bg-primary-600 text-accents-300"
                     >
                       Total:
-                      {totalAmount < waterGoalAmount ? (
+                      {totalAmount < waterGoalAmountDate ? (
                         <>
                           {` Drink ${Math.abs(
-                            totalAmount - Number(waterGoalAmount)
+                            totalAmount - Number(waterGoalAmountDate)
                           )} ml more water`}
                         </>
-                      ) : totalAmount > waterGoalAmount ? (
+                      ) : totalAmount > waterGoalAmountDate ? (
                         <>
                           {` You've drunk ${
-                            totalAmount - Number(waterGoalAmount)
+                            totalAmount - Number(waterGoalAmountDate)
                           }ml over your water goal`}
                         </>
                       ) : (
                         <>
                           {` Congratulations!! You've reached your daily goal of ${Number(
-                            waterGoalAmount
+                            waterGoalAmountDate
                           )}ml!!`}
                         </>
                       )}
