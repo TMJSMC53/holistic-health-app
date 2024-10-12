@@ -71,7 +71,7 @@ const NotesCreateForm = () => {
       <div>
         <label
           htmlFor="addButton"
-          className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent"
+          className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent hover:scale-125 hover:text-primary-400 p-0 mx-8 md:mx-0"
         >
           <button id="addButton" onClick={handleModalToggle}>
             <svg
