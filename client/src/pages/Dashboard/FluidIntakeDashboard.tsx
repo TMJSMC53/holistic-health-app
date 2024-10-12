@@ -11,10 +11,10 @@ const FluidIntakeDashboard = () => {
           <h6>Water Intake</h6>
           <div className="tabs font-poppins pb-1">
             <a
-              className={`tab tab-bordered text-16 md:text-18 ${
+              className={`tab tab-bordered text-16 text-primary-600 md:text-18 rounded-t-12 transition-colors duration-200 ${
                 activeTab === 'List'
                   ? 'bg-primary-600 text-white border rounded-t-12'
-                  : 'border rounded-t-12 border-primary-600'
+                  : 'border rounded-t-12 border-primary-600 hover:bg-primary-700 hover:text-accents-500 hover:border-transparent relative before:absolute before:inset-0 before:rounded-t-12 before:border-transparent hover:before:border-primary-600'
               }`}
               onClick={() => setActiveTab('List')}
             >
@@ -22,10 +22,10 @@ const FluidIntakeDashboard = () => {
             </a>
 
             <a
-              className={`tab tab-bordered text-16 md:text-18 ${
+              className={`tab tab-bordered text-16 text-primary-600 md:text-18 rounded-t-12 transition-colors duration-200 ${
                 activeTab === 'By Day'
                   ? 'bg-primary-600 text-white border rounded-t-12'
-                  : 'border rounded-t-12 border-primary-600'
+                  : 'border rounded-t-12 border-primary-600 hover:bg-primary-700 hover:text-accents-500 hover:border-transparent relative before:absolute before:inset-0 before:rounded-t-12 before:border-transparent hover:before:border-primary-600'
               }`}
               onClick={() => setActiveTab('By Day')}
             >
