@@ -38,7 +38,7 @@ const NotesCards = () => {
 
   return (
     <section className="mb-4">
-      <div className="grid grid-cols-3 gap-4 px-4">
+      <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4 px-4">
         {notes.map((note) => (
           <div
             className={`${getBackgroundColor(
