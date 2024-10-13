@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Notes } from './NotesAside';
+import { Notes } from './NotesCards';
 
 const NotesDeleteForm = ({ note }: { note: Notes }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,11 +29,7 @@ const NotesDeleteForm = ({ note }: { note: Notes }) => {
   return (
     <>
       <div>
-        {/* <label
-          htmlFor="deleteButton"
-          className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent"
-        > */}
-        <button id="deleteButton" onClick={handleModalToggle} className="flex ">
+        <button onClick={handleModalToggle} className="flex ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

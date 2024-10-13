@@ -5,9 +5,18 @@ const NoteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  title: {
+    type: String,
+  },
   note: {
     type: String,
     required: true,
+  },
+  color: {
+    type: String,
+    required: true,
+    enum: ['primary-400', 'primary-700', 'accents-400'],
+    default: 'primary-400',
   },
   tag: {
     type: String,

@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link } from 'react-router-dom';
 import NotesUpdateForm from '../Notes/NotesUpdateForm';
+import {
+  getBorderColor,
+  getHoverBackgroundColor,
+} from '../../utils/notesUtils';
 export interface Notes {
   _id: string;
   date: string;
+  title: string;
+  color: string;
   note: string;
   tag: string;
 }
@@ -37,20 +43,25 @@ const NotesDashboardView = () => {
   return (
     <>
       <aside className="flex justify-center">
-        <section className="w-10/12 md:w-full md:ml-4">
-          <div className="flex flex-col bg-accents-300 px-4 ">
+        <section className="w-10/12 md:w-full lg:full md:ml-4">
+          <div className="flex flex-col bg-accents-500  border-primary-600 border notes-cards-border py-2 px-4 ">
             {notes.slice(0, 5).map((note) => (
-              <div className="flex gap-2 my-4" key={note._id}>
+              <div className="flex gap-2 my-2" key={note._id}>
                 <div className="flex gap-1">
                   <a
-                    className="lg:text-20 cursor-pointer underline hover:underline-offset-4"
+                    className="lg:text-20 cursor-pointer"
                     onClick={() => handleDateClick(note)}
                   >
-                    {new Date(note.date).toLocaleDateString()}
+                    <div
+                      className={`${getBorderColor(
+                        note.color
+                      )} text-12 md:text-14 p-2 border-2 rounded-full ${getHoverBackgroundColor(
+                        note.color
+                      )}`}
+                    >
+                      {note.title}
+                    </div>
                   </a>
-                  <span className="text-12 lg:text-14 rounded-full py-0.5 px-2 bg-primary-600 text-accents-100">
-                    {note.tag}
-                  </span>
                 </div>
               </div>
             ))}

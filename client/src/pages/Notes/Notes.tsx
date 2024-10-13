@@ -1,11 +1,11 @@
-import NotesAside from './NotesAside';
+import NotesCards from './NotesCards';
 import NotesCreateForm from './NotesCreateForm';
 
 const Notes = () => {
   return (
     <>
       <NotesCreateForm />
-      <NotesAside />
+      <NotesCards />
     </>
   );
 };

@@ -3,11 +3,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Textarea from './Textarea';
 import NotesDeleteForm from './NotesDeleteForm';
+import { getBackgroundColor } from '../../utils/notesUtils';
 export interface Notes {
   _id: string;
   date: string;
+  title: string;
   note: string;
   tag: string;
+  color: string;
 }
 const NotesUpdateForm = ({
   note,
@@ -17,9 +20,12 @@ const NotesUpdateForm = ({
   setSelectedNote: React.Dispatch<React.SetStateAction<Notes | null>>;
 }) => {
   const [startDate, setStartDate] = useState(new Date(note.date));
+  const [title, setTitle] = useState(note.title);
   const [text, setText] = useState(note.note);
   const [tag, setTag] = useState(note.tag);
   const [isShowSuccessModalOpen, setIsShowSuccessModalOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string>(note.color);
+
   const handleDateChange = (date: Date | [Date, Date] | null) => {
     if (date instanceof Date) {
       setStartDate(date);
@@ -28,6 +34,12 @@ const NotesUpdateForm = ({
   const handleCloseNoteModal = () => {
     setSelectedNote(null);
   };
+  function handleColorChange(event: ChangeEvent<HTMLInputElement>) {
+    setSelectedColor(event.target.value);
+  }
+  function handleTitle(event: ChangeEvent<HTMLInputElement>) {
+    setTitle(event.target.value);
+  }
   function handleTag(event: ChangeEvent<HTMLInputElement>) {
     setTag(event.target.value);
   }
@@ -41,12 +53,15 @@ const NotesUpdateForm = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          title: title,
           note: text,
+          color: selectedColor,
           tag: tag,
           date: startDate,
         }),
       });
 
+      setSelectedColor('white');
       setIsShowSuccessModalOpen(true);
       setTimeout(() => {
         handleCloseNoteModal();
@@ -95,9 +110,54 @@ const NotesUpdateForm = ({
                   onChange={handleDateChange}
                 />
               </div>
+              <div className="radio-btns">
+                <div className="form-control flex flex-row gap-2">
+                  <label className="cursor-pointer">
+                    <input
+                      type="radio"
+                      name="radio-10"
+                      className="radio checked:bg-primary-400"
+                      onChange={handleColorChange}
+                      value="primary-400"
+                      defaultChecked={selectedColor === 'primary-400'}
+                    />
+                  </label>
+                  <label className="cursor-pointer">
+                    <input
+                      type="radio"
+                      name="radio-10"
+                      className="radio checked:bg-primary-700"
+                      value="primary-700"
+                      onChange={handleColorChange}
+                      defaultChecked={selectedColor === 'primary-700'}
+                    />
+                  </label>
+                  <label className="cursor-pointer">
+                    <input
+                      type="radio"
+                      name="radio-10"
+                      className="radio checked:bg-accents-400"
+                      value="accents-400"
+                      onChange={handleColorChange}
+                      defaultChecked={selectedColor === 'accents-400'}
+                    />
+                  </label>
+                </div>
+              </div>
               <NotesDeleteForm note={note} />
             </div>
             <form onSubmit={handleSubmit}>
+              <div className="flex gap-2 mt-4">
+                <p className="text-12 md:text-14 text-primary-600 font-poppins font-bold">
+                  Title:
+                </p>
+                <input
+                  value={title}
+                  onChange={handleTitle}
+                  className="text-12 md:text-16 text-primary-600 font-poppins border w-full"
+                  type="string"
+                />
+              </div>
               <Textarea initialTextValue={text} setText={setText} />
 
               <div className="flex gap-2">
@@ -110,6 +170,15 @@ const NotesUpdateForm = ({
                   className="text-12 md:text-16 text-primary-600 font-poppins border w-24"
                   type="string"
                 />
+              </div>
+              <div
+                className={`p-4 mt-4 notes-cards-border ${getBackgroundColor(
+                  selectedColor
+                )}`}
+              >
+                <p className="text-12 text-primary-600 md:text-14 font-poppins font-bold">
+                  Note Preview
+                </p>
               </div>
               <section className="flex justify-end gap-2 mt-10">
                 <div className="modal-action mt-0">

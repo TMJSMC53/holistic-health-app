@@ -4,7 +4,9 @@ import Note from '../models/note.js';
 export const createNote = async (req, res) => {
   const newNote = new Note({
     note: req.body.note,
+    title: req.body.title,
     tag: req.body.tag,
+    color: req.body.color,
     user_id: req.user.id,
   });
   console.log(newNote);
@@ -39,9 +41,11 @@ export const updateNote = async (req, res) => {
     const updateNote = await Note.findByIdAndUpdate(
       id,
       {
+        title: req.body.title,
         note: req.body.note,
         tag: req.body.tag,
         date: req.body.date,
+        color: req.body.color,
       },
       { new: true }
     );
