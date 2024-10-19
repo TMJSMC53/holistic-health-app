@@ -45,7 +45,6 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
           className="drawer-toggle"
           checked={isOpen}
           onChange={toggleSidebar}
-          // onChange={() => setIsOpen(!isOpen)}
         />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
@@ -108,6 +107,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                         Quick Links
                       </Link>
                     </li>
+                    <li className="text-primary-600">
+                      <Link to="/habits" className="hover:bg-transparent">
+                        Habits
+                      </Link>
+                    </li>
                   </>
                 ) : null}
                 <li>
@@ -168,6 +172,11 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                 <li className="text-primary-600">
                   <Link to="/quickLinks" onClick={toggleSidebar}>
                     Quick Links
+                  </Link>
+                </li>
+                <li className="text-primary-600">
+                  <Link to="/habits" onClick={toggleSidebar}>
+                    Habits
                   </Link>
                 </li>
               </>

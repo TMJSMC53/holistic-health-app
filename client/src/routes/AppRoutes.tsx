@@ -12,6 +12,7 @@ import Notes from '../pages/Notes/Notes';
 import Docs from '../pages/Docs/Docs';
 import Fluids from '../pages/Fluids/Fluids';
 import QuickLinks from '../pages/QuickLinks/QuickLinks';
+import Habits from '../pages/Habits/Habits';
 import { UserState } from '../main.d';
 
 const AppRoutes = () => {
@@ -62,6 +63,7 @@ const AppRoutes = () => {
         <Route path="/docs" element={<Docs />} />
         <Route path="/fluids" element={<Fluids />} />
         <Route path="/quickLinks" element={<QuickLinks />} />
+        <Route path="/habits" element={<Habits />} />
       </Routes>
       <Footer />
     </BrowserRouter>

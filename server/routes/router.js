@@ -31,6 +31,12 @@ import {
   deleteQuickLink,
 } from '../controllers/quickLinks.js';
 
+import {
+  createRecordHabitEnactment,
+  createHabit,
+  getHabits,
+} from '../controllers/habits.js';
+
 // Auth
 import { register, login, getCurrentUser } from '../controllers/auth.js';
 import { userAuth } from '../middleware/auth.js';
@@ -61,7 +67,6 @@ router.post('/logout', (req, res) => {
   res.status(201).json({
     message: 'User successfully logged out',
   });
-  // res.redirect('/');
 });
 
 // NOTES Routes
@@ -80,4 +85,8 @@ router.get('/api/quickLinks', getQuickLinks);
 router.put('/api/quickLinks/:id', updateQuickLink);
 router.delete('/api/quickLinks/:id', deleteQuickLink);
 
+// HABITS Routes
+router.post('/api/habits/:id/enactments', createRecordHabitEnactment);
+router.post('/api/habits', createHabit);
+router.get('/api/habits', getHabits);
 export default router;
