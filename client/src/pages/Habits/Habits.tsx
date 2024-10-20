@@ -91,7 +91,7 @@ const Habits = () => {
     <div className="text-primary-600 font-poppins">
       <div className="dropdown" ref={dropdownRef}>
         <button
-          className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-1"
+          className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
           onClick={handleToggle}
           disabled={isLoading}
         >
@@ -121,7 +121,7 @@ const Habits = () => {
           </ul>
         )}
       </div>
-      <div className="habits-list">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 habits-list">
         {habits.map((habit) => (
           <HabitItem key={habit._id} habit={habit} />
         ))}
