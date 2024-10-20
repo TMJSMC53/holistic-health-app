@@ -1,5 +1,6 @@
 import { Habits } from './Habits';
 import { FormEvent, useState } from 'react';
+import { formatDistance } from 'date-fns';
 
 function countCurrentStreak(dates: string[]): number {
   if (!dates || !dates.length) return 0;
@@ -54,14 +55,15 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
   const [currentStreak, setCurrentStreak] = useState(() =>
     countCurrentStreak(habit.enactments || [])
   );
-  // const setLastSeen = formatDistance(
-  //   new Date(habit.enactments[0]),
-  //   new Date(),
-  //   {
-  //     includeSeconds: true,
-  //     addSuffix: true,
-  //   }
-  // );
+  const setLastSeen = formatDistance(
+    new Date(habit.enactments[0]),
+    new Date(),
+
+    {
+      includeSeconds: true,
+      addSuffix: true,
+    }
+  );
 
   const [error, setError] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -132,7 +134,9 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
         </div>
         <div>
           <p>Current streak: {currentStreak}</p>
-          {/* <p>Last seen: {setLastSeen}</p> */}
+          <p className="text-12 text-primary-400 italic mt-2">
+            Last recorded: {setLastSeen}
+          </p>
 
           <button
             className="text-primary-600 btn bg-transparent hover:bg-primary-700 hover:text-accents-100 border-2 border-primary-600 hover:border-primary-700 relative before:absolute before:border-transparent transition-all duration-300 my-4"
