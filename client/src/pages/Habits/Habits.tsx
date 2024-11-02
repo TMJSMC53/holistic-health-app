@@ -13,6 +13,7 @@ const Habits = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  // const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     getHabits();
@@ -62,6 +63,7 @@ const Habits = () => {
 
   const handleHabitClick = async (habit: string) => {
     setIsLoading(true);
+    // setError(null);
     try {
       const response = await fetch('/api/habits', {
         method: 'POST',
@@ -71,11 +73,13 @@ const Habits = () => {
         body: JSON.stringify({ title: habit }),
       });
 
-      if (response.ok) {
-        const newHabit: Habits = await response.json();
-        setHabits((prevHabits) => [...prevHabits, newHabit]);
-        setIsOpen(false);
+      if (!response.ok) {
+        // setError(data.message);
+        return;
       }
+      const newHabit: Habits = await response.json();
+      setHabits((prevHabits) => [...prevHabits, newHabit]);
+      setIsOpen(false);
     } catch (err) {
       console.error('Error occurred', err);
     } finally {
@@ -97,6 +101,7 @@ const Habits = () => {
         >
           {isLoading ? 'Adding...' : '+ Add Habit'}
         </button>
+        {/*error && <p className="text-red-500 text-sm mt-2">{error}</p>*/}
         {isOpen && (
           <ul
             tabIndex={0}

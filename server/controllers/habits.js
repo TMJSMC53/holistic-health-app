@@ -71,6 +71,13 @@ export const createPlusOneHabitEnactment = async (req, res) => {
 
 export const createHabit = async (req, res) => {
   try {
+    const query = Habit.where({ title: req.body.title, user_id: req.user.id });
+    const existingHabit = await query.findOne();
+    if (existingHabit) {
+      return res.status(409).json({
+        message: 'Habit already exists',
+      });
+    }
     const habit = new Habit({
       user_id: req.user.id,
       title: req.body.title,

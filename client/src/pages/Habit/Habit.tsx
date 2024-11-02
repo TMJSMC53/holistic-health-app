@@ -1,9 +1,60 @@
-import { Habits } from './Habits';
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
 import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, parseISO } from 'date-fns';
 
-function countCurrentStreak(dates: string[]): number {
+import { HabitData, HabitProps } from '../../habits';
+
+function calculateMaxStreak(dates: string[]): number {
+  if (!dates || !dates.length) return 0;
+
+  const uniqueDates = [
+    ...new Set(dates.map((date) => new Date(date).toISOString().split('T')[0])),
+  ]
+    .sort()
+    .reverse();
+
+  if (uniqueDates.length === 1) {
+    const date = new Date(uniqueDates[0]);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    date.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    yesterday.setHours(0, 0, 0, 0);
+
+    [date, today, yesterday].forEach((d) => d.setHours(0, 0, 0, 0));
+
+    return date.getTime() === today.getTime() ||
+      date.getTime() === yesterday.getTime()
+      ? 1
+      : 0;
+  }
+
+  let streak = 1;
+  let maxStreak = 1;
+
+  // Use unique dates for streak calculation
+  for (let i = 0; i < uniqueDates.length - 1; i++) {
+    const currentDate = new Date(uniqueDates[i]);
+    const nextDate = new Date(uniqueDates[i + 1]);
+
+    const diffDays =
+      (currentDate.getTime() - nextDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffDays === 1) {
+      streak++;
+      maxStreak = Math.max(maxStreak, streak);
+    } else {
+      streak = 1;
+    }
+  }
+
+  return maxStreak;
+}
+
+function calculateCurrentStreak(dates: string[]): number {
   if (!dates || !dates.length) return 0;
 
   const uniqueDates = [
@@ -47,35 +98,62 @@ function countCurrentStreak(dates: string[]): number {
   return streak;
 }
 
-const HabitItem = ({ habit }: { habit: Habits }) => {
-  const [habitData, setHabitData] = useState(habit);
-  const [currentStreak, setCurrentStreak] = useState(() =>
-    countCurrentStreak(habit.enactments || [])
-  );
+const Habit = ({ habits }: HabitProps) => {
+  const { habitTitle } = useParams();
+  const [habit, setHabit] = useState<HabitData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [maxStreak, setMaxStreak] = useState(() =>
+    calculateMaxStreak(habit?.enactments || [])
+  );
+  const [currentStreak, setCurrentStreak] = useState(() =>
+    calculateMaxStreak(habit?.enactments || [])
+  );
+  const [habitData, setHabitData] = useState<HabitData | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [counter, setCounter] = useState(1);
   const [showPlusOne, setShowPlusOne] = useState(false);
 
   useEffect(() => {
-    const hasEnactmentToday = habitData.enactments?.some((enactment) => {
-      const enactmentDate = new Date(enactment);
-      return enactmentDate.toDateString() === new Date().toDateString();
-    });
-    setShowPlusOne(hasEnactmentToday);
-  }, [habitData.enactments]);
+    // Recalculate maxStreak when `habit.enactments` changes
+    setMaxStreak(calculateMaxStreak(habit?.enactments || []));
+    setCurrentStreak(calculateCurrentStreak(habit?.enactments || []));
+  }, [habit?.enactments]);
+  // Find the matching habit when habits or habitTitle changes
+  useEffect(() => {
+    if (habitTitle) {
+      const foundHabit = habits.find((h) => h.title === habitTitle);
+      if (foundHabit) {
+        setHabit(foundHabit);
+        setHabitData(foundHabit);
+        setCurrentStreak(calculateMaxStreak(foundHabit.enactments));
+        setLoading(false);
+      } else {
+        setError('Habit not found');
+        setLoading(false);
+      }
+    }
+  }, [habitTitle, habits]);
 
   useEffect(() => {
-    const plusOneEnactment = habitData.enactments?.filter((enactment) => {
-      const enactmentDate = new Date(enactment);
-      return enactmentDate.toDateString() === new Date().toDateString();
-    });
-    setCounter(plusOneEnactment.length);
-  }, []);
+    if (habitData) {
+      const hasEnactmentToday = habitData.enactments.some((enactment) => {
+        const enactmentDate = new Date(enactment);
+        return enactmentDate.toDateString() === new Date().toDateString();
+      });
+      setShowPlusOne(hasEnactmentToday);
+
+      const plusOneEnactment = habitData.enactments.filter((enactment) => {
+        const enactmentDate = new Date(enactment);
+        return enactmentDate.toDateString() === new Date().toDateString();
+      });
+      setCounter(plusOneEnactment.length);
+    }
+  }, [habitData]);
 
   // Get the latest enactment timestamp
   const getLatestEnactment = () => {
-    if (!habitData.enactments?.length) return new Date();
+    if (!habitData?.enactments?.length) return new Date();
     return parseISO(
       [...habitData.enactments].sort(
         (a, b) => parseISO(b).getTime() - parseISO(a).getTime()
@@ -94,7 +172,7 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
     setIsRecording(true);
 
     try {
-      const response = await fetch(`/api/habits/${habit._id}/enactments`, {
+      const response = await fetch(`/api/habits/${habit?._id}/enactments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -111,7 +189,7 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
 
       // Update with the complete habit data from the response
       setHabitData(data);
-      setCurrentStreak(countCurrentStreak(data.enactments));
+      setCurrentStreak(calculateMaxStreak(data.enactments));
       setCounter(counter + 1);
       setShowPlusOne(true);
     } catch (error) {
@@ -129,7 +207,7 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
 
     try {
       const response = await fetch(
-        `/api/habits/${habit._id}/enactments/plusOne`,
+        `/api/habits/${habit?._id}/enactments/plusOne`,
         {
           method: 'POST',
           headers: {
@@ -153,14 +231,21 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
     }
   }
 
-  return (
-    <div className="border-2 border-primary-700 habits-list m-4 p-4">
-      <div>
-        <div className="flex justify-between">
-          {habit.title}
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  // if (!habit) return <div>Habit not found</div>;
 
+  return (
+    <div className="min-h-full text-14 text-primary-600 font-poppins flex flex-col items-center justify-center overflow-x-hidden m-4">
+      <div className="w-full md:max-w-md flex flex-col justify-center border-2 border-primary-700 habits-list p-4">
+        <div className="flex justify-between item-center font-poppins">
+          <div className="text-16 flex items-center">{habit?.title} habit</div>
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn ml-4">
+            <div
+              tabIndex={0}
+              role="button"
+              className="text-primary-600 btn bg-accents-100 hover:bg-accents-300 transition-all duration-300 ml-4"
+            >
               + Add QuickLink
             </div>
             <ul
@@ -177,7 +262,10 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
           </div>
         </div>
         <div>
-          <p>Current streak: {currentStreak}</p>
+          <div className="w-48 border-2 border-primary-700 habits-list my-4 p-4">
+            <p>Current streak: {currentStreak}</p>
+            <p>Max Streak: {maxStreak}</p>
+          </div>
           <p className="text-12 text-primary-400 italic mt-2">
             Last recorded: {lastSeen}
           </p>
@@ -187,7 +275,7 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
               onClick={handleEnactmentsCreation}
               disabled={isRecording}
             >
-              {isRecording ? 'Recording...' : `Record ${habit.title}`}
+              {isRecording ? 'Recording...' : `Record ${habit?.title}`}
             </button>
             {showPlusOne && (
               <button
@@ -200,17 +288,9 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
           </div>
         </div>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        <div className="flex justify-end">
-          <Link
-            to={`/habit/${habit.title}`}
-            className="underline hover:underline-offset-4 hover:border-primary-600 hover:text-primary-700 hover:font-bold transition duration-300"
-          >
-            View History
-          </Link>
-        </div>
       </div>
     </div>
   );
 };
 
-export default HabitItem;
+export default Habit;
