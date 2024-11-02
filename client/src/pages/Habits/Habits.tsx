@@ -13,7 +13,7 @@ const Habits = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  // const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     getHabits();
@@ -72,9 +72,9 @@ const Habits = () => {
         },
         body: JSON.stringify({ title: habit }),
       });
-
+      const data = await response.json();
       if (!response.ok) {
-        // setError(data.message);
+        setError(data.message);
         return;
       }
       const newHabit: Habits = await response.json();
@@ -101,7 +101,7 @@ const Habits = () => {
         >
           {isLoading ? 'Adding...' : '+ Add Habit'}
         </button>
-        {/*error && <p className="text-red-500 text-sm mt-2">{error}</p>*/}
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         {isOpen && (
           <ul
             tabIndex={0}

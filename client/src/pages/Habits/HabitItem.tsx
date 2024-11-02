@@ -202,7 +202,7 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         <div className="flex justify-end">
           <Link
-            to={`/habit/${habit.title}`}
+            to={`/habit/${habit?.title}`}
             className="underline hover:underline-offset-4 hover:border-primary-600 hover:text-primary-700 hover:font-bold transition duration-300"
           >
             View History

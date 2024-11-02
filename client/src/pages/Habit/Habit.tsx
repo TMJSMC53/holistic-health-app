@@ -119,19 +119,24 @@ const Habit = ({ habits }: HabitProps) => {
     setMaxStreak(calculateMaxStreak(habit?.enactments || []));
     setCurrentStreak(calculateCurrentStreak(habit?.enactments || []));
   }, [habit?.enactments]);
+
   // Find the matching habit when habits or habitTitle changes
   useEffect(() => {
-    if (habitTitle) {
+    if (habits.length > 0 && habitTitle) {
       const foundHabit = habits.find((h) => h.title === habitTitle);
       if (foundHabit) {
         setHabit(foundHabit);
         setHabitData(foundHabit);
         setCurrentStreak(calculateMaxStreak(foundHabit.enactments));
+        setMaxStreak(calculateMaxStreak(foundHabit.enactments));
         setLoading(false);
+        setError(null);
       } else {
         setError('Habit not found');
         setLoading(false);
       }
+    } else if (!habits.length) {
+      setLoading(true);
     }
   }, [habitTitle, habits]);
 
@@ -179,17 +184,24 @@ const Habit = ({ habits }: HabitProps) => {
 
       const data = await response.json();
 
+      // if (!response.ok) {
+      //   setError(data.message);
+      //   if (data.habit) {
+      //     setHabitData(data.habit);
+      //   }
+      //   return;
+      // }
+
       if (!response.ok) {
-        setError(data.message);
-        if (data.habit) {
-          setHabitData(data.habit);
-        }
-        return;
+        // Set error message from backend but keep card visible by avoiding state reset
+        setError(data.message || 'Failed to record habit');
+        return; // Exit to avoid setting other states
       }
 
       // Update with the complete habit data from the response
       setHabitData(data);
-      setCurrentStreak(calculateMaxStreak(data.enactments));
+      setCurrentStreak(calculateCurrentStreak(data.enactments));
+      setMaxStreak(calculateMaxStreak(data.enactments));
       setCounter(counter + 1);
       setShowPlusOne(true);
     } catch (error) {
@@ -232,7 +244,7 @@ const Habit = ({ habits }: HabitProps) => {
   }
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
   // if (!habit) return <div>Habit not found</div>;
 
   return (
@@ -286,8 +298,8 @@ const Habit = ({ habits }: HabitProps) => {
               </button>
             )}
           </div>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       </div>
     </div>
   );
