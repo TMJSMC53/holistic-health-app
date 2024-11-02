@@ -16,5 +16,5 @@ const HabitSchema = new mongoose.Schema({
     },
   ],
 });
-console.log(HabitSchema);
+
 export default mongoose.model('Habit', HabitSchema);

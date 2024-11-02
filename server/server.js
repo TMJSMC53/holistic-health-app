@@ -26,7 +26,6 @@ if (process.env.NODE_ENV !== 'development') {
 app.use((req, res, next) =>
   connect()
     .then(() => {
-      console.log('Connected to MongoDB');
       return next();
     })
     .catch(next)

@@ -19,5 +19,5 @@ const QuickLinkSchema = new mongoose.Schema({
     required: true,
   },
 });
-console.log(QuickLinkSchema);
+
 export default mongoose.model('QuickLink', QuickLinkSchema);

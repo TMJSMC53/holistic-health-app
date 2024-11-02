@@ -12,7 +12,6 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
-    console.log('sidebar is toggled', toggleSidebar);
     if (isOpen) {
       setIsOpen(false);
     } else {
