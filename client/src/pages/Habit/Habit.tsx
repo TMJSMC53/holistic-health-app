@@ -242,7 +242,7 @@ const Habit = ({ habits }: HabitProps) => {
       <div className="w-full md:max-w-md flex flex-col justify-center border-2 border-primary-700 habits-list p-4">
         <div className="flex justify-between item-center font-poppins">
           <div className="text-16 flex items-center">{habit?.title} habit</div>
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <div
               tabIndex={0}
               role="button"
@@ -261,7 +261,7 @@ const Habit = ({ habits }: HabitProps) => {
                 <a>Item 2</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         <div>
           <div className="w-48 border-2 border-primary-700 habits-list my-4 p-4">

@@ -164,7 +164,7 @@ const HabitItem = ({
         <div className="flex justify-between">
           {habit.title}
 
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <div tabIndex={0} role="button" className="btn ml-4">
               + Add QuickLink
             </div>
@@ -179,7 +179,7 @@ const HabitItem = ({
                 <a>Item 2</a>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         <div>
           <p>Current streak: {currentStreak}</p>
