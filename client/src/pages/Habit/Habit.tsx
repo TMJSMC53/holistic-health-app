@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 
 import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, parseISO } from 'date-fns';
-
 import { HabitData, HabitProps } from '../../habits';
 
 function calculateMaxStreak(dates: string[]): number {
@@ -109,7 +108,7 @@ const Habit = ({ habits }: HabitProps) => {
   const [currentStreak, setCurrentStreak] = useState(() =>
     calculateMaxStreak(habit?.enactments || [])
   );
-  const [habitData, setHabitData] = useState<HabitData | null>(null);
+  // const [habitData, setHabitData] = useState<HabitData | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [counter, setCounter] = useState(1);
   const [showPlusOne, setShowPlusOne] = useState(false);
@@ -124,9 +123,9 @@ const Habit = ({ habits }: HabitProps) => {
   useEffect(() => {
     if (habits.length > 0 && habitTitle) {
       const foundHabit = habits.find((h) => h.title === habitTitle);
+
       if (foundHabit) {
         setHabit(foundHabit);
-        setHabitData(foundHabit);
         setCurrentStreak(calculateMaxStreak(foundHabit.enactments));
         setMaxStreak(calculateMaxStreak(foundHabit.enactments));
         setLoading(false);
@@ -141,26 +140,27 @@ const Habit = ({ habits }: HabitProps) => {
   }, [habitTitle, habits]);
 
   useEffect(() => {
-    if (habitData) {
-      const hasEnactmentToday = habitData.enactments.some((enactment) => {
+    if (habit) {
+      const hasEnactmentToday = habit.enactments.some((enactment) => {
         const enactmentDate = new Date(enactment);
         return enactmentDate.toDateString() === new Date().toDateString();
       });
+
       setShowPlusOne(hasEnactmentToday);
 
-      const plusOneEnactment = habitData.enactments.filter((enactment) => {
+      const plusOneEnactment = habit.enactments.filter((enactment) => {
         const enactmentDate = new Date(enactment);
         return enactmentDate.toDateString() === new Date().toDateString();
       });
       setCounter(plusOneEnactment.length);
     }
-  }, [habitData]);
+  }, [habit]);
 
   // Get the latest enactment timestamp
   const getLatestEnactment = () => {
-    if (!habitData?.enactments?.length) return new Date();
+    if (!habit?.enactments?.length) return new Date();
     return parseISO(
-      [...habitData.enactments].sort(
+      [...habit.enactments].sort(
         (a, b) => parseISO(b).getTime() - parseISO(a).getTime()
       )[0]
     );
@@ -184,14 +184,6 @@ const Habit = ({ habits }: HabitProps) => {
 
       const data = await response.json();
 
-      // if (!response.ok) {
-      //   setError(data.message);
-      //   if (data.habit) {
-      //     setHabitData(data.habit);
-      //   }
-      //   return;
-      // }
-
       if (!response.ok) {
         // Set error message from backend but keep card visible by avoiding state reset
         setError(data.message || 'Failed to record habit');
@@ -199,7 +191,7 @@ const Habit = ({ habits }: HabitProps) => {
       }
 
       // Update with the complete habit data from the response
-      setHabitData(data);
+      setHabit(data);
       setCurrentStreak(calculateCurrentStreak(data.enactments));
       setMaxStreak(calculateMaxStreak(data.enactments));
       setCounter(counter + 1);
@@ -233,7 +225,7 @@ const Habit = ({ habits }: HabitProps) => {
         setError(data.message);
         return;
       }
-      setHabitData(data);
+      setHabit(data);
       setCounter(counter + 1);
     } catch (error) {
       setError('Failed to record additional habit');
@@ -244,8 +236,6 @@ const Habit = ({ habits }: HabitProps) => {
   }
 
   if (loading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error}</div>;
-  // if (!habit) return <div>Habit not found</div>;
 
   return (
     <div className="min-h-full text-14 text-primary-600 font-poppins flex flex-col items-center justify-center overflow-x-hidden m-4">

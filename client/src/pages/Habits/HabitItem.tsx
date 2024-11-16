@@ -47,8 +47,13 @@ function countCurrentStreak(dates: string[]): number {
   return streak;
 }
 
-const HabitItem = ({ habit }: { habit: Habits }) => {
-  const [habitData, setHabitData] = useState(habit);
+const HabitItem = ({
+  habit,
+  setHabit,
+}: {
+  habit: Habits;
+  setHabit: (habit: Habits) => void;
+}) => {
   const [currentStreak, setCurrentStreak] = useState(() =>
     countCurrentStreak(habit.enactments || [])
   );
@@ -58,15 +63,15 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
   const [showPlusOne, setShowPlusOne] = useState(false);
 
   useEffect(() => {
-    const hasEnactmentToday = habitData.enactments?.some((enactment) => {
+    const hasEnactmentToday = habit.enactments?.some((enactment) => {
       const enactmentDate = new Date(enactment);
       return enactmentDate.toDateString() === new Date().toDateString();
     });
     setShowPlusOne(hasEnactmentToday);
-  }, [habitData.enactments]);
+  }, [habit.enactments]);
 
   useEffect(() => {
-    const plusOneEnactment = habitData.enactments?.filter((enactment) => {
+    const plusOneEnactment = habit.enactments?.filter((enactment) => {
       const enactmentDate = new Date(enactment);
       return enactmentDate.toDateString() === new Date().toDateString();
     });
@@ -75,9 +80,9 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
 
   // Get the latest enactment timestamp
   const getLatestEnactment = () => {
-    if (!habitData.enactments?.length) return new Date();
+    if (!habit.enactments?.length) return new Date();
     return parseISO(
-      [...habitData.enactments].sort(
+      [...habit.enactments].sort(
         (a, b) => parseISO(b).getTime() - parseISO(a).getTime()
       )[0]
     );
@@ -104,13 +109,13 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
       if (!response.ok) {
         setError(data.message);
         if (data.habit) {
-          setHabitData(data.habit);
+          setHabit(data.habit);
         }
         return;
       }
 
       // Update with the complete habit data from the response
-      setHabitData(data);
+      setHabit(data);
       setCurrentStreak(countCurrentStreak(data.enactments));
       setCounter(counter + 1);
       setShowPlusOne(true);
@@ -143,7 +148,7 @@ const HabitItem = ({ habit }: { habit: Habits }) => {
         setError(data.message);
         return;
       }
-      setHabitData(data);
+      setHabit(data);
       setCounter(counter + 1);
     } catch (error) {
       setError('Failed to record additional habit');

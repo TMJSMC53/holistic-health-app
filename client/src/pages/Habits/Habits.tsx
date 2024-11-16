@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import HabitItem from './HabitItem';
+import { HabitProps } from '../../habits';
 
 export interface Habits {
   _id: string;
@@ -7,8 +8,8 @@ export interface Habits {
   enactments: string[];
 }
 
-const Habits = () => {
-  const [habits, setHabits] = useState<Habits[]>([]);
+const Habits = ({ habits, setHabits }: HabitProps) => {
+  // const [habits, setHabits] = useState<Habits[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -63,7 +64,7 @@ const Habits = () => {
 
   const handleHabitClick = async (habit: string) => {
     setIsLoading(true);
-    // setError(null);
+    setError(null);
     try {
       const response = await fetch('/api/habits', {
         method: 'POST',
@@ -72,13 +73,12 @@ const Habits = () => {
         },
         body: JSON.stringify({ title: habit }),
       });
-      const data = await response.json();
+      const newHabitData = await response.json();
       if (!response.ok) {
-        setError(data.message);
+        setError(newHabitData.message);
         return;
       }
-      const newHabit: Habits = await response.json();
-      setHabits((prevHabits) => [...prevHabits, newHabit]);
+      setHabits((prevHabits) => [...prevHabits, newHabitData]);
       setIsOpen(false);
     } catch (err) {
       console.error('Error occurred', err);
@@ -86,6 +86,18 @@ const Habits = () => {
       setIsLoading(false);
     }
   };
+
+  function setHabit(latestHabit: Habits) {
+    setHabits(
+      habits.map((habit) => {
+        if (habit._id === latestHabit._id) {
+          return latestHabit;
+        } else {
+          return habit;
+        }
+      })
+    );
+  }
 
   if (isInitialLoading) {
     return <div>Loading habits...</div>;
@@ -128,7 +140,7 @@ const Habits = () => {
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 habits-list">
         {habits.map((habit) => (
-          <HabitItem key={habit._id} habit={habit} />
+          <HabitItem key={habit._id} habit={habit} setHabit={setHabit} />
         ))}
       </div>
     </div>

@@ -16,16 +16,6 @@ import Habits from '../pages/Habits/Habits';
 import Habit from '../pages/Habit/Habit';
 import { UserState } from '../main.d';
 import { HabitData } from '../habits';
-// interface HabitData {
-//   _id: string;
-//   title: string;
-//   enactments: string[];
-// }
-
-// interface HabitProps {
-//   habits: HabitData[];
-//   setHabits: React.Dispatch<React.SetStateAction<HabitData[]>>;
-// }
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserState>(undefined);
@@ -103,7 +93,10 @@ const AppRoutes = () => {
         <Route path="/docs" element={<Docs />} />
         <Route path="/fluids" element={<Fluids />} />
         <Route path="/quickLinks" element={<QuickLinks />} />
-        <Route path="/habits" element={<Habits />} />
+        <Route
+          path="/habits"
+          element={<Habits habits={habits} setHabits={setHabits} />}
+        />
         <Route
           path="/habit/:habitTitle"
           element={<Habit habits={habits} setHabits={setHabits} />}
