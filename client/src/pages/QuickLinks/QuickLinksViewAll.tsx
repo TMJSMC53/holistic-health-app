@@ -22,7 +22,7 @@ const QuickLinksViewAll = () => {
         });
 
         const data = await response.json();
-        console.log('Fetched Links:', data);
+
         setLinks(data);
         setFavorites(
           data.filter((favorite: QuickLinks) => favorite.isFavorite)

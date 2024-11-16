@@ -12,10 +12,14 @@ import Notes from '../pages/Notes/Notes';
 import Docs from '../pages/Docs/Docs';
 import Fluids from '../pages/Fluids/Fluids';
 import QuickLinks from '../pages/QuickLinks/QuickLinks';
+import Habits from '../pages/Habits/Habits';
+import Habit from '../pages/Habit/Habit';
 import { UserState } from '../main.d';
+import { HabitData } from '../habits';
 
 const AppRoutes = () => {
   const [user, setUser] = useState<UserState>(undefined);
+  const [habits, setHabits] = useState<HabitData[]>([]);
 
   const isLoggedIn = user !== null;
 
@@ -43,6 +47,33 @@ const AppRoutes = () => {
     getList();
   }, []);
 
+  // Fetch all habits when user is logged in
+  useEffect(() => {
+    const fetchHabits = async () => {
+      if (!isLoggedIn) return;
+
+      try {
+        const response = await fetch('/api/habits', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch habits');
+        }
+
+        const data = await response.json();
+        setHabits(data);
+      } catch (error) {
+        console.error('Error fetching habits:', error);
+      }
+    };
+
+    fetchHabits();
+  }, [isLoggedIn]);
+
   if (user === undefined) {
     return null;
   }
@@ -62,6 +93,14 @@ const AppRoutes = () => {
         <Route path="/docs" element={<Docs />} />
         <Route path="/fluids" element={<Fluids />} />
         <Route path="/quickLinks" element={<QuickLinks />} />
+        <Route
+          path="/habits"
+          element={<Habits habits={habits} setHabits={setHabits} />}
+        />
+        <Route
+          path="/habit/:habitTitle"
+          element={<Habit habits={habits} setHabits={setHabits} />}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -9,11 +9,10 @@ export const createNote = async (req, res) => {
     color: req.body.color,
     user_id: req.user.id,
   });
-  console.log(newNote);
 
   try {
     await newNote.save();
-    console.log(newNote);
+
     res.status(201).json(newNote);
   } catch (err) {
     return res.status(500).send(err);

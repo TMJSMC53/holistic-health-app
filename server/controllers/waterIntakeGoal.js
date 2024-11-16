@@ -8,7 +8,6 @@ export const createWaterIntakeGoal = async (req, res) => {
   });
   try {
     await newItem.save();
-    console.log(newItem);
     res.json(newItem);
   } catch (err) {
     if (err) return res.status(500).send(err);
@@ -27,8 +26,6 @@ export const getWaterIntakeGoal = async (req, res) => {
     });
 
     res.status(200).send(allWaterIntakeGoals);
-
-    console.log(allWaterIntakeGoals);
   } catch (err) {
     res.status(500).send(err);
   }

@@ -9,11 +9,10 @@ export const createQuickLink = async (req, res) => {
     isFavorite: req.body.isFavorite,
     user_id: req.user.id,
   });
-  console.log(newQuickLink);
 
   try {
     await newQuickLink.save();
-    console.log(newQuickLink);
+
     res.status(201).json(newQuickLink);
   } catch (err) {
     return res.status(500).send(err);

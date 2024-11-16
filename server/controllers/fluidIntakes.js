@@ -7,10 +7,10 @@ export const createFluidIntake = async (req, res) => {
     amount: req.body.amount,
     user_id: req.user.id,
   });
-  console.log(newItem);
+
   try {
     await newItem.save();
-    console.log(newItem);
+
     res.status(201).json(newItem);
   } catch (err) {
     if (err) return res.status(500).send(err);
@@ -26,8 +26,6 @@ export const getFluidIntake = async (req, res) => {
       date: 'desc',
     });
     res.status(200).json(getItems);
-
-    console.log(getItems);
   } catch (err) {
     if (err) return res.status(500).send(err);
   }

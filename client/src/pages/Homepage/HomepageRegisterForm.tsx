@@ -53,7 +53,6 @@ const HomepageRegisterForm = ({
             password: password,
           }),
         });
-        console.log(response);
         if (response.ok) {
           // Registration successful
           const registerResponse = await response.json();

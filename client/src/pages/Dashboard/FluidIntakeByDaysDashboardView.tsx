@@ -98,7 +98,6 @@ const FluidIntakeByDays: React.FC = () => {
         waterGoalAmountDate = historicalWaterGoal.amount;
       }
     }
-    console.log(waterGoalAmountDate);
     groupedAndSummed.push({
       date,
       totalAmount,

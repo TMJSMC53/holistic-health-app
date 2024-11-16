@@ -8,7 +8,6 @@ type HomepageLoginFormProps = {
 };
 
 const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
-  console.log('All Props:', setUser, switchForm);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -44,7 +43,6 @@ const HomepageLoginForm = ({ setUser, switchForm }: HomepageLoginFormProps) => {
             password: password,
           }),
         });
-        console.log(response);
         if (response.ok) {
           // Login successful
 
