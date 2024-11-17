@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
 import HabitItem from './HabitItem';
 import { HabitProps } from '../../habits';
 
@@ -9,12 +9,14 @@ export interface Habits {
 }
 
 const Habits = ({ habits, setHabits }: HabitProps) => {
-  // const [habits, setHabits] = useState<Habits[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [title, setTitle] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     getHabits();
@@ -87,6 +89,17 @@ const Habits = ({ habits, setHabits }: HabitProps) => {
     }
   };
 
+  // Custom Habit Creation
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    handleHabitClick(title);
+    setIsModalOpen(false);
+  }
+  // Custom Habit Title
+  function handleTitle(event: ChangeEvent<HTMLInputElement>) {
+    setTitle(event.target.value);
+  }
+
   function setHabit(latestHabit: Habits) {
     setHabits(
       habits.map((habit) => {
@@ -105,6 +118,28 @@ const Habits = ({ habits, setHabits }: HabitProps) => {
 
   return (
     <div className="text-primary-600 font-poppins">
+      <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
+        <div className="modal-box h-90 md:w-96 overflow-y-hidden px-4 bg-accents-500">
+          <form onSubmit={handleSubmit}>
+            <div className="flex gap-2 mt-4">
+              <p className="text-12 md:text-14 text-primary-600 font-poppins font-bold">
+                Title:
+              </p>
+              <input
+                value={title}
+                onChange={handleTitle}
+                className="text-12 md:text-16 text-primary-600 font-poppins border w-full"
+                type="string"
+              />
+            </div>
+          </form>
+        </div>
+        <div className="modal-backdrop">
+          <button type="button" onClick={() => setIsModalOpen(false)}>
+            Close
+          </button>
+        </div>
+      </div>
       <div className="dropdown" ref={dropdownRef}>
         <button
           className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
@@ -134,6 +169,9 @@ const Habits = ({ habits, setHabits }: HabitProps) => {
             </li>
             <li>
               <button onClick={() => handleHabitClick('Sleep')}>Sleep</button>
+            </li>
+            <li>
+              <button onClick={() => setIsModalOpen(true)}>Custom</button>
             </li>
           </ul>
         )}
