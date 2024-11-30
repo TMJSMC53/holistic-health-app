@@ -1,8 +1,14 @@
 import { useParams } from 'react-router-dom';
-
+import { UserState } from '../../main.d';
 import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, parseISO } from 'date-fns';
-import { HabitData, HabitProps } from '../../habits';
+import { HabitData } from '../../habits';
+import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+
+export type HabitProps = {
+  habits: HabitData[];
+  user: UserState;
+};
 
 function calculateMaxStreak(dates: string[]): number {
   if (!dates || !dates.length) return 0;
@@ -97,7 +103,9 @@ function calculateCurrentStreak(dates: string[]): number {
   return streak;
 }
 
-const Habit = ({ habits }: HabitProps) => {
+const Habit = ({ habits, user }: HabitProps) => {
+  sendAuthenticatedUserToLoginPage(user);
+
   const { habitTitle } = useParams();
   const [habit, setHabit] = useState<HabitData | null>(null);
   const [loading, setLoading] = useState(true);

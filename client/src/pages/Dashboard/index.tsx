@@ -1,8 +1,6 @@
 import FluidIntakeForm from '../Fluids/FluidIntakeForm';
 import CustomizableWaterIntakeGoalForm from '../Fluids/CustomizableWaterIntakeGoalForm';
 import CurrentUsername from './CurrentUsername';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { UserState } from '../../main.d';
 import DailyMotivationalQuote from './DailyMotivationalQuote';
 import QuickLinksCreateForm from '../QuickLinks/QuickLinksCreateForm';
@@ -11,20 +9,14 @@ import NotesDashboard from './NotesDashboard';
 import FluidIntakeDashboard from './FluidIntakeDashboard';
 
 import QuickLinks from './QuickLinksDashboardView';
+import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
 
 type DashboardProps = {
   user: UserState;
 };
 
 const Dashboard = ({ user }: DashboardProps) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user === null) {
-      // User is not logged in, redirect to login page
-      navigate('/');
-    }
-  }, [user, navigate]);
+  sendAuthenticatedUserToLoginPage(user);
 
   return (
     <div>

@@ -99,7 +99,7 @@ const AppRoutes = () => {
         />
         <Route
           path="/habit/:habitTitle"
-          element={<Habit habits={habits} setHabits={setHabits} />}
+          element={<Habit habits={habits} user={user} />}
         />
       </Routes>
       <Footer />

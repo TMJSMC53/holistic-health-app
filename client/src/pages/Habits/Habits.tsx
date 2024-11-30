@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
 import HabitItem from './HabitItem';
-import { HabitProps } from '../../habits';
+import { HabitData } from '../../habits';
 
-export interface Habits {
-  _id: string;
-  title: string;
-  enactments: string[];
-}
-
-const Habits = ({ habits, setHabits }: HabitProps) => {
+type HabitsProps = {
+  habits: HabitData[];
+  setHabits: React.Dispatch<React.SetStateAction<HabitData[]>>;
+};
+const Habits = ({ habits, setHabits }: HabitsProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -26,7 +24,7 @@ const Habits = ({ habits, setHabits }: HabitProps) => {
     try {
       const response = await fetch('/api/habits');
       if (response.ok) {
-        const fetchedHabits: Habits[] = await response.json();
+        const fetchedHabits: HabitData[] = await response.json();
         setHabits(fetchedHabits);
       } else {
         console.error('Failed to fetch habits');
@@ -100,7 +98,7 @@ const Habits = ({ habits, setHabits }: HabitProps) => {
     setTitle(event.target.value);
   }
 
-  function setHabit(latestHabit: Habits) {
+  function setHabit(latestHabit: HabitData) {
     setHabits(
       habits.map((habit) => {
         if (habit._id === latestHabit._id) {
