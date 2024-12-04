@@ -95,7 +95,7 @@ const AppRoutes = () => {
         <Route path="/quickLinks" element={<QuickLinks user={user} />} />
         <Route
           path="/habits"
-          element={<Habits habits={habits} setHabits={setHabits} />}
+          element={<Habits habits={habits} setHabits={setHabits} user={user} />}
         />
         <Route
           path="/habit/:habitTitle"

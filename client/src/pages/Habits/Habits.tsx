@@ -1,12 +1,18 @@
 import { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
 import HabitItem from './HabitItem';
 import { HabitData } from '../../habits';
-
+import { UserState } from '../../main.d';
+import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+// type DocsProps = {
+//   user: UserState;
+// };
 type HabitsProps = {
   habits: HabitData[];
   setHabits: React.Dispatch<React.SetStateAction<HabitData[]>>;
+  user: UserState;
 };
-const Habits = ({ habits, setHabits }: HabitsProps) => {
+const Habits = ({ habits, setHabits, user }: HabitsProps) => {
+  sendAuthenticatedUserToLoginPage(user);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
