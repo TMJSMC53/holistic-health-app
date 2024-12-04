@@ -6,7 +6,7 @@ export default function sendAuthenticatedUserToLoginPage(user: UserState) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user === null) {
+    if (!user) {
       // User is not logged in, redirect to login page
       navigate('/');
     }

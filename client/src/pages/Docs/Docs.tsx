@@ -1,4 +1,10 @@
-const Docs = () => {
+import { UserState } from '../../main.d';
+import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+type DocsProps = {
+  user: UserState;
+};
+const Docs = ({ user }: DocsProps) => {
+  sendAuthenticatedUserToLoginPage(user);
   return (
     <div className="my-10 ml-8 mr-8 md:mr-20 text-primary-600 font-poppins">
       <h2 className="text-26 md:text-36 text-primary-700 font-playfair">
