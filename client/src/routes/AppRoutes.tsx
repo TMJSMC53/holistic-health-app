@@ -90,9 +90,9 @@ const AppRoutes = () => {
         <Route path="/dashboard" element={<Dashboard user={user} />} />
         <Route path="/note" element={<Notes />} />
         <Route path="/about" element={<About />} />
-        <Route path="/docs" element={<Docs />} />
+        <Route path="/docs" element={<Docs user={user} />} />
         <Route path="/fluids" element={<Fluids />} />
-        <Route path="/quickLinks" element={<QuickLinks />} />
+        <Route path="/quickLinks" element={<QuickLinks user={user} />} />
         <Route
           path="/habits"
           element={<Habits habits={habits} setHabits={setHabits} />}

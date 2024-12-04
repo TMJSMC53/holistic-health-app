@@ -1,9 +1,15 @@
 import QuickLinksViewAll from './QuickLinksViewAll';
 
-const QuickLinks = () => {
+import { UserState } from '../../main.d';
+import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+type QuickLinksProps = {
+  user: UserState;
+};
+const QuickLinks = ({ user }: QuickLinksProps) => {
+  sendAuthenticatedUserToLoginPage(user);
   return (
     <>
-      <QuickLinksViewAll />
+      <QuickLinksViewAll user={user} />
     </>
   );
 };

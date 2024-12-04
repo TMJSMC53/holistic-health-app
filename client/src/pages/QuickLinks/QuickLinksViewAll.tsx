@@ -2,14 +2,20 @@ import { useState, useEffect } from 'react';
 import QuickLinksUpdateForm from '../QuickLinks/QuickLinksUpdateForm';
 import QuickLinksDeleteForm from './QuickLinksDeleteForm';
 import QuickLinksCreateForm from './QuickLinksCreateForm';
-
+import { UserState } from '../../main.d';
+import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+type QuickLinksProps = {
+  user: UserState;
+};
 export interface QuickLinks {
   _id: string;
   name: string;
   url: string;
   isFavorite: boolean;
 }
-const QuickLinksViewAll = () => {
+const QuickLinksViewAll = ({ user }: QuickLinksProps) => {
+  sendAuthenticatedUserToLoginPage(user);
+
   const [links, setLinks] = useState<QuickLinks[]>([]);
   const [favorites, setFavorites] = useState<QuickLinks[]>([]);
 
