@@ -92,8 +92,10 @@ export const createHabit = async (req, res) => {
 };
 
 export const getHabits = async (req, res) => {
+  if (!req.user || !req.user.id) return;
   try {
     const getHabitsList = await Habit.find({ user_id: req.user.id });
+
     res.status(200).json(getHabitsList);
   } catch (err) {
     handleError(res, err, 'Error fetching habits');
