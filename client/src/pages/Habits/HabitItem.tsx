@@ -1,8 +1,14 @@
-import { Habits } from './Habits';
+import Habits from './Habits';
+// import { HabitData } from '../../habits';
 import { Link } from 'react-router-dom';
 import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, parseISO } from 'date-fns';
 
+export interface Habits {
+  _id: string;
+  title: string;
+  enactments: string[];
+}
 function countCurrentStreak(dates: string[]): number {
   if (!dates || !dates.length) return 0;
 
