@@ -3,9 +3,7 @@ import HabitItem from './HabitItem';
 import { HabitData } from '../../habits';
 import { UserState } from '../../main.d';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
-// type DocsProps = {
-//   user: UserState;
-// };
+
 type HabitsProps = {
   habits: HabitData[];
   setHabits: React.Dispatch<React.SetStateAction<HabitData[]>>;
@@ -156,7 +154,7 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
         {isOpen && (
           <ul
             tabIndex={0}
-            className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow !visible !opacity-100"
           >
             <li>
               <button
