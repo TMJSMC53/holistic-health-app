@@ -14,7 +14,12 @@ const NotesCards = () => {
   const [notes, setNotes] = useState<Notes[]>([]);
   const [selectedNote, setSelectedNote] = useState<Notes | null>(null);
 
-  const JSONToFile = (obj: any, filename: string) => {
+  const JSONToFile = (
+    obj: {
+      notes: Notes[];
+    },
+    filename: string
+  ) => {
     const blob = new Blob([JSON.stringify(obj, null, 2)], {
       type: 'application/json',
     });

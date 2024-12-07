@@ -1,13 +1,14 @@
 {
   "name": "holistic-health-app",
   "private": true,
-  "version": "1.39.3",
+  "version": "1.39.4",
   "type": "module",
   "scripts": {
     "dev": "NODE_ENV=development nodemon --watch server server/server.js",
     "build": "tsc && vite build",
     "postinstall": "npm run build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest --coverage",
     "test:dev": "vitest --coverage --ui"
