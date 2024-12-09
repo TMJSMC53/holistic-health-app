@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Fluid } from './FluidIntakeLog';
 import { WaterGoal } from './CustomizableWaterIntakeGoalForm';
 import Confetti from 'react-confetti';
@@ -67,44 +67,51 @@ const FluidIntakeByDays: React.FC = () => {
 
   const waterList = fluidList.filter((item) => item.fluidType === 'Water');
 
-  const acc: Record<string, { totalAmount: number; group: Fluid[] }> = {};
+  const acc = useMemo(() => {
+    const initialAcc: Record<string, { totalAmount: number; group: Fluid[] }> =
+      {};
 
-  for (let i = 0; i < waterList.length; i++) {
-    const item = waterList[i];
+    for (let i = 0; i < waterList.length; i++) {
+      const item = waterList[i];
 
-    const days = new Date(item.date);
-    const formattedDate = days.toLocaleDateString();
+      const days = new Date(item.date);
+      const formattedDate = days.toLocaleDateString();
 
-    if (!acc[formattedDate]) {
-      acc[formattedDate] = { totalAmount: 0, group: [] };
-    }
-
-    acc[formattedDate].totalAmount += item.amount;
-    acc[formattedDate].group.push(item);
-  }
-
-  const groupedAndSummed: Array<GroupSum> = [];
-
-  for (const date in acc) {
-    const { totalAmount, group } = acc[date];
-
-    let waterGoalAmountDate = 4000;
-
-    for (let historicalWaterGoal of historicalWaterGoals) {
-      if (
-        new Date(historicalWaterGoal.date).toISOString().split('T')[0] <=
-        new Date(date).toISOString().split('T')[0]
-      ) {
-        waterGoalAmountDate = historicalWaterGoal.amount;
+      if (!initialAcc[formattedDate]) {
+        initialAcc[formattedDate] = { totalAmount: 0, group: [] };
       }
+
+      initialAcc[formattedDate].totalAmount += item.amount;
+      initialAcc[formattedDate].group.push(item);
     }
-    groupedAndSummed.push({
-      date,
-      totalAmount,
-      group,
-      waterGoalAmountDate,
-    });
-  }
+    return initialAcc;
+  }, [waterList]);
+
+  const groupedAndSummed = useMemo(() => {
+    const result: Array<GroupSum> = [];
+
+    for (const date in acc) {
+      const { totalAmount, group } = acc[date];
+
+      let waterGoalAmountDate = 4000;
+
+      for (const historicalWaterGoal of historicalWaterGoals) {
+        if (
+          new Date(historicalWaterGoal.date).toISOString().split('T')[0] <=
+          new Date(date).toISOString().split('T')[0]
+        ) {
+          waterGoalAmountDate = historicalWaterGoal.amount;
+        }
+      }
+      result.push({
+        date,
+        totalAmount,
+        group,
+        waterGoalAmountDate,
+      });
+    }
+    return result;
+  }, [acc, historicalWaterGoals]);
 
   useEffect(() => {
     const dateToday = new Date().toLocaleDateString();

@@ -82,7 +82,7 @@ const HabitItem = ({
       return enactmentDate.toDateString() === new Date().toDateString();
     });
     setCounter(plusOneEnactment.length);
-  }, []);
+  }, [habit.enactments]);
 
   // Get the latest enactment timestamp
   const getLatestEnactment = () => {

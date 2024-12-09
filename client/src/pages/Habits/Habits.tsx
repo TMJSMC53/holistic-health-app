@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
 import HabitItem from './HabitItem';
 import { HabitData } from '../../habits';
 import { UserState } from '../../main.d';
@@ -20,11 +27,7 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
   const [title, setTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    getHabits();
-  }, []);
-
-  const getHabits = async () => {
+  const getHabits = useCallback(async () => {
     try {
       const response = await fetch('/api/habits');
       if (response.ok) {
@@ -38,7 +41,11 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     } finally {
       setIsInitialLoading(false);
     }
-  };
+  }, [setHabits, setIsInitialLoading]);
+
+  useEffect(() => {
+    getHabits();
+  }, [getHabits]);
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
