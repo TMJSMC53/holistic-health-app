@@ -1,9 +1,9 @@
-import Habits from './Habits';
+// import Habits from './Habits';
 // import { HabitData } from '../../habits';
 import { Link } from 'react-router-dom';
 import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, parseISO } from 'date-fns';
-
+import HabitDeleteForm from '../Habit/HabitDeleteForm';
 export interface Habits {
   _id: string;
   title: string;
@@ -169,7 +169,7 @@ const HabitItem = ({
       <div>
         <div className="flex justify-between">
           {habit.title}
-
+          <HabitDeleteForm habit={habit} />
           {/* <div className="dropdown">
             <div tabIndex={0} role="button" className="btn ml-4">
               + Add QuickLink

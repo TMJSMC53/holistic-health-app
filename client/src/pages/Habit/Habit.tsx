@@ -4,6 +4,7 @@ import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, parseISO } from 'date-fns';
 import { HabitData } from '../../habits';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+import HabitDeleteForm from './HabitDeleteForm';
 
 export type HabitProps = {
   habits: HabitData[];
@@ -250,6 +251,7 @@ const Habit = ({ habits, user }: HabitProps) => {
       <div className="w-full md:max-w-md flex flex-col justify-center border-2 border-primary-700 habits-list p-4">
         <div className="flex justify-between item-center font-poppins">
           <div className="text-16 flex items-center">{habit?.title} habit</div>
+          {habit && <HabitDeleteForm habit={habit} />}
           {/* <div className="dropdown">
             <div
               tabIndex={0}

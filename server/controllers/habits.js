@@ -101,3 +101,18 @@ export const getHabits = async (req, res) => {
     handleError(res, err, 'Error fetching habits');
   }
 };
+
+// Delete a Habit
+export const deleteHabit = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleteHabit = await Habit.findByIdAndDelete(id);
+
+    if (!deleteHabit) {
+      return res.status(404).send(`Entry with id: ${id} not found`);
+    }
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
