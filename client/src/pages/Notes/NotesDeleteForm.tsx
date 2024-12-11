@@ -36,7 +36,7 @@ const NotesDeleteForm = ({ note }: { note: Notes }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-4 h-4 md:w-6 md:h-6"
+            className="w-4 h-4 md:w-6 md:h-6 ml-4"
           >
             <path
               strokeLinecap="round"

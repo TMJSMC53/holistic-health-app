@@ -100,52 +100,55 @@ const NotesUpdateForm = ({
         <div className={`modal open`} role="dialog">
           <div className="modal-box">
             <div className="flex justify-between items-center">
-              <div className="flex  items-center gap-2">
+              <div className="flex items-center gap-2 flex-grow">
                 <h3 className="text-14 md:text-18 text-primary-600 font-poppins font-bold mb-0">
                   Date:
                 </h3>
                 <DatePicker
-                  className="text-14  md:text-18 text-primary-600 font-poppins"
+                  className="text-12 md:text-18 text-primary-600 font-poppins w-32"
                   selected={startDate}
                   onChange={handleDateChange}
                 />
               </div>
-              <div className="radio-btns">
-                <div className="form-control flex flex-row gap-2">
-                  <label className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="radio-10"
-                      className="radio checked:bg-primary-400"
-                      onChange={handleColorChange}
-                      value="primary-400"
-                      defaultChecked={selectedColor === 'primary-400'}
-                    />
-                  </label>
-                  <label className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="radio-10"
-                      className="radio checked:bg-primary-700"
-                      value="primary-700"
-                      onChange={handleColorChange}
-                      defaultChecked={selectedColor === 'primary-700'}
-                    />
-                  </label>
-                  <label className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="radio-10"
-                      className="radio checked:bg-accents-400"
-                      value="accents-400"
-                      onChange={handleColorChange}
-                      defaultChecked={selectedColor === 'accents-400'}
-                    />
-                  </label>
-                </div>
+
+              <div className="radio-btns flex flex-row gap-2 flex-grow sm:flex-wrap sm:gap-4">
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="radio-10"
+                    className="radio checked:bg-primary-400 w-4 h-4 md:w-6 md:h-6"
+                    onChange={handleColorChange}
+                    value="primary-400"
+                    defaultChecked={selectedColor === 'primary-400'}
+                  />
+                </label>
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="radio-10"
+                    className="radio checked:bg-primary-700 w-4 h-4 md:w-6 md:h-6"
+                    value="primary-700"
+                    onChange={handleColorChange}
+                    defaultChecked={selectedColor === 'primary-700'}
+                  />
+                </label>
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="radio-10"
+                    className="radio checked:bg-accents-400 w-4 h-4 md:w-6 md:h-6"
+                    value="accents-400"
+                    onChange={handleColorChange}
+                    defaultChecked={selectedColor === 'accents-400'}
+                  />
+                </label>
               </div>
-              <NotesDeleteForm note={note} />
+
+              <div className="flex-shrink-0">
+                <NotesDeleteForm note={note} />
+              </div>
             </div>
+
             <form onSubmit={handleSubmit}>
               <div className="flex gap-2 mt-4">
                 <p className="text-12 md:text-14 text-primary-600 font-poppins font-bold">
