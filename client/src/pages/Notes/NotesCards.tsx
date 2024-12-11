@@ -66,11 +66,11 @@ const NotesCards = () => {
           fill="#000000"
           className="w-6 h-6 md:w-6  md:h-6"
         >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
           <g
             id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></g>
           <g id="SVGRepo_iconCarrier">
             <defs>
@@ -83,14 +83,14 @@ const NotesCards = () => {
                 d="M11,9.58578644 L13.2928932,7.29289322 C13.6834175,6.90236893 14.3165825,6.90236893 14.7071068,7.29289322 C15.0976311,7.68341751 15.0976311,8.31658249 14.7071068,8.70710678 L10.7071068,12.7071068 C10.3165825,13.0976311 9.68341751,13.0976311 9.29289322,12.7071068 L5.29289322,8.70710678 C4.90236893,8.31658249 4.90236893,7.68341751 5.29289322,7.29289322 C5.68341751,6.90236893 6.31658249,6.90236893 6.70710678,7.29289322 L9,9.58578644 L9,0.998529185 C9,0.447056744 9.44771525,-7.95978809e-15 10,-7.99360578e-15 C10.5522847,-8.02742346e-15 11,0.447056744 11,0.998529185 L11,9.58578644 Z M18,16 L18,10 C18,9.44771525 18.4477153,9 19,9 C19.5522847,9 20,9.44771525 20,10 L20,17 C20,17.5522847 19.5522847,18 19,18 L1,18 C0.44771525,18 0,17.5522847 0,17 L0,10 C0,9.44771525 0.44771525,9 1,9 C1.55228475,9 2,9.44771525 2,10 L2,16 L18,16 Z"
               ></path>
             </defs>
-            <g fill="none" fill-rule="evenodd" transform="translate(2 3)">
+            <g fill="none" fillRule="evenodd" transform="translate(2 3)">
               <g transform="translate(2 6)">
                 <mask id="download-b" fill="#ffffff">
                   <use xlinkHref="#download-a"></use>
                 </mask>
                 <use
                   fill="#D8D8D8"
-                  fill-rule="nonzero"
+                  fillRule="nonzero"
                   xlinkHref="#download-a"
                 ></use>
                 <g fill="#42b883" mask="url(#download-b)">
@@ -106,7 +106,7 @@ const NotesCards = () => {
               </mask>
               <use
                 fill="#000000"
-                fill-rule="nonzero"
+                fillRule="nonzero"
                 xlinkHref="#download-c"
               ></use>
               <g fill="#ff7e67" mask="url(#download-d)">
