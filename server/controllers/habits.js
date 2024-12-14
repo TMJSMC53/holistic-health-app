@@ -102,6 +102,25 @@ export const getHabits = async (req, res) => {
   }
 };
 
+// Update a Habit Title
+export const updateHabit = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateHabitTitle = await Habit.findByIdAndUpdate(
+      id,
+      { title: req.body.title },
+      { new: true }
+    );
+
+    if (!updateHabitTitle) {
+      return res.status(404).json({ message: 'Habit title not found' });
+    }
+    res.status(200).json(updateHabitTitle);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Delete a Habit
 export const deleteHabit = async (req, res) => {
   try {

@@ -5,7 +5,7 @@ import { formatDistance, parseISO } from 'date-fns';
 import { HabitData } from '../../habits';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
 import HabitDeleteForm from './HabitDeleteForm';
-
+import HabitUpdateForm from './HabitUpdateForm';
 export type HabitProps = {
   habits: HabitData[];
   user: UserState;
@@ -251,7 +251,11 @@ const Habit = ({ habits, user }: HabitProps) => {
       <div className="w-full md:max-w-md flex flex-col justify-center border-2 border-primary-700 habits-list p-4">
         <div className="flex justify-between item-center font-poppins">
           <div className="text-16 flex items-center">{habit?.title} habit</div>
-          {habit && <HabitDeleteForm habit={habit} />}
+          <div className="flex items-center gap-2">
+            {habit && <HabitUpdateForm habit={habit} />}
+            {habit && <HabitDeleteForm habit={habit} />}
+          </div>
+
           {/* <div className="dropdown">
             <div
               tabIndex={0}

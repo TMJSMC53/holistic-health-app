@@ -36,6 +36,7 @@ import {
   createPlusOneHabitEnactment,
   createHabit,
   getHabits,
+  updateHabit,
   deleteHabit,
 } from '../controllers/habits.js';
 
@@ -92,5 +93,6 @@ router.post('/api/habits/:id/enactments', createRecordHabitEnactment);
 router.post('/api/habits/:id/enactments/plusOne', createPlusOneHabitEnactment);
 router.post('/api/habits', createHabit);
 router.get('/api/habits', getHabits);
+router.put('/api/habits/:id', updateHabit);
 router.delete('/api/habits/:id', deleteHabit);
 export default router;
