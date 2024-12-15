@@ -252,7 +252,7 @@ const Habit = ({ habits, user }: HabitProps) => {
         <div className="flex justify-between item-center font-poppins">
           <div className="text-16 flex items-center">{habit?.title} habit</div>
           <div className="flex items-center gap-2">
-            {habit && <HabitUpdateForm habit={habit} />}
+            {habit && <HabitUpdateForm habit={habit} isOnHabitPage={true} />}
             {habit && <HabitDeleteForm habit={habit} />}
           </div>
 

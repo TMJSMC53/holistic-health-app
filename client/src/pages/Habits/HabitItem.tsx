@@ -171,7 +171,7 @@ const HabitItem = ({
         <div className="flex justify-between items-center">
           {habit.title}
           <div className="flex items-center gap-2">
-            <HabitUpdateForm habit={habit} />
+            <HabitUpdateForm habit={habit} isOnHabitPage={false} />
             <HabitDeleteForm habit={habit} />
           </div>
           {/* <div className="dropdown">

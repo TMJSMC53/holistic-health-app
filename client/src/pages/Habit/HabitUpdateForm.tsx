@@ -1,11 +1,18 @@
 import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 export interface Habits {
   _id: string;
   title: string;
   enactments: string[];
 }
-const HabitUpdateForm = ({ habit }: { habit: Habits }) => {
+const HabitUpdateForm = ({
+  habit,
+  isOnHabitPage,
+}: {
+  habit: Habits;
+  isOnHabitPage: boolean;
+}) => {
+  const navigate = useNavigate();
   const [name, setName] = useState(habit.title);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +40,9 @@ const HabitUpdateForm = ({ habit }: { habit: Habits }) => {
       });
 
       setIsModalOpen(false);
-
+      if (isOnHabitPage) {
+        navigate(`/habit/${name}`);
+      }
       window.location.reload();
     } catch (error) {
       console.error('Error:', error);
