@@ -11,6 +11,7 @@ import connect from './db/conn.js';
 
 import router from './routes/router.js';
 
+import quoteRoutes from './routes/router.js';
 const PORT = process.env.PORT || 5151;
 
 const app = express();
@@ -37,6 +38,17 @@ if (process.env.NODE_ENV !== 'development') {
     res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
   });
 }
+
+// app.get('/', async (req, res) => {
+//   const response = await fetch('https://zenquotes.io/api/today');
+
+//   const data = await response.json();
+//   data[0].q;
+
+//   console.log(data);
+// });
+
+app.use('/api', quoteRoutes);
 
 if (process.env.NODE_ENV === 'development') {
   ViteExpress.listen(app, PORT, () =>

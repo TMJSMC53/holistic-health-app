@@ -1,33 +1,12 @@
-import { useEffect, useState } from 'react';
-
+import useQuote from '../../context/useQuote';
 export interface Quote {
   quote: string;
   author: string;
 }
 
 const DailyMotivationalQuote = () => {
-  const [quoteData, setQuoteData] = useState<Quote | null>(null);
+  const { quoteData } = useQuote();
 
-  useEffect(() => {
-    const getQuoteData = async () => {
-      try {
-        const response = await fetch(
-          `https://corsproxy.io/?${encodeURIComponent(
-            'https://zenquotes.io/api/today'
-          )}`
-        );
-        const data = await response.json();
-        setQuoteData({
-          quote: data[0].q,
-          author: data[0].a,
-        });
-      } catch (err) {
-        console.error('Error fetching data:', err);
-      }
-    };
-
-    getQuoteData();
-  }, []);
   return (
     <div>
       {quoteData && (
