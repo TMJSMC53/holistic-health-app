@@ -39,8 +39,9 @@ export const QuoteProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     };
-
-    fetchQuote();
+    if (!quoteData) {
+      fetchQuote();
+    }
   }, []);
 
   return (
