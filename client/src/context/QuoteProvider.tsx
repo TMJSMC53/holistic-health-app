@@ -24,21 +24,29 @@ export const QuoteProvider = ({ children }: { children: ReactNode }) => {
       if (storedQuote) {
         // Use the stored quote
         setQuoteData(JSON.parse(storedQuote));
-      } else {
-        try {
-          // Fetch a new quote
-          const response = await fetch(`/api/daily-quotes`);
-          const data = await response.json();
-          const newQuote = { quote: data.quote, author: data.author };
+        return;
+      }
+      try {
+        // Fetch a new quote if not already cached
+        const response = await fetch(`/api/daily-quotes`);
 
-          // Save the new quote in localStorage
-          localStorage.setItem(today, JSON.stringify(newQuote));
-          setQuoteData(newQuote);
-        } catch (err) {
-          console.error('Error fetching daily quote:', err);
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch daily quote: ${response.statusText}`
+          );
         }
+        const data = await response.json();
+        const newQuote: Quote = { quote: data.quote, author: data.author };
+
+        // Save the new quote in localStorage and update state
+        localStorage.setItem(today, JSON.stringify(newQuote));
+        setQuoteData(newQuote);
+      } catch (err) {
+        console.error('Error fetching daily quote:', err);
       }
     };
+
+    // Only fetch if 'quoteData' hasn't been set
     if (!quoteData) {
       fetchQuote();
     }
