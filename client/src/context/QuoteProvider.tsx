@@ -17,39 +17,45 @@ export const QuoteProvider = ({ children }: { children: ReactNode }) => {
   const [quoteData, setQuoteData] = useState<Quote | null>(null);
 
   useEffect(() => {
+    const FALLBACK_QUOTE = {
+      quote:
+        "May you always remember to enjoy the road, especially when it's a hard one.",
+      author: 'Kobe Bryant',
+    };
+
     const fetchQuote = async () => {
       const today = new Date().toISOString().split('T')[0];
       const storedQuote = localStorage.getItem(today);
 
       if (storedQuote) {
-        // Use the stored quote
-        setQuoteData(JSON.parse(storedQuote));
-        return;
-      }
-      try {
-        // Fetch a new quote if not already cached
-        const response = await fetch(`/api/daily-quotes`);
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch daily quote: ${response.statusText}`
-          );
+        const parsedQuote = JSON.parse(storedQuote);
+        if (parsedQuote.quote && parsedQuote.author) {
+          setQuoteData(parsedQuote);
+          return;
         }
-        const data = await response.json();
-        const newQuote: Quote = { quote: data.quote, author: data.author };
+      }
 
-        // Save the new quote in localStorage and update state
-        localStorage.setItem(today, JSON.stringify(newQuote));
-        setQuoteData(newQuote);
+      try {
+        const response = await fetch('/api/daily-quotes');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch quote: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        if (data.quote && data.author) {
+          const newQuote = { quote: data.quote, author: data.author };
+          localStorage.setItem(today, JSON.stringify(newQuote));
+          setQuoteData(newQuote);
+        } else {
+          throw new Error('Invalid quote data received');
+        }
       } catch (err) {
-        console.error('Error fetching daily quote:', err);
+        console.error('Error fetching quote:', err);
+        setQuoteData(FALLBACK_QUOTE); // Set fallback quote here
       }
     };
 
-    // Only fetch if 'quoteData' hasn't been set
-    if (!quoteData) {
-      fetchQuote();
-    }
+    fetchQuote();
   }, []);
 
   return (
