@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DailyMotivationalQuote from '../client/src/pages/Dashboard/DailyMotivationalQuote';
-
+import { MemoryRouter } from 'react-router-dom';
+import { QuoteProvider } from '../client/src/context/QuoteProvider';
 import { server } from '../mocks/node';
 beforeAll(() => {
   server.listen();
@@ -15,12 +16,24 @@ beforeEach(() => {
 
 describe('DailyMotivationalQuote', () => {
   it('should show nothing initially when the page is rendered', () => {
-    render(<DailyMotivationalQuote />);
+    render(
+      <MemoryRouter>
+        <QuoteProvider>
+          <DailyMotivationalQuote />
+        </QuoteProvider>
+      </MemoryRouter>
+    );
 
     expect(screen.queryByText(/~/i)).toBeNull();
   });
   it('should show the quote when the page is rendered', async () => {
-    render(<DailyMotivationalQuote />);
+    render(
+      <MemoryRouter>
+        <QuoteProvider>
+          <DailyMotivationalQuote />
+        </QuoteProvider>
+      </MemoryRouter>
+    );
 
     const quoteWrapper = await screen.findByText(/~/i);
     expect(quoteWrapper).not.toBeNull();

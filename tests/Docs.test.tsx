@@ -1,8 +1,21 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import Docs from '../client/src/pages/Docs/Docs';
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
+import { server } from '../mocks/node';
+
+beforeAll(() => {
+  server.listen();
+});
+afterAll(() => {
+  server.close();
+});
+beforeEach(() => {
+  server.resetHandlers();
+});
 describe('Docs', () => {
   //Mock user object
 
@@ -15,14 +28,25 @@ describe('Docs', () => {
     lastName: 'User',
   };
   it('should render the Feedback and Bug Reporting heading ', () => {
-    render(<Docs user={mockUser} />);
+    render(
+      <MemoryRouter>
+        <Docs user={mockUser} />
+      </MemoryRouter>
+    );
 
-    const heading = screen.getByRole('heading');
-    expect(heading).toBeInTheDocument();
+    const h2 = screen.getByRole('heading', {
+      level: 2,
+      name: 'Feedback and Bug Reporting',
+    });
+    expect(h2).toBeInTheDocument();
   });
 
   it('should take the user to the issues page in github', async () => {
-    render(<Docs user={mockUser} />);
+    render(
+      <MemoryRouter>
+        <Docs user={mockUser} />
+      </MemoryRouter>
+    );
 
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();

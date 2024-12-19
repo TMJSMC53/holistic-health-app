@@ -1,19 +1,13 @@
 import { http, HttpResponse } from 'msw';
 
+// Mock the API response for '/api/daily-quotes'
 export const handlers = [
-  // Intercept "GET https://example.com/user" requests...
-  http.get(
-    `https://corsproxy.io/?${encodeURIComponent(
-      'https://zenquotes.io/api/today'
-    )}`,
-    () => {
-      // ...and respond to them using this JSON response.
-      return HttpResponse.json([
-        {
-          q: "May you always remember to enjoy the road, especially when it's a hard one.",
-          a: 'Kobe Bryant',
-        },
-      ]);
-    }
-  ),
+  http.get('/api/daily-quotes', () => {
+    // Mock the response you would get from 'https://zenquotes.io/api/today'
+    return HttpResponse.json({
+      quote:
+        "May you always remember to enjoy the road, especially when it's a hard one.",
+      author: 'Kobe Bryant',
+    });
+  }),
 ];
