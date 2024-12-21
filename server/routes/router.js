@@ -31,6 +31,10 @@ import {
   deleteQuickLink,
 } from '../controllers/quickLinks.js';
 
+// Daily Quote
+
+import { getDailyQuote } from '../controllers/dailyQuotes.js';
+
 import {
   createRecordHabitEnactment,
   createPlusOneHabitEnactment,
@@ -98,18 +102,5 @@ router.delete('/api/habits/:id', deleteHabit);
 
 // route to get the Zenquote of the day
 
-router.get('/api/daily-quotes', async (req, res) => {
-  try {
-    const response = await fetch('https://zenquotes.io/api/today');
-
-    const data = await response.json();
-    res.status(200).json({
-      quote: data[0].q,
-      author: data[0].a,
-    });
-  } catch (error) {
-    console.error('Error fetching the daily quote:', error);
-    res.status(500).json({ error: 'Failed to fetch daily quote' });
-  }
-});
+router.get('/api/daily-quotes', getDailyQuote);
 export default router;

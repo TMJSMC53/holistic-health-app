@@ -42,6 +42,14 @@ export const QuoteProvider = ({ children }: { children: ReactNode }) => {
         }
 
         const data = await response.json();
+        if (data.author === 'zenquotes.io') {
+          setQuoteData(FALLBACK_QUOTE);
+
+          setTimeout(() => {
+            fetchQuote();
+          }, 20000);
+          return;
+        }
         if (data.quote && data.author) {
           const newQuote = { quote: data.quote, author: data.author };
           localStorage.setItem(today, JSON.stringify(newQuote));
