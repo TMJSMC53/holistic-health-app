@@ -1,8 +1,6 @@
-// import Habits from './Habits';
-// import { HabitData } from '../../habits';
 import { Link } from 'react-router-dom';
 import { FormEvent, useState, useEffect } from 'react';
-import { formatDistance, parseISO } from 'date-fns';
+import { formatDistance, startOfDay } from 'date-fns';
 import HabitUpdateForm from '../Habit/HabitUpdateForm';
 import HabitDeleteForm from '../Habit/HabitDeleteForm';
 export interface Habits {
@@ -14,22 +12,16 @@ function countCurrentStreak(dates: string[]): number {
   if (!dates || !dates.length) return 0;
 
   const uniqueDates = [
-    ...new Set(dates.map((date) => new Date(date).toISOString().split('T')[0])),
+    ...new Set(dates.map((date) => startOfDay(new Date(date)).toISOString())),
   ]
     .sort()
     .reverse();
 
   if (uniqueDates.length === 1) {
-    const date = new Date(uniqueDates[0]);
-    const today = new Date();
-    const yesterday = new Date(today);
+    const date = startOfDay(new Date(uniqueDates[0]));
+    const today = startOfDay(new Date());
+    const yesterday = startOfDay(new Date(today));
     yesterday.setDate(yesterday.getDate() - 1);
-
-    date.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-    yesterday.setHours(0, 0, 0, 0);
-
-    [date, today, yesterday].forEach((d) => d.setHours(0, 0, 0, 0));
 
     return date.getTime() === today.getTime() ||
       date.getTime() === yesterday.getTime()
@@ -71,26 +63,28 @@ const HabitItem = ({
 
   useEffect(() => {
     const hasEnactmentToday = habit.enactments?.some((enactment) => {
-      const enactmentDate = new Date(enactment);
-      return enactmentDate.toDateString() === new Date().toDateString();
+      const enactmentDate = startOfDay(new Date(enactment));
+      const today = startOfDay(new Date());
+      return enactmentDate.getTime() === today.getTime();
     });
     setShowPlusOne(hasEnactmentToday);
   }, [habit.enactments]);
 
   useEffect(() => {
     const plusOneEnactment = habit.enactments?.filter((enactment) => {
-      const enactmentDate = new Date(enactment);
-      return enactmentDate.toDateString() === new Date().toDateString();
+      const enactmentDate = startOfDay(new Date(enactment));
+      const today = startOfDay(new Date());
+      return enactmentDate.getTime() === today.getTime();
     });
-    setCounter(plusOneEnactment.length);
+    setCounter(plusOneEnactment?.length || 0);
   }, [habit.enactments]);
 
   // Get the latest enactment timestamp
   const getLatestEnactment = () => {
     if (!habit.enactments?.length) return new Date();
-    return parseISO(
+    return new Date(
       [...habit.enactments].sort(
-        (a, b) => parseISO(b).getTime() - parseISO(a).getTime()
+        (a, b) => new Date(b).getTime() - new Date(a).getTime()
       )[0]
     );
   };

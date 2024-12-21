@@ -18,12 +18,10 @@ const updateHabitEnactment = async (habitId, date) => {
 export const createRecordHabitEnactment = async (req, res) => {
   try {
     const habitId = req.params.id;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
 
-    // Define tomorrow (start of the next day)
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    // Get start of today in user's timezone from request
+    const today = startOfDay(new Date());
+    const tomorrow = addDays(today, 1);
 
     // Get the current habit
     const habit = await Habit.findById(habitId);
