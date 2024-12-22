@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 app.use((req, res, next) =>
   connect()
-    .then(connection => {
+    .then((connection) => {
       // Disconnect from the DB after the response is sent/aborted
       const cleanup = async () => {
         try {
@@ -36,8 +36,8 @@ app.use((req, res, next) =>
         }
       };
 
-      res.on('finish', cleanup); // On response sent
-      res.on('close', cleanup); // On request abort
+      // res.on('finish', cleanup); // On response sent
+      // res.on('close', cleanup); // On request abort
       return next();
     })
     .catch(next)
@@ -49,15 +49,6 @@ if (process.env.NODE_ENV !== 'development') {
     res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
   });
 }
-
-// app.get('/', async (req, res) => {
-//   const response = await fetch('https://zenquotes.io/api/today');
-
-//   const data = await response.json();
-//   data[0].q;
-
-//   console.log(data);
-// });
 
 app.use('/api', quoteRoutes);
 
