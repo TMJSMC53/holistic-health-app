@@ -26,7 +26,18 @@ if (process.env.NODE_ENV !== 'development') {
 }
 app.use((req, res, next) =>
   connect()
-    .then(() => {
+    .then(connection => {
+      // Disconnect from the DB after the response is sent/aborted
+      const cleanup = async () => {
+        try {
+          await connection.disconnect();
+        } catch (error) {
+          console.error('Error closing database connection:', error);
+        }
+      };
+
+      res.on('finish', cleanup); // On response sent
+      res.on('close', cleanup); // On request abort
       return next();
     })
     .catch(next)
