@@ -26,21 +26,8 @@ if (process.env.NODE_ENV !== 'development') {
 }
 app.use((req, res, next) =>
   connect()
-    .then((connection) => {
-      // Disconnect from the DB after the response is sent/aborted
-      const cleanup = async () => {
-        try {
-          await connection.disconnect();
-        } catch (error) {
-          console.error('Error closing database connection:', error);
-        }
-      };
-
-      // res.on('finish', cleanup); // On response sent
-      // res.on('close', cleanup); // On request abort
-      return next();
-    })
-    .catch(next)
+    .then(() => next())
+    .catch(next),
 );
 // routes
 app.use('/', router);
@@ -53,9 +40,7 @@ if (process.env.NODE_ENV !== 'development') {
 app.use('/api', quoteRoutes);
 
 if (process.env.NODE_ENV === 'development') {
-  ViteExpress.listen(app, PORT, () =>
-    console.log(`Server is listening on PORT ${PORT} `)
-  );
+  ViteExpress.listen(app, PORT, () => console.log(`Server is listening on PORT ${PORT} `));
 }
 
 export default app;
