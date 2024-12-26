@@ -36,7 +36,11 @@ const HabitDeleteForm = ({ habit }: { habit: Habits }) => {
   return (
     <>
       <div>
-        <button onClick={handleModalToggle} className="flex ">
+        <button
+          onClick={handleModalToggle}
+          className="flex "
+          aria-label="Delete Habit Icon"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -54,51 +58,57 @@ const HabitDeleteForm = ({ habit }: { habit: Habits }) => {
         </button>
         {/* </label> */}
       </div>
+      {isModalOpen && (
+        <div
+          className={`modal ${isModalOpen ? 'modal-open' : ''}`}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal-box h-50 md:w-96 overflow-y-hidden px-4">
+            <h3 className="text-14 md:text-18 text-primary-600 font-semibold font-poppins mb-10">
+              Confirm Delete
+            </h3>
 
-      <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
-        <div className="modal-box h-50 md:w-96 overflow-y-hidden px-4">
-          <h3 className="text-14 md:text-18 text-primary-600 font-semibold font-poppins mb-10">
-            Confirm Delete
-          </h3>
-
-          <form onSubmit={handleDelete}>
-            <div className="relative flex">
-              <label
-                className="text-xs sm:text-14 md:text-16  text-primary-600 font-poppins font-semibold w-full"
-                htmlFor="habit"
-              >
-                Are you sure you want to delete this?
-              </label>
-              <div className="absolute inset-0">
-                <div className="absolute inset-x-0 mt-[-10px] h-0.5 bg-gray-100" />
-                <div className="absolute inset-x-0 bottom-0 top-7 h-0.5 bg-gray-100" />
-              </div>
-            </div>
-            <section className="flex justify-between mt-10">
-              <div className="modal-action mt-0">
+            <form onSubmit={handleDelete}>
+              <div className="relative flex">
                 <label
-                  htmlFor="modalToggle"
-                  className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
-                  onClick={handleModalToggle}
+                  className="text-xs sm:text-14 md:text-16  text-primary-600 font-poppins font-semibold w-full"
+                  htmlFor="habit"
                 >
-                  Cancel
+                  Are you sure you want to delete this?
                 </label>
+                <div className="absolute inset-0">
+                  <div className="absolute inset-x-0 mt-[-10px] h-0.5 bg-gray-100" />
+                  <div className="absolute inset-x-0 bottom-0 top-7 h-0.5 bg-gray-100" />
+                </div>
               </div>
-              <button
-                className="btn bg-primary-700 text-accents-100 hover:bg-primary-700"
-                type="submit"
-              >
-                Delete
-              </button>
-            </section>
-          </form>
+              <section className="flex justify-between mt-10">
+                <div className="modal-action mt-0">
+                  <button
+                    // htmlFor="modalToggle"
+                    className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
+                    onClick={handleModalToggle}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <button
+                  className="btn bg-primary-700 text-accents-100 hover:bg-primary-700"
+                  type="submit"
+                  aria-label="Delete"
+                >
+                  Delete
+                </button>
+              </section>
+            </form>
+          </div>
+          <div className="modal-backdrop">
+            <button type="button" onClick={() => setIsModalOpen(false)}>
+              Close
+            </button>
+          </div>
         </div>
-        <div className="modal-backdrop">
-          <button type="button" onClick={() => setIsModalOpen(false)}>
-            Close
-          </button>
-        </div>
-      </div>
+      )}
     </>
   );
 };
