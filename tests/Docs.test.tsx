@@ -5,17 +5,6 @@ import Docs from '../client/src/pages/Docs/Docs';
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
-import { server } from '../mocks/node';
-
-beforeAll(() => {
-  server.listen();
-});
-afterAll(() => {
-  server.close();
-});
-beforeEach(() => {
-  server.resetHandlers();
-});
 describe('Docs', () => {
   //Mock user object
 

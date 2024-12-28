@@ -95,7 +95,6 @@ const HabitDeleteForm = ({ habit }: { habit: Habits }) => {
                 <button
                   className="btn bg-primary-700 text-accents-100 hover:bg-primary-700"
                   type="submit"
-                  aria-label="Delete"
                 >
                   Delete
                 </button>

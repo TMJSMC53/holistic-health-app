@@ -163,7 +163,7 @@ const HabitItem = ({
     <div className="border-2 border-primary-700 habits-list m-4 pb-4 px-4">
       <div>
         <div className="flex justify-between items-center">
-          {habit.title}
+          <span className="text-16">{habit.title}</span>
           <div className="flex items-center gap-2">
             <HabitUpdateForm habit={habit} isOnHabitPage={false} />
             <HabitDeleteForm habit={habit} />

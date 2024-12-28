@@ -3,16 +3,6 @@ import '@testing-library/jest-dom';
 import DailyMotivationalQuote from '../client/src/pages/Dashboard/DailyMotivationalQuote';
 import { MemoryRouter } from 'react-router-dom';
 import { QuoteProvider } from '../client/src/context/QuoteProvider';
-import { server } from '../mocks/node';
-beforeAll(() => {
-  server.listen();
-});
-afterAll(() => {
-  server.close();
-});
-beforeEach(() => {
-  server.resetHandlers();
-});
 
 describe('DailyMotivationalQuote', () => {
   it('should show nothing initially when the page is rendered', () => {

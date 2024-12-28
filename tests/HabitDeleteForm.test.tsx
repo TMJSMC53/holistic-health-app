@@ -12,16 +12,6 @@ const mockHabit = {
   enactments: [],
 };
 
-beforeAll(() => {
-  server.listen();
-});
-afterEach(() => {
-  server.resetHandlers();
-});
-afterAll(() => {
-  server.close();
-});
-
 describe('HabitDeleteForm', () => {
   it('should render the DeleteHabitForm component without errors', async () => {
     render(
@@ -31,27 +21,38 @@ describe('HabitDeleteForm', () => {
     );
   });
   it('should call delete method with relevant user ID', async () => {
-    // let deleteCalled = false;
+    // GIVEN the backend server is listening for habit deletion requests
+    let deleteCalled = false;
     server.use(
       http.delete(`/api/habits/${mockHabit._id}`, () => {
-        // deleteCalled = true;
+        deleteCalled = true;
         return HttpResponse.json({});
       })
     );
+
+    // GIVEN there is a habit to be deleted
     render(
       <MemoryRouter>
         <HabitDeleteForm habit={mockHabit} />
       </MemoryRouter>
     );
+
+    // GIVEN the modal is opened
     const deleteIconButton = screen.getByRole('button', {
       name: /delete habit icon/i,
     });
-    userEvent.click(deleteIconButton);
+    await userEvent.click(deleteIconButton);
 
+    // WHEN the delete button is clicked
     const deleteButton = screen.getByRole('button', {
-      name: /delete/i,
+      name: 'Delete',
     });
-    userEvent.click(deleteButton);
+    await userEvent.click(deleteButton);
+
+    await waitFor(() => {
+      // THEN the request is made
+      expect(deleteCalled).toBe(true);
+    });
   });
 
   it('should open and close the confirmation modal ', async () => {
@@ -67,16 +68,18 @@ describe('HabitDeleteForm', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
-    // Open the modal via "Delete Habit" icon button
+    // WHEN Open the modal via "Delete Habit" icon button
     const deleteButton = screen.getByRole('button', {
       name: /delete habit icon/i,
     });
     await user.click(deleteButton);
+    // THEN the modal is open
     expect(screen.queryByRole('dialog')).toBeInTheDocument();
 
-    // Close the modal via "Cancel"
+    // WHEN user Closes the modal via "Cancel"
     await user.click(screen.getByText(/cancel/i));
     await waitFor(() => {
+      // THEN the modal is closed
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
@@ -87,12 +90,13 @@ describe('HabitDeleteForm', () => {
       </MemoryRouter>
     );
     const deleteButton = screen.getByRole('button', { name: /delete habit/i });
+    // WHEN the modal is open
     await userEvent.click(deleteButton);
 
-    // when the modal is open the user sees confirm delete
     const confirmationMessage = screen.getByText(
       'Are you sure you want to delete this?'
     );
+    // THEN the confirmation message is shown on the screen
     expect(confirmationMessage).toBeInTheDocument();
   });
 });

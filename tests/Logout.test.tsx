@@ -7,15 +7,6 @@ import { vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 
 import { server } from '../mocks/node';
-beforeAll(() => {
-  server.listen();
-});
-afterAll(() => {
-  server.close();
-});
-beforeEach(() => {
-  server.resetHandlers();
-});
 
 describe('Logout', () => {
   const setUser = () => {};
