@@ -12,6 +12,12 @@ const mockHabit = {
   enactments: [],
 };
 
+const openTheModal = async () => {
+  const deleteIconButton = screen.getByRole('button', {
+    name: /delete habit icon/i,
+  });
+  await userEvent.click(deleteIconButton);
+};
 describe('HabitDeleteForm', () => {
   it('should render the DeleteHabitForm component without errors', async () => {
     render(
@@ -38,11 +44,7 @@ describe('HabitDeleteForm', () => {
     );
 
     // GIVEN the modal is opened
-    const deleteIconButton = screen.getByRole('button', {
-      name: /delete habit icon/i,
-    });
-    await userEvent.click(deleteIconButton);
-
+    await openTheModal();
     // WHEN the delete button is clicked
     const deleteButton = screen.getByRole('button', {
       name: 'Delete',
@@ -69,10 +71,7 @@ describe('HabitDeleteForm', () => {
     });
 
     // WHEN Open the modal via "Delete Habit" icon button
-    const deleteButton = screen.getByRole('button', {
-      name: /delete habit icon/i,
-    });
-    await user.click(deleteButton);
+    await openTheModal();
     // THEN the modal is open
     expect(screen.queryByRole('dialog')).toBeInTheDocument();
 
