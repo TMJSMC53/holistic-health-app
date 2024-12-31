@@ -29,7 +29,7 @@ const HabitUpdateForm = ({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await fetch(`/api/habits/${habit._id}`, {
+      const response = await fetch(`/api/habits/${habit._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -39,9 +39,12 @@ const HabitUpdateForm = ({
         }),
       });
 
+      const updatedHabit = await response.json();
+      setName(updatedHabit.title);
+
       setIsModalOpen(false);
       if (isOnHabitPage) {
-        navigate(`/habit/${name}`);
+        navigate(`/habit/${updatedHabit.title}`);
       }
       window.location.reload();
     } catch (error) {
@@ -82,6 +85,7 @@ const HabitUpdateForm = ({
       <label
         htmlFor="editHabitUpdateButton"
         className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent px-0"
+        aria-label="Edit habit icon"
       >
         <button id="editHabitUpdateButton" onClick={handleModalToggle}>
           <svg
@@ -135,13 +139,12 @@ const HabitUpdateForm = ({
 
               <section className="flex justify-end gap-2 mt-10">
                 <div className="modal-action mt-0">
-                  <label
-                    htmlFor="modalToggle"
+                  <button
                     className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
                     onClick={handleModalToggle}
                   >
                     Cancel
-                  </label>
+                  </button>
                 </div>
                 <button className="btn bg-primary-700 text-accents-100 hover:bg-primary-700">
                   Save
