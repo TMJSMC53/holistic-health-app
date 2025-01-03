@@ -6,6 +6,7 @@ import { HabitData } from '../../habits';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
 import HabitDeleteForm from './HabitDeleteForm';
 import HabitUpdateForm from './HabitUpdateForm';
+import BackButton from '../../components/BackButton';
 export type HabitProps = {
   habits: HabitData[];
   user: UserState;
@@ -237,16 +238,22 @@ const Habit = ({ habits, user }: HabitProps) => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="min-h-full text-14 text-primary-600 font-poppins flex flex-col items-center justify-center overflow-x-hidden m-4">
-      <div className="w-full md:max-w-md flex flex-col justify-center border-2 border-primary-700 habits-list p-4">
-        <div className="flex justify-between item-center font-poppins">
-          <div className="text-16 flex items-center">{habit?.title} habit</div>
-          <div className="flex items-center gap-2">
-            {habit && <HabitUpdateForm habit={habit} isOnHabitPage={true} />}
-            {habit && <HabitDeleteForm habit={habit} />}
-          </div>
+    <>
+      <div className="ml-4">
+        <BackButton />
+      </div>
+      <div className="min-h-full text-14 text-primary-600 font-poppins flex flex-col items-center justify-center overflow-x-hidden m-4">
+        <div className="w-full md:max-w-md flex flex-col justify-center border-2 border-primary-700 habits-list p-4">
+          <div className="flex justify-between item-center font-poppins">
+            <div className="text-16 flex items-center">
+              {habit?.title} habit
+            </div>
+            <div className="flex items-center gap-2">
+              {habit && <HabitUpdateForm habit={habit} isOnHabitPage={true} />}
+              {habit && <HabitDeleteForm habit={habit} />}
+            </div>
 
-          {/* <div className="dropdown">
+            {/* <div className="dropdown">
             <div
               tabIndex={0}
               role="button"
@@ -266,36 +273,37 @@ const Habit = ({ habits, user }: HabitProps) => {
               </li>
             </ul>
           </div> */}
-        </div>
-        <div>
-          <div className="w-48 border-2 border-primary-700 habits-list my-4 p-4">
-            <p>Current streak: {currentStreak}</p>
-            <p>Max Streak: {maxStreak}</p>
           </div>
-          <p className="text-12 text-primary-400 italic mt-2">
-            Last recorded: {lastSeen}
-          </p>
-          <div className="flex items-center justify-between">
-            <button
-              className="text-primary-600 btn bg-transparent hover:bg-primary-700 hover:text-accents-100 border-2 border-primary-600 hover:border-primary-700 relative before:absolute before:border-transparent transition-all duration-300 my-4"
-              onClick={handleEnactmentsCreation}
-              disabled={isRecording}
-            >
-              {isRecording ? 'Recording...' : `Record ${habit?.title}`}
-            </button>
-            {showPlusOne && (
+          <div>
+            <div className="w-48 border-2 border-primary-700 habits-list my-4 p-4">
+              <p>Current streak: {currentStreak}</p>
+              <p>Max Streak: {maxStreak}</p>
+            </div>
+            <p className="text-12 text-primary-400 italic mt-2">
+              Last recorded: {lastSeen}
+            </p>
+            <div className="flex items-center justify-between">
               <button
-                className="text-primary-600 btn bg-transparent hover:bg-primary-400 hover:text-accents-100 border-2 border-accents-400 hover:border-primary-400 relative before:absolute before:border-transparent transition-all duration-300 my-4"
-                onClick={handlePlusOneCreation}
+                className="text-primary-600 btn bg-transparent hover:bg-primary-700 hover:text-accents-100 border-2 border-primary-600 hover:border-primary-700 relative before:absolute before:border-transparent transition-all duration-300 my-4"
+                onClick={handleEnactmentsCreation}
+                disabled={isRecording}
               >
-                + {counter}
+                {isRecording ? 'Recording...' : `Record ${habit?.title}`}
               </button>
-            )}
+              {showPlusOne && (
+                <button
+                  className="text-primary-600 btn bg-transparent hover:bg-primary-400 hover:text-accents-100 border-2 border-accents-400 hover:border-primary-400 relative before:absolute before:border-transparent transition-all duration-300 my-4"
+                  onClick={handlePlusOneCreation}
+                >
+                  + {counter}
+                </button>
+              )}
+            </div>
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           </div>
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

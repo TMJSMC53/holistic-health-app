@@ -7,6 +7,7 @@ import {
   FormEvent,
 } from 'react';
 import HabitItem from './HabitItem';
+import BackButton from '../../components/BackButton';
 import { HabitData } from '../../habits';
 import { UserState } from '../../main.d';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
@@ -127,6 +128,9 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
 
   return (
     <div className="text-primary-600 font-poppins">
+      <div className="ml-4">
+        <BackButton />
+      </div>
       <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
         <div className="modal-box h-90 md:w-96 overflow-y-hidden px-4 bg-accents-500">
           <form onSubmit={handleSubmit}>
