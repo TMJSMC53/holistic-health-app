@@ -3,6 +3,7 @@ import { FormEvent, useState, useEffect } from 'react';
 import { formatDistance, startOfDay } from 'date-fns';
 import HabitUpdateForm from '../Habit/HabitUpdateForm';
 import HabitDeleteForm from '../Habit/HabitDeleteForm';
+import ClapAnimation from '../../components/ClapAnimation';
 export interface Habits {
   _id: string;
   title: string;
@@ -60,6 +61,8 @@ const HabitItem = ({
   const [isRecording, setIsRecording] = useState(false);
   const [counter, setCounter] = useState(1);
   const [showPlusOne, setShowPlusOne] = useState(false);
+
+  const [clapVisible, setClapVisible] = useState(false);
 
   useEffect(() => {
     const hasEnactmentToday = habit.enactments?.some((enactment) => {
@@ -151,6 +154,8 @@ const HabitItem = ({
       }
       setHabit(data);
       setCounter(counter + 1);
+      setClapVisible(true);
+      setTimeout(() => setClapVisible(false), 1000);
     } catch (error) {
       setError('Failed to record additional habit');
       console.error('Error:', error);
@@ -190,7 +195,7 @@ const HabitItem = ({
           <p className="text-12 text-primary-400 italic mt-2">
             Last recorded: {lastSeen}
           </p>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between relative">
             <button
               className="text-primary-600 btn bg-transparent hover:bg-primary-700 hover:text-accents-100 border-2 border-primary-600 hover:border-primary-700 relative before:absolute before:border-transparent transition-all duration-300 my-4"
               onClick={handleEnactmentsCreation}
@@ -199,13 +204,16 @@ const HabitItem = ({
               {isRecording ? 'Recording...' : `Record ${habit.title}`}
             </button>
             {showPlusOne && (
-              <button
-                className="text-primary-600 btn bg-transparent hover:bg-primary-400 hover:text-accents-100 border-2 border-accents-400 hover:border-primary-400 relative before:absolute before:border-transparent transition-all duration-300 my-4"
-                onClick={handlePlusOneCreation}
-              >
-                + {counter}
-              </button>
+              <>
+                <button
+                  className="text-primary-600 btn bg-transparent hover:bg-primary-400 hover:text-accents-100 border-2 border-accents-400 hover:border-primary-400 relative before:absolute before:border-transparent transition-all duration-300 my-4"
+                  onClick={handlePlusOneCreation}
+                >
+                  + {counter}
+                </button>
+              </>
             )}
+            <ClapAnimation show={clapVisible} />
           </div>
         </div>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

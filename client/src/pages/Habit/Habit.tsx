@@ -7,6 +7,7 @@ import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserT
 import HabitDeleteForm from './HabitDeleteForm';
 import HabitUpdateForm from './HabitUpdateForm';
 import BackButton from '../../components/BackButton';
+import ClapAnimation from '../../components/ClapAnimation';
 export type HabitProps = {
   habits: HabitData[];
   user: UserState;
@@ -106,10 +107,12 @@ const Habit = ({ habits, user }: HabitProps) => {
   const [currentStreak, setCurrentStreak] = useState(() =>
     calculateMaxStreak(habit?.enactments || [])
   );
-  // const [habitData, setHabitData] = useState<HabitData | null>(null);
+
   const [isRecording, setIsRecording] = useState(false);
   const [counter, setCounter] = useState(1);
   const [showPlusOne, setShowPlusOne] = useState(false);
+
+  const [clapVisible, setClapVisible] = useState(false);
 
   useEffect(() => {
     // Recalculate maxStreak when `habit.enactments` changes
@@ -227,6 +230,8 @@ const Habit = ({ habits, user }: HabitProps) => {
       }
       setHabit(data);
       setCounter(counter + 1);
+      setClapVisible(true);
+      setTimeout(() => setClapVisible(false), 1000);
     } catch (error) {
       setError('Failed to record additional habit');
       console.error('Error:', error);
@@ -282,7 +287,7 @@ const Habit = ({ habits, user }: HabitProps) => {
             <p className="text-12 text-primary-400 italic mt-2">
               Last recorded: {lastSeen}
             </p>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between relative">
               <button
                 className="text-primary-600 btn bg-transparent hover:bg-primary-700 hover:text-accents-100 border-2 border-primary-600 hover:border-primary-700 relative before:absolute before:border-transparent transition-all duration-300 my-4"
                 onClick={handleEnactmentsCreation}
@@ -291,14 +296,18 @@ const Habit = ({ habits, user }: HabitProps) => {
                 {isRecording ? 'Recording...' : `Record ${habit?.title}`}
               </button>
               {showPlusOne && (
-                <button
-                  className="text-primary-600 btn bg-transparent hover:bg-primary-400 hover:text-accents-100 border-2 border-accents-400 hover:border-primary-400 relative before:absolute before:border-transparent transition-all duration-300 my-4"
-                  onClick={handlePlusOneCreation}
-                >
-                  + {counter}
-                </button>
+                <div className="relative">
+                  <button
+                    className="text-primary-600 btn bg-transparent hover:bg-primary-400 hover:text-accents-100 border-2 border-accents-400 hover:border-primary-400 relative before:absolute before:border-transparent transition-all duration-300 my-4"
+                    onClick={handlePlusOneCreation}
+                  >
+                    + {counter}
+                  </button>
+                  <ClapAnimation show={clapVisible} />
+                </div>
               )}
             </div>
+
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           </div>
         </div>
