@@ -8,9 +8,11 @@ export interface Habits {
 const HabitUpdateForm = ({
   habit,
   isOnHabitPage,
+  updateHabitTitle,
 }: {
   habit: Habits;
   isOnHabitPage: boolean;
+  updateHabitTitle: (id: string, title: string) => void;
 }) => {
   const navigate = useNavigate();
   const [name, setName] = useState(habit.title);
@@ -46,7 +48,7 @@ const HabitUpdateForm = ({
       if (isOnHabitPage) {
         navigate(`/habit/${updatedHabit.title}`);
       }
-      window.location.reload();
+      updateHabitTitle(habit._id, updatedHabit.title);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -142,6 +144,7 @@ const HabitUpdateForm = ({
                   <button
                     className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
                     onClick={handleModalToggle}
+                    type="button"
                   >
                     Cancel
                   </button>

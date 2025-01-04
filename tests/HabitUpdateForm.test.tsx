@@ -12,19 +12,6 @@ const mockHabit = {
   enactments: [],
 };
 
-// Set up the request handler before all tests
-beforeEach(() => {
-  server.use(
-    http.put('/api/habits/:habitId', async () => {
-      return HttpResponse.json({
-        ...mockHabit,
-        title: 'Test Title',
-        enactments: [...mockHabit.enactments, new Date().toISOString()],
-      });
-    })
-  );
-});
-
 const openTheModal = async () => {
   const editIconButton = screen.getByRole('button', {
     name: /edit habit icon/i,
@@ -33,17 +20,27 @@ const openTheModal = async () => {
 };
 describe('HabitUpdateForm', () => {
   it('should render the HabitUpdateForm component without errors', async () => {
+    const mockUpdateHabitTitle = vi.fn();
     render(
       <MemoryRouter>
-        <HabitUpdateForm habit={mockHabit} isOnHabitPage={true} />
+        <HabitUpdateForm
+          habit={mockHabit}
+          isOnHabitPage={true}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
   });
   it('should show the Update habit title text', async () => {
+    const mockUpdateHabitTitle = vi.fn();
     //GIVEN there is a habit to update
     render(
       <MemoryRouter>
-        <HabitUpdateForm habit={mockHabit} isOnHabitPage={true} />
+        <HabitUpdateForm
+          habit={mockHabit}
+          isOnHabitPage={true}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
     //WHEN the modal is open
@@ -53,31 +50,27 @@ describe('HabitUpdateForm', () => {
     expect(label).toBeInTheDocument();
   });
   it('should show the Title and the current habit title in the input', async () => {
-    const testHabit = {
-      _id: '12345',
-      title: 'Old Title',
-      enactments: ['2024-12-27T10:00:00Z'],
-    };
-    // GIVEN the backend server is listening for habit update requests
+    // Set up the request handler
+    server.use(
+      http.put('/api/habits/:habitId', async () => {
+        return HttpResponse.json({
+          ...mockHabit,
+          title: 'Test Title',
+          enactments: [...mockHabit.enactments, new Date().toISOString()],
+        });
+      })
+    );
 
-    // server.use(
-    //   http.put('/api/habits/:habitId', async () => {
-    //     return HttpResponse.json({
-    //       ...testHabit,
-    //       title: 'Test Title',
-    //       enactments: [
-    //         // include any existing enactments
-    //         ...testHabit.enactments,
-    //         // add a new enactment
-    //         new Date().toISOString(),
-    //       ],
-    //     });
-    //   })
-    // );
+    const mockUpdateHabitTitle = vi.fn();
+
     //GIVEN there is a habit to update
     render(
       <MemoryRouter>
-        <HabitUpdateForm habit={testHabit} isOnHabitPage={true} />
+        <HabitUpdateForm
+          habit={mockHabit}
+          isOnHabitPage={true}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
     //WHEN the modal is open
@@ -88,7 +81,7 @@ describe('HabitUpdateForm', () => {
     expect(title).toBeInTheDocument();
 
     // The input should initially show the old title
-    const currentHabitTitle = screen.getByDisplayValue('Old Title');
+    const currentHabitTitle = screen.getByDisplayValue('Test Title');
     expect(currentHabitTitle).toBeInTheDocument();
 
     const editButton = screen.getByRole('button', {
@@ -103,9 +96,14 @@ describe('HabitUpdateForm', () => {
     });
   });
   it('should open and close the Update your habit title modal', async () => {
+    const mockUpdateHabitTitle = vi.fn();
     render(
       <MemoryRouter>
-        <HabitUpdateForm habit={mockHabit} isOnHabitPage={true} />
+        <HabitUpdateForm
+          habit={mockHabit}
+          isOnHabitPage={true}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
     const user = userEvent.setup();

@@ -74,6 +74,21 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     };
   }, [isOpen]);
 
+  const updateHabitTitle = (id: string, title: string) => {
+    // GIVEN an id of a habit that exists in the habits array
+    const foundHabitToUpdate = {
+      // create a copy of the habits array
+      ...habits.filter((habit) => {
+        if (habit._id === id) {
+          return true;
+        }
+      })[0],
+    };
+    // GIVEN the new title you want to update add it to setHabits
+    foundHabitToUpdate.title = title;
+    setHabit(foundHabitToUpdate);
+  };
+
   const handleHabitClick = async (habit: string) => {
     setIsLoading(true);
     setError(null);
@@ -191,7 +206,12 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 habits-list">
         {habits.map((habit) => (
-          <HabitItem key={habit._id} habit={habit} setHabit={setHabit} />
+          <HabitItem
+            key={habit._id}
+            habit={habit}
+            setHabit={setHabit}
+            updateHabitTitle={updateHabitTitle}
+          />
         ))}
       </div>
     </div>

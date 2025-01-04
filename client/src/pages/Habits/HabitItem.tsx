@@ -50,9 +50,11 @@ function countCurrentStreak(dates: string[]): number {
 const HabitItem = ({
   habit,
   setHabit,
+  updateHabitTitle,
 }: {
   habit: Habits;
   setHabit: (habit: Habits) => void;
+  updateHabitTitle: (id: string, title: string) => void;
 }) => {
   const [currentStreak, setCurrentStreak] = useState(() =>
     countCurrentStreak(habit.enactments || [])
@@ -170,7 +172,11 @@ const HabitItem = ({
         <div className="flex justify-between items-center">
           <span className="text-16">{habit.title}</span>
           <div className="flex items-center gap-2">
-            <HabitUpdateForm habit={habit} isOnHabitPage={false} />
+            <HabitUpdateForm
+              habit={habit}
+              isOnHabitPage={false}
+              updateHabitTitle={updateHabitTitle}
+            />
             <HabitDeleteForm habit={habit} />
           </div>
           {/* <div className="dropdown">
