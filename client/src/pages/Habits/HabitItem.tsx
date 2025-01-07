@@ -166,10 +166,21 @@ const HabitItem = ({
     }
   }
 
+  // Helper Function to Remove Emoji from Record Button
+  const removeEmojiFromRecordBtn = (str: string) => {
+    return str
+      .replace(
+        /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g,
+        ''
+      )
+      .trim();
+  };
+
   return (
     <div className="border-2 border-primary-700 habits-list m-4 pb-4 px-4">
       <div>
         <div className="flex justify-between items-center">
+          {/* add the icon */}
           <span className="text-16">{habit.title}</span>
           <div className="flex items-center gap-2">
             <HabitUpdateForm
@@ -207,7 +218,9 @@ const HabitItem = ({
               onClick={handleEnactmentsCreation}
               disabled={isRecording}
             >
-              {isRecording ? 'Recording...' : `Record ${habit.title}`}
+              {isRecording
+                ? 'Recording...'
+                : `Record ${removeEmojiFromRecordBtn(habit.title)}`}
             </button>
             {showPlusOne && (
               <>
