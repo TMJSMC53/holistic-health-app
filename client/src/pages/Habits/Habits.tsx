@@ -5,12 +5,16 @@ import {
   useCallback,
   ChangeEvent,
   FormEvent,
+  useMemo,
 } from 'react';
 import HabitItem from './HabitItem';
 import BackButton from '../../components/BackButton';
 import { HabitData } from '../../habits';
 import { UserState } from '../../main.d';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+
+type SortBy = 'HABIT_CREATION' | 'LATEST_ENACTMENT';
+type SortDirection = 'ASC' | 'DESC'
 
 type HabitsProps = {
   habits: HabitData[];
@@ -27,6 +31,54 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
 
   const [title, setTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortingByWithDirection, setSortingByWithDirection] = useState<[SortBy, SortDirection]>(() => {
+    const defaultValue = ['HABIT_CREATION', 'ASC'];
+    const rawValue = localStorage.getItem('habits-sorting-by-and-direction')
+    if (rawValue === null) return defaultValue
+    try {
+      return JSON.parse(rawValue)
+    } catch (error){
+      console.warn(error)
+      return defaultValue
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('habits-sorting-by-and-direction', JSON.stringify(sortingByWithDirection))
+  }, [sortingByWithDirection])
+
+  const sortedHabits = useMemo(() => {
+    const [by, direction] = sortingByWithDirection
+    const sortedHabits = [...habits].sort((a, b) => {
+      if (by === 'HABIT_CREATION'){
+        const aDate = a.enactments[0];
+        const bDate = b.enactments[0];
+        if (direction === 'ASC') {
+          if (aDate > bDate) return 1
+          else if (aDate < bDate) return -1
+          else return 0
+        } else if (direction === 'DESC') {
+          if (aDate > bDate) return -1
+          else if (aDate < bDate) return 1
+          else return 0
+        }
+      } else if (by === 'LATEST_ENACTMENT') {
+        const aDate = a.enactments.at(-1)!
+        const bDate = b.enactments.at(-1)!
+        if (direction === 'ASC') {
+          if (aDate > bDate) return 1
+          else if (aDate < bDate) return -1
+          else return 0
+        } else if (direction === 'DESC') {
+          if (aDate > bDate) return -1
+          else if (aDate < bDate) return 1
+          else return 0
+        }
+      }
+      return 0
+    })
+    return sortedHabits
+  }, [habits, sortingByWithDirection])
 
   const getHabits = useCallback(async () => {
     try {
@@ -168,44 +220,82 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
           </button>
         </div>
       </div>
-      <div className="dropdown" ref={dropdownRef}>
-        <button
-          className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
-          onClick={handleToggle}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Adding...' : '+ Add Habit'}
-        </button>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        {isOpen && (
-          <ul
-            tabIndex={0}
-            className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow !visible !opacity-100"
+      <div className='flex'>
+        <div className="dropdown flex-1" ref={dropdownRef}>
+          <button
+            className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
+            onClick={handleToggle}
+            disabled={isLoading}
           >
+            {isLoading ? 'Adding...' : '+ Add Habit'}
+          </button>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {isOpen && (
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow !visible !opacity-100"
+            >
+              <li>
+                <button
+                  onClick={() => handleHabitClick('Exercise')}
+                  disabled={isLoading}
+                >
+                  Exercise
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleHabitClick('Meditation')}>
+                  Meditation
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleHabitClick('Sleep')}>Sleep</button>
+              </li>
+              <li>
+                <button onClick={() => setIsModalOpen(true)}>Custom</button>
+              </li>
+            </ul>
+          )}
+        </div>
+        <details className="dropdown dropdown-end mx-4 self-end">
+          <summary className="marker:content-none cursor-pointer" aria-label='Sort By'><svg viewBox="0 0 24 24" width="40px" height="40px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM7.55495 12.7455C7.27632 12.439 6.80199 12.4164 6.49549 12.695C6.189 12.9737 6.16641 13.448 6.44504 13.7545L8.94504 16.5045C9.08719 16.6609 9.28869 16.75 9.5 16.75C9.71131 16.75 9.91281 16.6609 10.055 16.5045L12.555 13.7545C12.8336 13.448 12.811 12.9737 12.5045 12.695C12.198 12.4164 11.7237 12.439 11.445 12.7455L10.25 14.06V8C10.25 7.58579 9.91421 7.25 9.5 7.25C9.08579 7.25 8.75 7.58579 8.75 8V14.06L7.55495 12.7455ZM11.4955 11.305C11.802 11.5836 12.2763 11.561 12.555 11.2545L13.75 9.93995L13.75 16C13.75 16.4142 14.0858 16.75 14.5 16.75C14.9142 16.75 15.25 16.4142 15.25 16L15.25 9.93995L16.445 11.2545C16.7237 11.561 17.198 11.5836 17.5045 11.305C17.811 11.0263 17.8336 10.552 17.555 10.2455L15.055 7.49549C14.9128 7.33914 14.7113 7.25 14.5 7.25C14.2887 7.25 14.0872 7.33914 13.945 7.49549L11.445 10.2455C11.1664 10.552 11.189 11.0263 11.4955 11.305Z" fill="#1C274C"></path> </g></svg></summary>
+          <ul className="menu dropdown-content bg-slate-50 rounded-box z-[1] w-52 p-2 shadow gap-1">
+            <li className='text-gray-500'>
+              Sort
+            </li>
+
             <li>
-              <button
-                onClick={() => handleHabitClick('Exercise')}
-                disabled={isLoading}
-              >
-                Exercise
+              <button onClick={(e) => {
+                e.currentTarget.closest('details')?.removeAttribute('open');
+                setSortingByWithDirection(['HABIT_CREATION', 'ASC'])
+              }} className={`hover:text-accents-100 hover:bg-accents-400 bg-base-100 ${sortingByWithDirection[0] === 'HABIT_CREATION' && sortingByWithDirection[1] === 'ASC' ? '' : 'pl-11'}`}>
+                {sortingByWithDirection[0] === 'HABIT_CREATION' && sortingByWithDirection[1] === 'ASC' ? <svg role="img" aria-label="Active (checkbox) icon" className='text-accents-200 fill-current' viewBox="0 0 24 24" width="20px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 7.34189C18.6095 6.95136 17.9763 6.95136 17.5858 7.34189L10.3407 14.587C9.95016 14.9775 9.31699 14.9775 8.92647 14.587L6.38507 12.0456C5.99454 11.6551 5.36138 11.6551 4.97085 12.0456C4.58033 12.4361 4.58033 13.0693 4.97085 13.4598L7.51774 16C8.68969 17.1689 10.5869 17.1677 11.7574 15.9974L19 8.7561C19.3905 8.36558 19.3905 7.73241 19 7.34189Z" ></path> </g></svg> : null}
+                Unsorted
               </button>
             </li>
             <li>
-              <button onClick={() => handleHabitClick('Meditation')}>
-                Meditation
+              <button onClick={(e) => {
+                e.currentTarget.closest('details')?.removeAttribute('open');
+                setSortingByWithDirection(['LATEST_ENACTMENT', 'DESC'])
+              }} className={`hover:text-accents-100 hover:bg-accents-400 bg-base-100 ${sortingByWithDirection[0] === 'LATEST_ENACTMENT' && sortingByWithDirection[1] === 'DESC' ? '' : 'pl-11'}`}>
+                {sortingByWithDirection[0] === 'LATEST_ENACTMENT' && sortingByWithDirection[1] === 'DESC' ? <svg role="img" aria-label="Active (checkbox) icon" className='text-accents-200 fill-current' viewBox="0 0 24 24" width="20px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 7.34189C18.6095 6.95136 17.9763 6.95136 17.5858 7.34189L10.3407 14.587C9.95016 14.9775 9.31699 14.9775 8.92647 14.587L6.38507 12.0456C5.99454 11.6551 5.36138 11.6551 4.97085 12.0456C4.58033 12.4361 4.58033 13.0693 4.97085 13.4598L7.51774 16C8.68969 17.1689 10.5869 17.1677 11.7574 15.9974L19 8.7561C19.3905 8.36558 19.3905 7.73241 19 7.34189Z" ></path> </g></svg> : null}
+                By Newest Enact
               </button>
             </li>
             <li>
-              <button onClick={() => handleHabitClick('Sleep')}>Sleep</button>
-            </li>
-            <li>
-              <button onClick={() => setIsModalOpen(true)}>Custom</button>
+              <button onClick={(e) => {
+                e.currentTarget.closest('details')?.removeAttribute('open');
+                setSortingByWithDirection(['LATEST_ENACTMENT', 'ASC'])
+              }} className={`hover:text-accents-100 hover:bg-accents-400 bg-base-100 ${sortingByWithDirection[0] === 'LATEST_ENACTMENT' && sortingByWithDirection[1] === 'ASC' ? '' : 'pl-11'}`}>
+                {sortingByWithDirection[0] === 'LATEST_ENACTMENT' && sortingByWithDirection[1] === 'ASC' ? <svg role="img" aria-label="Active (checkbox) icon" className='text-accents-200 fill-current' viewBox="0 0 24 24" width="20px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 7.34189C18.6095 6.95136 17.9763 6.95136 17.5858 7.34189L10.3407 14.587C9.95016 14.9775 9.31699 14.9775 8.92647 14.587L6.38507 12.0456C5.99454 11.6551 5.36138 11.6551 4.97085 12.0456C4.58033 12.4361 4.58033 13.0693 4.97085 13.4598L7.51774 16C8.68969 17.1689 10.5869 17.1677 11.7574 15.9974L19 8.7561C19.3905 8.36558 19.3905 7.73241 19 7.34189Z" ></path> </g></svg> : null}
+                By Oldest Enact
+              </button>
             </li>
           </ul>
-        )}
+        </details>
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 habits-list">
-        {habits.map((habit) => (
+        {sortedHabits.map((habit) => (
           <HabitItem
             key={habit._id}
             habit={habit}
