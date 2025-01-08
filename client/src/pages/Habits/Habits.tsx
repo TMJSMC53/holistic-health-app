@@ -191,19 +191,21 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
             >
               <li>
                 <button
-                  onClick={() => handleHabitClick('Exercise')}
+                  onClick={() => handleHabitClick('🏃‍➡️ Exercise')}
                   disabled={isLoading}
                 >
-                  Exercise
+                  👟 Exercise
                 </button>
               </li>
               <li>
-                <button onClick={() => handleHabitClick('Meditation')}>
-                  Meditation
+                <button onClick={() => handleHabitClick('🧘 Meditation')}>
+                  🧘 Meditation
                 </button>
               </li>
               <li>
-                <button onClick={() => handleHabitClick('Sleep')}>Sleep</button>
+                <button onClick={() => handleHabitClick('💤 Sleep')}>
+                  💤 Sleep
+                </button>
               </li>
               <li>
                 <button onClick={() => setIsModalOpen(true)}>Custom</button>
