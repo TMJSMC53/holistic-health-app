@@ -1,5 +1,5 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
@@ -8,6 +8,7 @@ import { http, HttpResponse } from 'msw';
 import { server } from '../mocks/node';
 import Habits from '../client/src/pages/Habits/Habits';
 import { HabitData } from '../client/src/habits';
+import { UserState } from '../client/src/main.d';
 
 beforeEach(() => {
 	// TODO - Temporary to silence the MSW warning; can remove once tech-debt of fetching within component is removed
@@ -16,85 +17,99 @@ beforeEach(() => {
 	)
 })
 
-function isTheSelectedSortingOption(textOfShouldBeActive: string){
-	expect(within(screen.getByText(textOfShouldBeActive)).getByRole('img')).toBeInTheDocument()
-	const otherTexts = ['Unsorted', 'By Newest Enact', 'By Oldest Enact'].filter(text => text !== textOfShouldBeActive)
-	for (const otherText of otherTexts){
-		expect(within(screen.getByText(otherText)).queryByRole('img')).not.toBeInTheDocument()
-	}
-}
 
 describe('Habits', () => {
-	it('should render without errors', () => {
-		render(
-			<MemoryRouter>
-				<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
+	const renderWithHabits = (habits: HabitData[] = []) => render(
+		<MemoryRouter>
+			<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={habits} setHabits={vi.fn()} />
+		</MemoryRouter>
+	);
+
+	it('should render without errors', () =>
+		renderWithHabits()
+	);
+
+	describe('authentication', () => {
+		const renderWithRoutes = (user: UserState) => render(
+			<MemoryRouter initialEntries={['/habits']}>
+				<Routes>
+					<Route path="/" element={'Homepage'} />
+					<Route path="/habits" element={'Habits Page'} />
+				</Routes>
+				<Habits user={user} habits={[]} setHabits={vi.fn()} />
 			</MemoryRouter>
 		);
-	});
+
+		it('should redirect user to homepage if they are not authenticated', async () => {
+			renderWithRoutes(null)
+			expect(screen.queryByText('Homepage')).toBeInTheDocument()
+		})
+
+		it('should keep user where they are if they are authenticated', async () => {
+			renderWithRoutes({ firstName: 'First', lastName: 'Last', username: 'first-last' })
+			expect(screen.queryByText('Habits Page')).toBeInTheDocument()
+		})
+	})
 
 	// or order
 	describe('sorting', () => {
+		const getSortByDropdownButton = () => screen.getByLabelText('Sort By')
+		const waitForLoadingToFinish = () => waitFor(() => expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument())
+
+		const UNSORTED_TEXT = 'Unsorted';
+		const BY_NEWEST_ENACT_TEXT = 'By Newest Enact';
+		const BY_OLDEST_ENACT_TEXT = 'By Oldest Enact';
+
+		function isTheSelectedSortingOption(textOfShouldBeActive: string) {
+			expect(within(screen.getByText(textOfShouldBeActive)).getByRole('img')).toBeInTheDocument()
+			const otherTexts = [UNSORTED_TEXT, BY_NEWEST_ENACT_TEXT, BY_OLDEST_ENACT_TEXT].filter(text => text !== textOfShouldBeActive)
+			for (const otherText of otherTexts) {
+				expect(within(screen.getByText(otherText)).queryByRole('img')).not.toBeInTheDocument()
+			}
+		}
+
 		describe('dropdown', () => {
 			it('should open when button is clicked', async () => {
 				// GIVEN the dropdown button is on the screen
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
-				const dropdownButton = screen.getByLabelText('Sort By')
+				renderWithHabits([]);
+				await waitForLoadingToFinish()
 
 				// WHEN it is clicked
-				await userEvent.click(dropdownButton)
+				await userEvent.click(getSortByDropdownButton())
 
 				// THEN the contents are visible
 				await waitFor(() => {
-					expect(screen.queryByText('By Newest Enact')).toBeVisible()
+					expect(screen.queryByText(BY_NEWEST_ENACT_TEXT)).toBeVisible()
 				})
 			});
 
 			it('should close when button is clicked while it is open', async () => {
 				// GIVEN the dropdown is open
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
-				await userEvent.click(screen.getByLabelText('Sort By'))
+				renderWithHabits([]);
+				await waitForLoadingToFinish()
+				await userEvent.click(getSortByDropdownButton())
 
 				// WHEN the dropdown button is clicked
-				await userEvent.click(screen.getByLabelText('Sort By'))
+				await userEvent.click(getSortByDropdownButton())
 
 				// THEN the contents are no longer visible
 				await waitFor(() => {
-					expect(screen.queryByText('Unsorted')).not.toBeVisible()
+					expect(screen.queryByText(UNSORTED_TEXT)).not.toBeVisible()
 				})
 			});
 
 			it('should close when option is selected while it is open', async () => {
 				// GIVEN the dropdown is open
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
-				await userEvent.click(screen.getByLabelText('Sort By'))
+				renderWithHabits([]);
+				await waitForLoadingToFinish()
+				await userEvent.click(getSortByDropdownButton())
 
 				// WHEN an option within is clicked
-				await userEvent.click(screen.getByText('Unsorted'))
+				await userEvent.click(screen.getByText(UNSORTED_TEXT))
+
 				// THEN the contents are no longer visible
 				await waitFor(() => {
-					expect(screen.queryByText('Unsorted')).not.toBeVisible()
+					expect(screen.queryByText(UNSORTED_TEXT)).not.toBeVisible()
 				})
 			});
 		})
@@ -116,18 +131,10 @@ describe('Habits', () => {
 						enactments: [now.toISOString()],
 					},
 				]
-
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={habits} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
+				renderWithHabits(habits);
 
 				// WHEN the Habits component renders the habits
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
-
+				await waitForLoadingToFinish()
 
 				// THEN the habits are rendered in the order of their creation date ascending (least to greatest, oldest to newest)
 				const firstHabitTitle = screen.getByText('First Habit');
@@ -139,38 +146,24 @@ describe('Habits', () => {
 			})
 
 			it('active sorting option should be the only option checked', async () => {
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
+				renderWithHabits([]);
 				// GIVEN the Habits component renders the dropdown
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
+				await waitForLoadingToFinish()
 
 				// WHEN the sorting options are initially viewed
-				await userEvent.click(screen.getByLabelText('Sort By'))
+				await userEvent.click(getSortByDropdownButton())
 				// THEN the default option of "Unsorted" has the checkbox beside it
-				isTheSelectedSortingOption('Unsorted')
+				isTheSelectedSortingOption(UNSORTED_TEXT)
 
-				// WHEN the "By Newest Enact" option is selected
-				await userEvent.click(screen.getByText('By Newest Enact'))
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				// THEN the option of "By Newest Enact" has the checkbox beside it
-				isTheSelectedSortingOption('By Newest Enact')
+				for (const text of [BY_NEWEST_ENACT_TEXT, BY_OLDEST_ENACT_TEXT, UNSORTED_TEXT]) {
+					// WHEN the option is selected
+					await userEvent.click(screen.getByText(text))
+					// AND the dropdown is re-opened
+					await userEvent.click(getSortByDropdownButton())
 
-				// WHEN the "By Oldest Enact" option is selected
-				await userEvent.click(screen.getByText('By Oldest Enact'))
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				// THEN the option of "By Oldest Enact" has the checkbox beside it
-				isTheSelectedSortingOption('By Oldest Enact')
-
-				// WHEN the "Unsorted" option is selected
-				await userEvent.click(screen.getByText('Unsorted'))
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				// THEN the option of "Unsorted" has the checkbox beside it
-				isTheSelectedSortingOption('Unsorted')
+					// THEN the option has the checkbox beside it
+					isTheSelectedSortingOption(text)
+				}
 			})
 
 			it('should sort from newest enacted to oldest enacted when Newest Enact is selected', async () => {
@@ -188,20 +181,14 @@ describe('Habits', () => {
 						enactments: [now.toISOString(), new Date(now.getTime() - 30000).toISOString()],
 					},
 				]
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={habits} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
+				renderWithHabits(habits);
 
 				// GIVEN the Habits component renders the habits
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
+				await waitForLoadingToFinish()
 
 				// WHEN the user changes the sort order to Newest Enact
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				await userEvent.click(screen.getByText('By Newest Enact'))
+				await userEvent.click(getSortByDropdownButton())
+				await userEvent.click(screen.getByText(BY_NEWEST_ENACT_TEXT))
 
 				// THEN the habits are rendered in the order of their most recent enactment, from newest to oldest (descending, largest to smallest)
 				const firstHabitTitle = screen.getByText('Newest Enacted');
@@ -230,20 +217,14 @@ describe('Habits', () => {
 					},
 				]
 
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={habits} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
+				renderWithHabits(habits);
 
 				// GIVEN the Habits component renders the habits
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
+				await waitForLoadingToFinish()
 
 				// WHEN the user changes the sort order to Oldest Enact
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				await userEvent.click(screen.getByText('By Oldest Enact'))
+				await userEvent.click(getSortByDropdownButton())
+				await userEvent.click(screen.getByText(BY_OLDEST_ENACT_TEXT))
 
 				// THEN the habits are rendered in the order of their most recent enactment, from oldest to newest (ascending, smallest to largest)
 				const firstHabitTitle = screen.getByText('Oldest Enacted');
@@ -272,20 +253,14 @@ describe('Habits', () => {
 					},
 				]
 
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={habits} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
+				renderWithHabits(habits);
 
 				// GIVEN the Habits component renders the habits
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
+				await waitForLoadingToFinish()
 
 				// WHEN the user changes the sort order to Newest Enact
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				await userEvent.click(screen.getByText('By Newest Enact'))
+				await userEvent.click(getSortByDropdownButton())
+				await userEvent.click(screen.getByText(BY_NEWEST_ENACT_TEXT))
 
 				// THEN the habits are rendered in the order of their most recent enactment, from newest to oldest (descending, largest to smallest)
 				let firstHabitTitle = screen.getByText('Newest Enacted');
@@ -298,8 +273,8 @@ describe('Habits', () => {
 				});
 
 				// WHEN the user changes the sort order to Unsorted
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				await userEvent.click(screen.getByText('Unsorted'))
+				await userEvent.click(getSortByDropdownButton())
+				await userEvent.click(screen.getByText(UNSORTED_TEXT))
 
 				// THEN the habits are rendered in the order of their creation date ascending (least to greatest, oldest to newest)
 				firstHabitTitle = screen.getByText('Oldest Enacted');
@@ -314,60 +289,42 @@ describe('Habits', () => {
 		})
 
 		describe('sorting by & direction storage', () => {
-			it('should store in local storage', async () => {
+			function givenLocalStorageContaining(getItemReturnValue: unknown) {
 				const localStorageMock = {
-					getItem: vi.fn().mockReturnValue(null),
+					getItem: vi.fn().mockReturnValue(getItemReturnValue),
 					setItem: vi.fn(),
-					removeItem: vi.fn(),
-					clear: vi.fn(),
 				};
 				Object.defineProperty(global, 'localStorage', {
 					value: localStorageMock,
 					configurable: true,
 				});
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
+				return localStorage.setItem
+			}
+
+			it('should store in local storage', async () => {
+				const setItem = givenLocalStorageContaining(null);
+				renderWithHabits([]);
+				await waitForLoadingToFinish()
 
 				// WHEN an option to sort is chosen
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				await userEvent.click(screen.getByText('By Newest Enact'))
+				await userEvent.click(getSortByDropdownButton())
+				await userEvent.click(screen.getByText(BY_NEWEST_ENACT_TEXT))
 
 				// THEN it is saved into local storage
-				expect(localStorageMock.setItem).toHaveBeenCalledWith('habits-sorting-by-and-direction', JSON.stringify({ by: 'LATEST_ENACTMENT', direction: 'DESC'}));
+				expect(setItem).toHaveBeenCalledWith('habits-sorting-by-and-direction', JSON.stringify({ by: 'LATEST_ENACTMENT', direction: 'DESC' }));
 			})
 
 			it('should restore from local storage', async () => {
 				// GIVEN local storage contains a sorting by & direction
-				const localStorageMock = {
-					getItem: vi.fn().mockReturnValue(JSON.stringify({ by: 'LATEST_ENACTMENT', direction: 'ASC'})),
-					setItem: vi.fn(),
-					removeItem: vi.fn(),
-					clear: vi.fn(),
-				};
-				Object.defineProperty(global, 'localStorage', {
-					value: localStorageMock,
-					configurable: true,
-				});
+				givenLocalStorageContaining(JSON.stringify({ by: 'LATEST_ENACTMENT', direction: 'ASC' }));
 
 				// WHEN the component is mounted
-				render(
-					<MemoryRouter>
-						<Habits user={{ firstName: 'First', lastName: 'Last', username: 'first-last' }} habits={[]} setHabits={vi.fn()} />
-					</MemoryRouter>
-				);
-				await waitFor(() => {
-					expect(screen.queryByText('Loading habits...')).not.toBeInTheDocument();
-				})
+				renderWithHabits([]);
+				await waitForLoadingToFinish()
 
 				// THEN it uses that sorting by & direction
-				await userEvent.click(screen.getByLabelText('Sort By'))
-				isTheSelectedSortingOption('By Oldest Enact')
+				await userEvent.click(getSortByDropdownButton())
+				isTheSelectedSortingOption(BY_OLDEST_ENACT_TEXT)
 			})
 		})
 	})
