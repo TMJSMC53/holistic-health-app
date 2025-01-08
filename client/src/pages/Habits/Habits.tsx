@@ -5,12 +5,15 @@ import {
   useCallback,
   ChangeEvent,
   FormEvent,
+  useMemo,
 } from 'react';
 import HabitItem from './HabitItem';
 import BackButton from '../../components/BackButton';
 import { HabitData } from '../../habits';
 import { UserState } from '../../main.d';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
+import { useSortingByWithDirection, getSortedHabits } from './sortingByAndDirection';
+import SortingDropdown from './SortingDropdown';
 
 type HabitsProps = {
   habits: HabitData[];
@@ -27,6 +30,9 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
 
   const [title, setTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortingByWithDirection, setSortingByWithDirection] = useSortingByWithDirection();
+
+  const sortedHabits = useMemo(() => getSortedHabits(habits, sortingByWithDirection.by, sortingByWithDirection.direction), [habits, sortingByWithDirection])
 
   const getHabits = useCallback(async () => {
     try {
@@ -168,46 +174,49 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
           </button>
         </div>
       </div>
-      <div className="dropdown" ref={dropdownRef}>
-        <button
-          className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
-          onClick={handleToggle}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Adding...' : '+ Add Habit'}
-        </button>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        {isOpen && (
-          <ul
-            tabIndex={0}
-            className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow !visible !opacity-100"
+      <div className='flex'>
+        <div className="dropdown flex-1" ref={dropdownRef}>
+          <button
+            className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
+            onClick={handleToggle}
+            disabled={isLoading}
           >
-            <li>
-              <button
-                onClick={() => handleHabitClick('🏃‍➡️ Exercise')}
-                disabled={isLoading}
-              >
-                👟 Exercise
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleHabitClick('🧘 Meditation')}>
-                🧘 Meditation
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleHabitClick('💤 Sleep')}>
-                💤 Sleep
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setIsModalOpen(true)}>Custom</button>
-            </li>
-          </ul>
-        )}
+            {isLoading ? 'Adding...' : '+ Add Habit'}
+          </button>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {isOpen && (
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow !visible !opacity-100"
+            >
+              <li>
+                <button
+                  onClick={() => handleHabitClick('🏃‍➡️ Exercise')}
+                  disabled={isLoading}
+                >
+                  👟 Exercise
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleHabitClick('🧘 Meditation')}>
+                  🧘 Meditation
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleHabitClick('💤 Sleep')}>
+                  💤 Sleep
+                </button>
+              </li>
+              <li>
+                <button onClick={() => setIsModalOpen(true)}>Custom</button>
+              </li>
+            </ul>
+          )}
+        </div>
+        <SortingDropdown sortingByWithDirection={sortingByWithDirection} setSortingByWithDirection={setSortingByWithDirection} />
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 habits-list">
-        {habits.map((habit) => (
+        {sortedHabits.map((habit) => (
           <HabitItem
             key={habit._id}
             habit={habit}
