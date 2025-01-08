@@ -339,13 +339,13 @@ describe('Habits', () => {
 				await userEvent.click(screen.getByText('By Newest Enact'))
 
 				// THEN it is saved into local storage
-				expect(localStorageMock.setItem).toHaveBeenCalledWith('habits-sorting-by-and-direction', JSON.stringify(['LATEST_ENACTMENT', 'DESC']));
+				expect(localStorageMock.setItem).toHaveBeenCalledWith('habits-sorting-by-and-direction', JSON.stringify({ by: 'LATEST_ENACTMENT', direction: 'DESC'}));
 			})
 
 			it('should restore from local storage', async () => {
 				// GIVEN local storage contains a sorting by & direction
 				const localStorageMock = {
-					getItem: vi.fn().mockReturnValue(JSON.stringify(['LATEST_ENACTMENT', 'ASC'])),
+					getItem: vi.fn().mockReturnValue(JSON.stringify({ by: 'LATEST_ENACTMENT', direction: 'ASC'})),
 					setItem: vi.fn(),
 					removeItem: vi.fn(),
 					clear: vi.fn(),
