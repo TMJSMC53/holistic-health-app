@@ -1,5 +1,5 @@
 import Habit from '../models/habit.js';
-import { startOfDay, addDays } from 'date-fns';
+
 // Helper function for error handling
 const handleError = (res, err, message = 'Server error') => {
   console.error(message, err);
@@ -18,11 +18,24 @@ const updateHabitEnactment = async (habitId, date) => {
 export const createRecordHabitEnactment = async (req, res) => {
   try {
     const habitId = req.params.id;
+    const timeZoneOffset = req.body.timeZoneOffset; // Get the user's time zone offset in minutes
 
-    // Get start of today in user's timezone from request
-    const today = startOfDay(new Date());
-    const tomorrow = addDays(today, 1);
+    // Calculate the start of the day in the user's local time zone
+    const now = new Date();
+    const localMidnight = new Date(
+      now.getTime() - now.getTimezoneOffset() * 60 * 1000
+    ); // Convert to UTC midnight
+    localMidnight.setUTCHours(0, 0, 0, 0); // Set time to midnight
+    const localTomorrowMidnight = new Date(localMidnight);
+    localTomorrowMidnight.setUTCDate(localTomorrowMidnight.getUTCDate() + 1); // Add one day for tomorrow
 
+    // Adjust the calculated midnights by the user's time zone offset
+    const today = new Date(
+      localMidnight.getTime() + timeZoneOffset * 60 * 1000
+    );
+    const tomorrow = new Date(
+      localTomorrowMidnight.getTime() + timeZoneOffset * 60 * 1000
+    );
     // Get the current habit
     const habit = await Habit.findById(habitId);
 

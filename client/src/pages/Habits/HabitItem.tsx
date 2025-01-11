@@ -99,6 +99,8 @@ const HabitItem = ({
     addSuffix: true,
   });
 
+  const timeZoneOffset = new Date().getTimezoneOffset();
+
   async function handleEnactmentsCreation(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     setError(null);
@@ -108,6 +110,9 @@ const HabitItem = ({
       const response = await fetch(`/api/habits/${habit._id}/enactments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          timeZoneOffset: timeZoneOffset,
+        }),
       });
 
       const data = await response.json();
