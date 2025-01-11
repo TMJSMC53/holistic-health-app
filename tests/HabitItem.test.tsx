@@ -13,12 +13,18 @@ export const mockHabit = {
   enactments: ['2024-12-27T10:00:00Z'],
 };
 
+const mockUpdateHabitTitle = vi.fn();
+
 describe('HabitItem', () => {
   it('should render the HabitItem component without errors', async () => {
     const mockSetHabit = vi.fn();
     render(
       <MemoryRouter>
-        <HabitItem habit={mockHabit} setHabit={mockSetHabit} />
+        <HabitItem
+          habit={mockHabit}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
 
@@ -49,7 +55,11 @@ describe('HabitItem', () => {
 
     render(
       <MemoryRouter>
-        <HabitItem habit={mockHabit} setHabit={mockSetHabit} />
+        <HabitItem
+          habit={mockHabit}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
 
@@ -75,7 +85,11 @@ describe('HabitItem', () => {
 
     render(
       <MemoryRouter>
-        <HabitItem habit={mockHabit} setHabit={mockSetHabit} />
+        <HabitItem
+          habit={mockHabit}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
 
@@ -98,7 +112,11 @@ describe('HabitItem', () => {
 
     render(
       <MemoryRouter>
-        <HabitItem habit={habitWithTodayEnactment} setHabit={mockSetHabit} />
+        <HabitItem
+          habit={habitWithTodayEnactment}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
 
@@ -125,7 +143,11 @@ describe('HabitItem', () => {
 
     render(
       <MemoryRouter>
-        <HabitItem habit={habitWithTodayEnactment} setHabit={mockSetHabit} />
+        <HabitItem
+          habit={habitWithTodayEnactment}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
 
@@ -148,7 +170,11 @@ describe('HabitItem', () => {
           <Route path="/habit/Test Habit" element={'Habits'} />
           <Route path="/wherever" element={'Wherever'} />
         </Routes>
-        <HabitItem habit={mockHabit} setHabit={mockSetHabit} />
+        <HabitItem
+          habit={mockHabit}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
       </MemoryRouter>
     );
 

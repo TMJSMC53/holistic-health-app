@@ -114,6 +114,21 @@ const Habit = ({ habits, user }: HabitProps) => {
 
   const [clapVisible, setClapVisible] = useState(false);
 
+  const updateHabitTitle = (id: string, title: string) => {
+    // GIVEN an id of a habit that exists in the habits array
+    const foundHabitToUpdate = {
+      // create a copy of the habits array
+      ...habits.filter((habit) => {
+        if (habit._id === id) {
+          return true;
+        }
+      })[0],
+    };
+    // GIVEN the new title you want to update add it to setHabits
+    foundHabitToUpdate.title = title;
+    setHabit(foundHabitToUpdate);
+  };
+
   useEffect(() => {
     // Recalculate maxStreak when `habit.enactments` changes
     setMaxStreak(calculateMaxStreak(habit?.enactments || []));
@@ -254,7 +269,13 @@ const Habit = ({ habits, user }: HabitProps) => {
               {habit?.title} habit
             </div>
             <div className="flex items-center gap-2">
-              {habit && <HabitUpdateForm habit={habit} isOnHabitPage={true} />}
+              {habit && (
+                <HabitUpdateForm
+                  habit={habit}
+                  isOnHabitPage={true}
+                  updateHabitTitle={updateHabitTitle}
+                />
+              )}
               {habit && <HabitDeleteForm habit={habit} />}
             </div>
 
