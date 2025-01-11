@@ -99,19 +99,23 @@ const HabitItem = ({
     addSuffix: true,
   });
 
-  const timeZoneOffset = new Date().getTimezoneOffset();
-
   async function handleEnactmentsCreation(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     setError(null);
     setIsRecording(true);
 
     try {
+      // Get current timestamp in user's local timezone
+      const localDate = new Date();
+      const timeZoneOffset = localDate.getTimezoneOffset();
+      const userTimestamp = localDate.toISOString();
+
       const response = await fetch(`/api/habits/${habit._id}/enactments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           timeZoneOffset: timeZoneOffset,
+          timestamp: userTimestamp,
         }),
       });
 

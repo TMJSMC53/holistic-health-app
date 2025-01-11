@@ -18,31 +18,36 @@ const updateHabitEnactment = async (habitId, date) => {
 export const createRecordHabitEnactment = async (req, res) => {
   try {
     const habitId = req.params.id;
-    const timeZoneOffset = req.body.timeZoneOffset; // Get the user's time zone offset in minutes
+    const timeZoneOffset = req.body.timeZoneOffset;
+    const userTimestamp = new Date(req.body.timestamp);
 
-    // Calculate the start of the day in the user's local time zone
-    const now = new Date();
-    const localMidnight = new Date(
-      now.getTime() - now.getTimezoneOffset() * 60 * 1000
-    ); // Convert to UTC midnight
-    localMidnight.setUTCHours(0, 0, 0, 0); // Set time to midnight
-    const localTomorrowMidnight = new Date(localMidnight);
-    localTomorrowMidnight.setUTCDate(localTomorrowMidnight.getUTCDate() + 1); // Add one day for tomorrow
+    // Calculate start and end of the user's local day
+    const userLocalDate = new Date(
+      userTimestamp.getTime() - timeZoneOffset * 60 * 1000
+    );
+    const startOfDay = new Date(userLocalDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setDate(endOfDay.getDate() + 1);
 
-    // Adjust the calculated midnights by the user's time zone offset
-    const today = new Date(
-      localMidnight.getTime() + timeZoneOffset * 60 * 1000
+    // Convert back to UTC for database comparison
+    const startOfDayUTC = new Date(
+      startOfDay.getTime() + timeZoneOffset * 60 * 1000
     );
-    const tomorrow = new Date(
-      localTomorrowMidnight.getTime() + timeZoneOffset * 60 * 1000
+    const endOfDayUTC = new Date(
+      endOfDay.getTime() + timeZoneOffset * 60 * 1000
     );
+
     // Get the current habit
     const habit = await Habit.findById(habitId);
+    if (!habit) {
+      return res.status(404).json({ message: 'Habit not found' });
+    }
 
-    // Check if there's already an enactment for today
+    // Check if there's already an enactment for today in user's local time
     const hasEnactmentToday = habit.enactments.some((enactment) => {
       const enactmentDate = new Date(enactment);
-      return enactmentDate >= today && enactmentDate < tomorrow;
+      return enactmentDate >= startOfDayUTC && enactmentDate < endOfDayUTC;
     });
 
     if (hasEnactmentToday) {
@@ -51,7 +56,6 @@ export const createRecordHabitEnactment = async (req, res) => {
         habit: habit,
       });
     }
-
     // Add the new enactment with the current timestamp (not just date)
     const updatedHabit = await Habit.findByIdAndUpdate(
       habitId,
