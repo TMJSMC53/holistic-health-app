@@ -255,6 +255,16 @@ const Habit = ({ habits, user }: HabitProps) => {
     }
   }
 
+  // Helper Function to Remove Emoji from Record Button
+  const removeEmojiFromRecordBtn = (str: string) => {
+    return str
+      .replace(
+        /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g,
+        ''
+      )
+      .trim();
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -314,7 +324,9 @@ const Habit = ({ habits, user }: HabitProps) => {
                 onClick={handleEnactmentsCreation}
                 disabled={isRecording}
               >
-                {isRecording ? 'Recording...' : `Record ${habit?.title}`}
+                {isRecording
+                  ? 'Recording...'
+                  : `Record ${removeEmojiFromRecordBtn(habit?.title ?? '')}`}
               </button>
               {showPlusOne && (
                 <div className="relative">
