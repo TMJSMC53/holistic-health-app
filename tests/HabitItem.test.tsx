@@ -16,6 +16,53 @@ export const mockHabit = {
 const mockUpdateHabitTitle = vi.fn();
 
 describe('HabitItem', () => {
+  it('should show the streak of 1 when the user creates a habit ', () => {
+    const mockSetHabit = vi.fn();
+    // GIVEN the user created enactment
+    const mockHabitWithStreak = {
+      _id: '12345',
+      title: 'Test Habit',
+      enactments: [new Date().toISOString()],
+    };
+    // WHEN the component renders
+    render(
+      <MemoryRouter>
+        <HabitItem
+          habit={mockHabitWithStreak}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
+      </MemoryRouter>
+    );
+    // THEN the streak should be 1
+    expect(screen.getByText(/Current streak: 1/)).toBeInTheDocument();
+  });
+  it('should update the streak by 1 when the user records an enactments 2 consecutive days ', () => {
+    const mockSetHabit = vi.fn();
+    // GIVEN the users enactments are recorded one day apart
+    const now = new Date();
+    console.log('NOW', now);
+    const mockHabitWithStreakOf2 = {
+      _id: '12345',
+      title: 'Test Habit',
+      enactments: [
+        new Date(now.getTime() - 86400000).toISOString(),
+        now.toISOString(),
+      ],
+    };
+    // WHEN the component renders
+    render(
+      <MemoryRouter>
+        <HabitItem
+          habit={mockHabitWithStreakOf2}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
+      </MemoryRouter>
+    );
+    // THEN the streak should be 2
+    expect(screen.getByText(/Current streak: 2/)).toBeInTheDocument();
+  });
   it('should render the HabitItem component without errors', async () => {
     const mockSetHabit = vi.fn();
     render(
@@ -29,10 +76,48 @@ describe('HabitItem', () => {
     );
 
     expect(screen.getByText('Test Habit')).toBeInTheDocument();
-    expect(screen.getByText(/Current streak:/)).toBeInTheDocument();
+    expect(screen.getByText(/Current streak: 0/)).toBeInTheDocument();
     expect(screen.getByText(/Last recorded:/)).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /Record Test Habit/i })
+    ).toBeInTheDocument();
+  });
+  it('should show an error message when the tries to record another enactment in the same day', async () => {
+    // GIVEN there is an enactment already recorded in the day
+    const recordedHabit = {
+      _id: '12345',
+      title: 'Test Habit',
+      enactments: [new Date().toISOString()],
+    };
+    const mockSetHabit = vi.fn();
+    // GIVEN the server responds with status code of 400, message, habit
+    server.use(
+      http.post('/api/habits/:habitId/enactments', async () => {
+        return HttpResponse.json(
+          { message: 'Habit already recorded for today', habit: recordedHabit },
+          { status: 400 }
+        );
+      })
+    );
+
+    // GIVEN the component renders
+    render(
+      <MemoryRouter>
+        <HabitItem
+          habit={recordedHabit}
+          setHabit={mockSetHabit}
+          updateHabitTitle={mockUpdateHabitTitle}
+        />
+      </MemoryRouter>
+    );
+
+    // WHEN the user clicks on the record enactment button a second time in the same day
+    const recordEnactmentBtn = screen.getByText('Record Test Habit');
+    await userEvent.click(recordEnactmentBtn);
+
+    // THEN the user receives on error message 'Habit already recorded for today'
+    expect(
+      screen.getByText('Habit already recorded for today')
     ).toBeInTheDocument();
   });
   it('should handle recording a habit correctly', async () => {
