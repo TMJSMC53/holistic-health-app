@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import { http, HttpResponse } from 'msw';
 
 // Mock the API response for '/api/daily-quotes'

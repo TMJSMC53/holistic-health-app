@@ -4,7 +4,11 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    coverage: { provider: 'v8', reporter: ['text-summary', 'html'] },
+    coverage: {
+      provider: 'v8',
+      reporter: ['text-summary', 'html'],
+      reportOnFailure: true,
+    },
     setupFiles: './tests/setupTests.ts',
   },
 });
