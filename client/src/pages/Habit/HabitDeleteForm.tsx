@@ -59,11 +59,7 @@ const HabitDeleteForm = ({ habit }: { habit: Habits }) => {
         {/* </label> */}
       </div>
       {isModalOpen && (
-        <div
-          className={`modal ${isModalOpen ? 'modal-open' : ''}`}
-          role="dialog"
-          aria-modal="true"
-        >
+        <div className={`modal modal-open `} role="dialog" aria-modal="true">
           <div className="modal-box h-50 md:w-96 overflow-y-hidden px-4">
             <h3 className="text-14 md:text-18 text-primary-600 font-semibold font-poppins mb-10">
               Confirm Delete

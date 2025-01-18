@@ -10,8 +10,6 @@ export interface Habits {
   enactments: string[];
 }
 function countCurrentStreak(dates: string[]): number {
-  if (!dates || !dates.length) return 0;
-
   const uniqueDates = [
     ...new Set(dates.map((date) => startOfDay(new Date(date)).toISOString())),
   ]
