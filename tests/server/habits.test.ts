@@ -54,7 +54,7 @@ describe('when creating a habit', () => {
     const habit = await habitResponse.json();
 
     // Convert received enactments to local time strings for comparison
-    const receivedEnactments = habit.enactments.map((date: any) =>
+    const receivedEnactments = habit.enactments.map((date: string) =>
       new Date(date).toISOString()
     );
 
