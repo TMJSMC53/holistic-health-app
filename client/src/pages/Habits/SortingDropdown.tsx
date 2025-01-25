@@ -37,7 +37,7 @@ export default function SortingDropdown({ sortingByWithDirection, setSortingByWi
 		<details className="dropdown dropdown-end mx-4 self-end">
 			<summary className="marker:content-none cursor-pointer" aria-label='Sort By'><DownUpSVG /></summary>
 			<ul className="menu dropdown-content bg-slate-50 rounded-box z-[1] w-52 p-2 shadow gap-1">
-				<li className='text-gray-500'>
+				<li className='text-primary-600 font-bold'>
 					Sort
 				</li>
 				<li>
