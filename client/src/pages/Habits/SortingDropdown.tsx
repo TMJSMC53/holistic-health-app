@@ -23,13 +23,7 @@ function SortingOptionButton({ onClick, by, direction, activeByAndDirection, chi
 	)
 }
 
-type SortingDropdownProps = {
-	sortingByWithDirection: SortingByWithDirection,
-	setSortingByWithDirection: SetSortingByWithDirection
-}
-export default function SortingDropdown({ sortingByWithDirection, setSortingByWithDirection }: SortingDropdownProps) {
-	const dropdownRef = useRef<HTMLDetailsElement>(null)
-
+const useDropdownCloseOnOutsideClick = (dropdownRef: React.RefObject<HTMLDetailsElement>) => {
 	useEffect(() => {
 		const controller = new AbortController();
 
@@ -40,10 +34,20 @@ export default function SortingDropdown({ sortingByWithDirection, setSortingByWi
 		}, { signal: controller.signal });
 
 		return () => controller.abort();
-	}, []);
+	}, [dropdownRef]);
+}
 
-	const handleSortOptionClick = useCallback((e: React.MouseEvent, by: SortBy, direction: SortDirection) => {
-		e.currentTarget.closest('details')?.removeAttribute('open');
+type SortingDropdownProps = {
+	sortingByWithDirection: SortingByWithDirection,
+	setSortingByWithDirection: SetSortingByWithDirection
+}
+export default function SortingDropdown({ sortingByWithDirection, setSortingByWithDirection }: SortingDropdownProps) {
+	const dropdownRef = useRef<HTMLDetailsElement>(null);
+
+	useDropdownCloseOnOutsideClick(dropdownRef);
+
+	const handleSortOptionClick = useCallback((_: React.MouseEvent, by: SortBy, direction: SortDirection) => {
+		dropdownRef.current?.removeAttribute('open');
 		setSortingByWithDirection({ by, direction })
 	}, [setSortingByWithDirection])
 
