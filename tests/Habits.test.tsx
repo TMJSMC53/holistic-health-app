@@ -112,6 +112,21 @@ describe('Habits', () => {
 					expect(screen.queryByText(UNSORTED_TEXT)).not.toBeVisible()
 				})
 			});
+
+			it('should close when the user clicks outside', async () => {
+				// GIVEN the dropdown is open
+				renderWithHabits([]);
+				await waitForLoadingToFinish()
+				await userEvent.click(getSortByDropdownButton())
+
+				// WHEN something outside of the dropdown is clicked
+				await userEvent.click(screen.getByText('+ Add Habit'));
+
+				// THEN the contents are no longer visible
+				await waitFor(() => {
+					expect(screen.queryByText(UNSORTED_TEXT)).not.toBeVisible()
+				})
+			})
 		})
 
 		describe('order', () => {

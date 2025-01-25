@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useMemo } from "react";
+import { ReactNode, useCallback, useMemo, useRef, useEffect } from "react";
 import DownUpSVG from "./DownUpSVG";
 import CheckboxSVG from "./CheckboxSVG";
 import type { SetSortingByWithDirection, SortBy, SortDirection, SortingByWithDirection } from "./sortingByAndDirection";
@@ -28,13 +28,27 @@ type SortingDropdownProps = {
 	setSortingByWithDirection: SetSortingByWithDirection
 }
 export default function SortingDropdown({ sortingByWithDirection, setSortingByWithDirection }: SortingDropdownProps) {
+	const dropdownRef = useRef<HTMLDetailsElement>(null)
+
+	useEffect(() => {
+		const controller = new AbortController();
+
+		document.addEventListener('click', (e) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(e.target as HTMLElement)) {
+				dropdownRef.current!.removeAttribute('open');
+			}
+		}, { signal: controller.signal });
+
+		return () => controller.abort();
+	}, []);
+
 	const handleSortOptionClick = useCallback((e: React.MouseEvent, by: SortBy, direction: SortDirection) => {
 		e.currentTarget.closest('details')?.removeAttribute('open');
 		setSortingByWithDirection({ by, direction })
 	}, [setSortingByWithDirection])
 
 	return (
-		<details className="dropdown dropdown-end mx-4 self-end">
+		<details ref={dropdownRef} className="dropdown dropdown-end mx-4 self-end">
 			<summary className="marker:content-none cursor-pointer" aria-label='Sort By'><DownUpSVG /></summary>
 			<ul className="menu dropdown-content bg-slate-200 rounded-box z-[1] w-52 p-2 shadow gap-1">
 				<li className='text-primary-600 font-bold'>
