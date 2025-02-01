@@ -107,7 +107,11 @@ export const createHabit = async (req, res) => {
 };
 
 export const getHabits = async (req, res) => {
-  if (!req.user || !req.user.id) return;
+  if (!req.user || !req.user.id) {
+    return res.status(500).json({
+      message: 'User not logged in',
+    });
+  }
   try {
     const getHabitsList = await Habit.find({ user_id: req.user.id });
 

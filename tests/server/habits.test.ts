@@ -93,4 +93,67 @@ describe('when creating a habit', () => {
     const habits = await habitsResponse.json();
     expect(habits).toStrictEqual([habit]);
   });
+
+  it('should return an error message if the user is NOT logged in', async () => {
+    // WHEN the user is NOT logged in
+    const habitsResponse = await fetch(getBaseURL() + '/api/habits', {
+      headers: {
+        // Cookie,
+      },
+    });
+
+    // THEN the status code is 500
+    expect(habitsResponse.status).toBe(500);
+
+    // THEN the error message should appear
+    const error = await habitsResponse.json();
+    expect(error.message).toBe('User not logged in');
+  });
+  it('should return a 409 status if a habit already exits', async () => {
+    // GIVEN the user has created a habit
+    const enactmentDate = ['2025-01-02T17:30:15'];
+    await createHabit('Exercise', enactmentDate);
+
+    // WHEN the user calls the get habits endpoint
+    const duplicateResponse = await fetch(getBaseURL() + '/api/habits', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie,
+      },
+      body: JSON.stringify({
+        title: 'Exercise',
+        enactmentDate,
+      }),
+    });
+
+    // THEN the status code is 409
+    expect(duplicateResponse.status).toBe(409);
+
+    // THEN the error message should appear
+    const error = await duplicateResponse.json();
+    expect(error.message).toBe('Habit already exists');
+  });
+
+  it('should handle server error when creating a habit', async () => {
+    // WHEN the information is not provided
+    const response = await fetch(getBaseURL() + '/api/habits', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie,
+      },
+      body: JSON.stringify({
+        title: '',
+        enactmentDate: null,
+      }),
+    });
+
+    // THEN the response status should be 500
+    expect(response.status).toBe(500);
+
+    // AND the error message should match
+    const error = await response.json();
+    expect(error.message).toBe('Error creating habit');
+  });
 });
