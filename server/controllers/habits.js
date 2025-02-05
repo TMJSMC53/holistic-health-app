@@ -147,7 +147,9 @@ export const deleteHabit = async (req, res) => {
     const deleteHabit = await Habit.findByIdAndDelete(id);
 
     if (!deleteHabit) {
-      return res.status(404).send(`Entry with id: ${id} not found`);
+      return res.status(404).json({
+        message: `Entry with id: ${id} not found`,
+      });
     }
     res.status(204).send();
   } catch (err) {

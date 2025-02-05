@@ -156,4 +156,43 @@ describe('when creating a habit', () => {
     const error = await response.json();
     expect(error.message).toBe('Error creating habit');
   });
+
+  it('should handle DELETE habit api request ', async () => {
+    const habitResponse = await createHabit('Test Habit', [
+      '2025-01-02T17:30:15',
+    ]);
+    const habit = await habitResponse.json();
+    const habitId = habit._id;
+    // WHEN the DELETE api request is made
+    const response = await fetch(getBaseURL() + `/api/habits/${habitId}`, {
+      method: 'DELETE',
+      headers: {
+        Cookie,
+      },
+    });
+
+    // THEN the response status should be 204
+    expect(response.status).toBe(204);
+  });
+  it('should return 404 when deleting non-existent habit', async () => {
+    // WHEN trying to delete a non-existent habit
+    const nonexistentId = '507f1f77bcf86cd799439011';
+    const response = await fetch(
+      getBaseURL() + `/api/habits/${nonexistentId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie,
+        },
+      }
+    );
+
+    // THEN the response status should be 404
+    expect(response.status).toBe(404);
+
+    // AND the error message should match
+    const error = await response.json();
+    expect(error.message).toBe(`Entry with id: ${nonexistentId} not found`);
+  });
 });
