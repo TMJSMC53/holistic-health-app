@@ -2,6 +2,7 @@ import { UserState, SetUser } from '../main.d';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Logout from './Logout';
+import WebsiteVersion from './WebsiteVersion';
 
 type NavbarProps = {
   user: UserState;
@@ -48,6 +49,18 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
           <div className="w-full navbar">
+            <div className="flex-1 px-2 mx-2">
+              <div className="mr-8">
+                <WebsiteVersion />
+              </div>
+              <img
+                className="block max-w-full rounded-full w-20 h-20"
+                src="/images/HH_logo_nav.jpeg"
+                alt="Navbar Holistic Health Logo"
+              />
+            </div>
+
+            {/* Moved hamburger menu here */}
             <div className="flex-none lg:hidden">
               <label
                 htmlFor="my-drawer-3"
@@ -69,13 +82,7 @@ const Navbar = ({ user, setUser }: NavbarProps) => {
                 </svg>
               </label>
             </div>
-            <div className="flex-1 px-2 mx-2">
-              <img
-                className="block max-w-full rounded-full w-20 h-20"
-                src="/images/HH_logo_nav.jpeg"
-                alt="Navbar Holistic Health Logo"
-              />
-            </div>
+
             <div className="flex-none hidden lg:block">
               <ul className="menu menu-horizontal text-primary-600 font-poppins">
                 {/* Navbar menu content here */}
