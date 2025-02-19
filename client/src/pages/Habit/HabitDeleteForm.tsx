@@ -84,6 +84,7 @@ const HabitDeleteForm = ({ habit }: { habit: Habits }) => {
                     // htmlFor="modalToggle"
                     className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
                     onClick={handleModalToggle}
+                    type="button"
                   >
                     Cancel
                   </button>
