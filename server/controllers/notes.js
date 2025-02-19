@@ -1,5 +1,11 @@
 import Note from '../models/note.js';
 
+// Helper function for error handling
+const handleError = (res, err, message = 'Server error') => {
+  console.error(message, err);
+  return res.status(500).json({ message });
+};
+
 // Create a new Note
 export const createNote = async (req, res) => {
   const newNote = new Note({
@@ -29,7 +35,7 @@ export const getNotes = async (req, res) => {
     });
     res.status(200).json(getNotes);
   } catch (err) {
-    if (err) return res.status(500).send(err);
+    handleError(res, err, 'User not logged in');
   }
 };
 
@@ -64,7 +70,9 @@ export const deleteNote = async (req, res) => {
     const deleteNote = await Note.findByIdAndDelete(id);
 
     if (!deleteNote) {
-      return res.status(404).send(`Entry with id: ${id} not found`);
+      return res
+        .status(404)
+        .json({ message: `Entry with id: ${id} not found` });
     }
     res.status(204).send();
   } catch (err) {
