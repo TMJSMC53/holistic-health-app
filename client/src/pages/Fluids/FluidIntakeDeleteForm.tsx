@@ -4,27 +4,42 @@ import { Fluid } from './FluidIntakeLog';
 
 const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleModalToggle = () => {
     if (isModalOpen) {
       setIsModalOpen(false);
+      setError(null);
     } else {
       window.history.pushState(null, '', window.location.pathname);
       setIsModalOpen(true);
     }
   };
 
-  async function handleDelete() {
+  async function handleDelete(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
     try {
-      await fetch(`/api/fluidIntakes/${fluid._id}`, {
+      const response = await fetch(`/api/fluidIntakes/${fluid._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      setIsModalOpen(false);
-      window.location.reload();
+
+      if (response.status === 404) {
+        setError('Fluid has already been deleted');
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Failed to delete fluid');
+      }
+      // setIsModalOpen(false);
+
+      window.location.href = '/fluids';
     } catch (error) {
+      setError('Fluid has already been deleted');
       console.error('Error:', error);
     }
   }
@@ -34,6 +49,7 @@ const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
     const onBackArrow = () => {
       if (isModalOpen) {
         setIsModalOpen(false);
+        setError(null);
       }
     };
 
@@ -51,7 +67,11 @@ const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
           htmlFor="deleteButton"
           className="btn bg-transparent border-0 shadow-transparent hover:bg-transparent"
         >
-          <button id="deleteButton" onClick={handleModalToggle}>
+          <button
+            id="deleteButton"
+            onClick={handleModalToggle}
+            aria-label="Delete Fluid Icon"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -70,50 +90,57 @@ const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
         </label>
       </div>
 
-      <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
-        <div className="modal-box h-50 md:w-96 overflow-y-hidden px-4">
-          <h3 className="text-14 md:text-18 text-primary-600 font-semibold font-poppins mb-10">
-            Confirm Delete
-          </h3>
+      {isModalOpen && (
+        <div className="modal modal-open" role="dialog" aria-modal="true">
+          <div className="modal-box h-50 md:w-96 overflow-y-hidden px-4">
+            <h3 className="text-14 md:text-18 text-primary-600 font-semibold font-poppins mb-10">
+              Confirm Delete
+            </h3>
 
-          <form onSubmit={handleDelete}>
-            <div className="relative flex">
-              <label
-                className="text-16 text-center text-primary-600 font-poppins font-semibold w-full"
-                htmlFor="fluidType"
-              >
-                Are you sure you want to delete this?
-              </label>
-              <div className="absolute inset-0">
-                <div className="absolute inset-x-0 mt-[-10px] h-0.5 bg-gray-100" />
-                <div className="absolute inset-x-0 bottom-0 top-7 h-0.5 bg-gray-100" />
-              </div>
-            </div>
-            <section className="flex justify-between mt-10">
-              <div className="modal-action mt-0">
+            <form onSubmit={handleDelete}>
+              <div className="relative flex flex-col">
                 <label
-                  htmlFor="modalToggle"
-                  className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
-                  onClick={handleModalToggle}
+                  className="text-16 text-center text-primary-600 font-poppins font-semibold w-full"
+                  htmlFor="fluidType"
                 >
-                  Cancel
+                  Are you sure you want to delete this?
                 </label>
+                {error && (
+                  <p className="text-red-500 text-sm mt-4 text-center z-10">
+                    {error}
+                  </p>
+                )}
+                <div className="absolute inset-0">
+                  <div className="absolute inset-x-0 mt-[-10px] h-0.5 bg-gray-100" />
+                  <div className="absolute inset-x-0 bottom-0 top-7 h-0.5 bg-gray-100" />
+                </div>
               </div>
-              <button
-                className="btn bg-primary-700 text-accents-100 hover:bg-primary-700"
-                type="submit"
-              >
-                Delete
-              </button>
-            </section>
-          </form>
+              <section className="flex justify-between mt-10">
+                <div className="modal-action mt-0">
+                  <label
+                    htmlFor="modalToggle"
+                    className="btn bg-primary-600 hover:bg-primary-600 text-accents-100 "
+                    onClick={handleModalToggle}
+                  >
+                    Cancel
+                  </label>
+                </div>
+                <button
+                  className="btn bg-primary-700 text-accents-100 hover:bg-primary-700"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              </section>
+            </form>
+          </div>
+          <div className="modal-backdrop">
+            <button type="button" onClick={() => setIsModalOpen(false)}>
+              Close
+            </button>
+          </div>
         </div>
-        <div className="modal-backdrop">
-          <button type="button" onClick={() => setIsModalOpen(false)}>
-            Close
-          </button>
-        </div>
-      </div>
+      )}
     </>
   );
 };
