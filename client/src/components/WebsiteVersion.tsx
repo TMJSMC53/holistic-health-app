@@ -1,5 +1,4 @@
 const WebsiteVersion = () => {
-  console.log('Version:', import.meta.env.VITE_APP_VERSION);
   return (
     <>
       <a
