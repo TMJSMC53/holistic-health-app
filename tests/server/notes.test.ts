@@ -139,6 +139,90 @@ describe('notes controller', () => {
       expect(error.message).toBe('User not logged in');
     });
   });
+
+  describe('updateNote', () => {
+    it('should update the current note', async () => {
+      // GIVEN there is a note
+      const noteResponse = await createNote(
+        'Test title',
+        'primary-400',
+        'I like blue',
+        'colors'
+      );
+      expect(noteResponse.status).toBe(201);
+      const note = await noteResponse.json();
+      const noteId = note._id;
+
+      // WHEN the PUT api request is made
+      const updatedNoteResponse = await fetch(
+        getBaseURL() + `/api/notes/${noteId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie,
+          },
+          body: JSON.stringify({
+            title: 'New Title',
+            note: 'I like blue',
+            color: 'primary-400',
+            tag: 'colors',
+          }),
+        }
+      );
+
+      // THEN an item in the note is updated
+      expect(updatedNoteResponse.status).toBe(200);
+      const updatedNoteTitle = await updatedNoteResponse.json();
+      expect(updatedNoteTitle.title).toBe('New Title');
+    });
+    it('should return a 404 error message if the note you are trying to update does not exist', async () => {
+      const nonExistentNoteId = '507f1f77bcf86cd799439011';
+
+      // WHEN the note you're trying to update does not exist
+      const updatedNoteResponse = await fetch(
+        getBaseURL() + `/api/notes/${nonExistentNoteId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie,
+          },
+          body: JSON.stringify({
+            title: 'New Title',
+          }),
+        }
+      );
+
+      // THEN return a 404 error message if the note you're trying to update does not exist
+      expect(updatedNoteResponse.status).toBe(404);
+
+      // THEN return the Note not found error message
+      const error = await updatedNoteResponse.json();
+      expect(error.message).toBe('Note not found');
+    });
+    it('should return 500 if the id does not match the MONGODB pattern', async () => {
+      const nonExistentNoteId = '12345';
+
+      // WHEN the note id you're trying to update is not MONGODB pattern
+      const updateNoteResponse = await fetch(
+        getBaseURL() + `/api/notes/${nonExistentNoteId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie,
+          },
+          body: JSON.stringify({
+            title: 'New Title',
+          }),
+        }
+      );
+
+      // THEN return the status of 500
+      expect(updateNoteResponse.status).toBe(500);
+    });
+  });
   describe('deleteNote', () => {
     it('should handle DELETE note api request', async () => {
       const noteResponse = await createNote(
