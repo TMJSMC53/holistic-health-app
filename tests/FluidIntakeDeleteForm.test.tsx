@@ -5,7 +5,6 @@ import FluidIntakeDeleteForm from '../client/src/pages/Fluids/FluidIntakeDeleteF
 import { http, HttpResponse } from 'msw';
 import userEvent from '@testing-library/user-event';
 import { server } from '../mocks/node';
-import { vi } from 'vitest';
 
 const mockFluid = {
   _id: '12345',
@@ -21,19 +20,6 @@ const openTheModal = async () => {
 };
 
 describe('FluidIntakeDeleteForm', () => {
-  let consoleSpy: any;
-
-  beforeEach(() => {
-    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    consoleSpy.mockClear();
-  });
-
-  afterAll(() => {
-    consoleSpy.mockRestore();
-  });
   it('should render the FluidIntakeDeleteForm component without errors', async () => {
     render(
       <MemoryRouter>
@@ -120,7 +106,10 @@ describe('FluidIntakeDeleteForm', () => {
 
     server.use(
       http.delete(`/api/fluidIntakes/${mockFluid._id}`, () => {
-        throw new Error('Network error');
+        return HttpResponse.json(
+          { message: 'Fluid has already been deleted' },
+          { status: 404 }
+        );
       })
     );
 
@@ -144,11 +133,36 @@ describe('FluidIntakeDeleteForm', () => {
 
     // AND the modal should still be open
     expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+  it('should show error message if the server is down', async () => {
+    // GIVEN the backend returns a  error
 
-    // AND the error should be logged to console
-    await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalled();
-    });
+    server.use(
+      http.delete(`/api/fluidIntakes/${mockFluid._id}`, () => {
+        throw new Error('Network Error');
+      })
+    );
+
+    render(
+      <MemoryRouter>
+        <FluidIntakeDeleteForm fluid={mockFluid} />
+      </MemoryRouter>
+    );
+
+    await openTheModal();
+
+    // AND the delete button is clicked
+    const deleteButton = screen.getByRole('button', { name: 'Delete' });
+    await userEvent.click(deleteButton);
+
+    // THEN the error message is shown
+    const errorMessage = await screen.findByText(
+      /Could not connect to server/i
+    );
+    expect(errorMessage).toBeInTheDocument();
+
+    // AND the modal should still be open
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
   it('should render a 404', async () => {
     server.use(

@@ -35,11 +35,10 @@ const FluidIntakeDeleteForm = ({ fluid }: { fluid: Fluid }) => {
       if (!response.ok) {
         throw new Error('Failed to delete fluid');
       }
-      // setIsModalOpen(false);
 
       window.location.href = '/fluids';
     } catch (error) {
-      setError('Fluid has already been deleted');
+      setError('Could not connect to server');
       console.error('Error:', error);
     }
   }
