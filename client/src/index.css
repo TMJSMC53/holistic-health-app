@@ -112,6 +112,37 @@ body {
   display: none;
 }
 
+/* Animation for dropdown menu with right-to-left opening and left-to-right closing */
+.menu-slide-in {
+  animation: slideInRightToLeft 0.3s ease-out forwards;
+}
+
+.menu-slide-out {
+  animation: slideOutLeftToRight 0.3s ease-in forwards;
+}
+
+@keyframes slideInRightToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px); /* Start from right */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeftToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px); /* End at right */
+  }
+}
+
 @media (max-width: 1024px) {
   .backButtonToggle {
     display: block;
