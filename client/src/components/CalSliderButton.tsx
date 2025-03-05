@@ -36,7 +36,12 @@ const CalSliderButton = () => {
 
   return (
     <div ref={dropdownRef} className="relative">
-      <button onClick={toggleDropdown} className="mx-4">
+      <button
+        data-testid="button-id"
+        type="button"
+        onClick={toggleDropdown}
+        className="mx-4"
+      >
         📅 Cal
       </button>
 
@@ -45,9 +50,7 @@ const CalSliderButton = () => {
           className={`fixed w-60 right-24 mt-6 md:absolute md:right-24 md:mt-4 md:w-52 bg-base-100 rounded-box z-[1] p-2 shadow ${animationClass}`}
         >
           <ul>
-            <li className="p-2 hover:bg-gray-100 rounded-md">
-              <a href="#">Item 1</a>
-            </li>
+            <li className="p-2 hover:bg-gray-100 rounded-md">Item 1</li>
             <li className="p-2 hover:bg-gray-100 rounded-md">
               <a href="#">Item 2</a>
             </li>
