@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import useClickOutside from '../hooks/useClickOutside';
+import HabitsCalendar from './HabitsCalendar';
 
 const CalSliderButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,14 +48,9 @@ const CalSliderButton = () => {
 
       {isOpen && (
         <div
-          className={`fixed w-60 right-24 mt-6 md:absolute md:right-24 md:mt-4 md:w-52 bg-base-100 rounded-box z-[1] p-2 shadow ${animationClass}`}
+          className={`fixed w-68 right-4 mt-6 ml-4 md:absolute md:right-16 md:mt-2 md:w-68 bg-base-100 rounded-lg z-[1] shadow ${animationClass}`}
         >
-          <ul>
-            <li className="p-2 hover:bg-gray-100 rounded-md">Item 1</li>
-            <li className="p-2 hover:bg-gray-100 rounded-md">
-              <a href="#">Item 2</a>
-            </li>
-          </ul>
+          <HabitsCalendar />
         </div>
       )}
     </div>
