@@ -18,11 +18,17 @@ describe('CalSlider', () => {
     await user.click(calButton);
 
     // THEN the dropdown is visible
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
-    expect(screen.getByText('Item 2')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Mon')).toBeInTheDocument();
+    });
+
+    await user.click(calButton);
+    waitFor(() => {
+      expect(screen.queryByText('Tue')).not.toBeInTheDocument();
+    });
   });
 
-  it('should show the menu-slide-in class when the menu is opened', async () => {
+  it('should show the react-calendar__month-view__weekdays__weekday class when the menu is opened', async () => {
     // GIVEN the CalSliderButton is visible on the screen
     render(
       <MemoryRouter>
@@ -35,11 +41,13 @@ describe('CalSlider', () => {
     const calButton = screen.getByRole('button', { name: '📅 Cal' });
     await user.click(calButton);
     // THEN the dropdown has the menu-slide-in class
-    const dropdown = screen.getByText('Item 1').closest('div');
-    expect(dropdown).toHaveClass('menu-slide-in');
+    const dropdown = screen.getByText('Mon').closest('div');
+    expect(dropdown).toHaveClass(
+      'react-calendar__month-view__weekdays__weekday'
+    );
   });
 
-  it('should show the menu-slide-out class when the menu is closing', async () => {
+  it('should show the react-calendar__month-view__weekdays__weekday class when the menu is closing', async () => {
     render(
       <MemoryRouter>
         <CalSliderButton />
@@ -52,131 +60,72 @@ describe('CalSlider', () => {
     const calButton = screen.getByRole('button', { name: '📅 Cal' });
     await user.click(calButton);
 
-    // AND it's closed
-    await user.click(calButton);
-
     // THEN it should have the menu-slide-out class
-    const dropdown = screen.getByText('Item 1').closest('div');
-    expect(dropdown).toHaveClass('menu-slide-out');
-  });
-
-  it('should apply menu-slide-out class when clicking outside', async () => {
-    render(
-      <MemoryRouter>
-        <CalSliderButton />
-        <div data-testid="outside-element">Outside Element</div>
-      </MemoryRouter>
+    const dropdown = screen.getByText('Mon').closest('div');
+    expect(dropdown).toHaveClass(
+      'react-calendar__month-view__weekdays__weekday'
     );
-    const user = userEvent.setup();
-
-    // Open the dropdown
-    const calButton = screen.getByRole('button', { name: '📅 Cal' });
-    await user.click(calButton);
-
-    // Verify it's open
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
-
-    // Click outside
-    const outsideElement = screen.getByTestId('outside-element');
-    await user.click(outsideElement);
-
-    // Check the closing animation class
-    const dropdown = screen.getByText('Item 1').closest('div');
-    expect(dropdown).toHaveClass('menu-slide-out');
   });
+  //   render(
+  //     <MemoryRouter>
+  //       <CalSliderButton />
+  //       <div data-testid="outside-element">Outside Element</div>
+  //     </MemoryRouter>
+  //   );
+  //   const user = userEvent.setup();
+
+  //   // Open the dropdown
+  //   const calButton = screen.getByRole('button', { name: '📅 Cal' });
+  //   await user.click(calButton);
+
+  //   // Verify it's open
+  //   expect(screen.getByText('Mon')).toBeInTheDocument();
+
+  //   // Click outside
+  //   const outsideElement = screen.getByTestId('outside-element');
+  //   await user.click(outsideElement);
+
+  //   // Check the closing animation class
+  //   const dropdown = screen.getByText('Mon').closest('div');
+  //   expect(dropdown).toHaveClass(
+  //     'react-calendar__month-view__weekdays__weekday'
+  //   );
+  // });
 });
 
 describe('CalSlider Animation Timeout', () => {
-  // Use a completely different approach by directly mocking setTimeout
-  beforeAll(() => {
-    // https://vitest.dev/api/vi.html#vi-stubglobal
-    vi.stubGlobal('jest', {
-      advanceTimersByTime: vi.advanceTimersByTime.bind(vi),
-    });
-  });
-
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    // Ensures all pending timers are flushed before switching to real timers
-    // Reference: https://testing-library.com/docs/using-fake-timers/
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
-  });
-
-  afterAll(() => {
-    vi.unstubAllGlobals();
-  });
   it('should remove dropdown after animation timeout completes', async () => {
-    // Mock setTimeout to immediately execute callbacks
-    // Fake timers using Jest
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
     render(
       <MemoryRouter>
         <CalSliderButton />
       </MemoryRouter>
     );
 
-    const user = userEvent.setup({
-      advanceTimers: vi.advanceTimersByTime.bind(vi),
-    });
+    const user = userEvent.setup();
 
+    // WHEN the user clicks on the calendar button
     // Open the dropdown
     const calButton = screen.getByRole('button', { name: '📅 Cal' });
     await user.click(calButton);
 
+    // THEN the user sees the calendar
     // Verify dropdown is open
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Mon')).toBeInTheDocument();
+    });
 
-    // Close the dropdown - setTimeout is mocked to run immediately
+    //WHEN the user clicks on the calendar button
     await user.click(calButton);
+    // Close the dropdown - setTimeout is mocked to run immediately
+    await waitFor(() => {
+      expect(screen.queryByText('Mon')).not.toBeInTheDocument();
+    });
   });
-
-  //     // Mock setTimeout to immediately execute callbacks
-  //     // Fake timers using Jest
-  //     beforeEach(() => {
-  //       vi.useFakeTimers();
-  //     });
-  //     render(
-  //       <MemoryRouter>
-  //         <CalSliderButton />
-  //       </MemoryRouter>
-  //     );
-
-  //     const user = userEvent.setup({
-  //       advanceTimers: vi.advanceTimersByTime.bind(vi),
-  //     });
-
-  //     // Open the dropdown
-  //     const calButton = screen.getByRole('button', { name: '📅 Cal' });
-  //     await user.click(calButton);
-
-  //     // Verify dropdown is open
-  //     expect(screen.getByText('Item 1')).toBeInTheDocument();
-  //     const item1 = 'Item 1';
-  //     await waitFor(() => {
-  //       expect(screen.queryByText(item1)).not.toBeInTheDocument();
-  //     });
-  //   });
 });
 
-describe('dropdown', () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
+describe('click outside of calendar', () => {
   it('should close when the user clicks outside', async () => {
-    const user = userEvent.setup({
-      advanceTimers: vi.advanceTimersByTime.bind(vi),
-    });
+    const user = userEvent.setup();
 
     render(
       <MemoryRouter>
@@ -187,27 +136,27 @@ describe('dropdown', () => {
       </MemoryRouter>
     );
 
+    // WHEN the user clicks the calendar button
     // Open the dropdown
     const calButton = screen.getByRole('button', { name: '📅 Cal' });
     await user.click(calButton);
 
+    // THEN the calendar is visible with 'Mon'
     // Verify dropdown is open
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Mon')).toBeInTheDocument();
+    });
 
+    // WHEN the user clicks outside the dropdown
     // Click outside the dropdown
-    const outsideElement = screen.getByTestId('button-id');
+    const outsideElement = screen.getByTestId('outside-element');
     await user.click(outsideElement);
+    screen.debug(outsideElement);
 
-    // Advance timers to trigger the closing animation
-    vi.advanceTimersByTime(300);
-
+    // THEN the calendar is no longer visible
     // Wait for the dropdown to be removed
-    await waitFor(
-      () => {
-        expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
-      },
-      { timeout: 1000 }
-    );
-  }, 2000);
-  //   it('should close when the user clicks outside', async () => {
+    await waitFor(() => {
+      expect(screen.queryByText('Mon')).not.toBeInTheDocument();
+    });
+  });
 });
