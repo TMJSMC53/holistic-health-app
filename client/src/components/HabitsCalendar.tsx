@@ -1,19 +1,32 @@
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const HabitsCalendar = () => {
-  //   const [value, onChange] = useState<Value>(new Date());
   const [value, setValue] = useState<Value>(new Date());
 
+  const show = ({ date, view }: { date: Date; view: string }) => {
+    if (view === 'month') {
+      if (date.getDate() % 2 === 0) {
+        return <div>Even</div>;
+      } else {
+        return <div>Odd</div>;
+      }
+    }
+    return null;
+  };
   return (
     <>
       {/* <Calendar onChange={onChange} value={value} /> */}
-      <Calendar onChange={setValue} value={value} locale="en-EN" />
+      <Calendar
+        onChange={setValue}
+        value={value}
+        locale="en-EN"
+        tileContent={show}
+      />
     </>
   );
 };
