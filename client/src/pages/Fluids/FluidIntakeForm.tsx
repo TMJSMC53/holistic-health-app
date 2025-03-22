@@ -15,7 +15,6 @@ const FluidIntakeForm = () => {
         },
         body: JSON.stringify({ fluidType: fluidType, amount: fluidAmount }),
       });
-
       window.location.reload();
     } catch (error) {
       console.error('Error:', error);
@@ -44,6 +43,7 @@ const FluidIntakeForm = () => {
               value={fluidType}
               onChange={handleFluidType}
               type="string"
+              data-testid="fluid-type-input"
             />
             <datalist className="sm:w-1/3" id="fluids">
               <option value="Water"></option>
