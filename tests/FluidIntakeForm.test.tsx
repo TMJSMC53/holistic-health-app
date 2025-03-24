@@ -9,7 +9,6 @@ import { http, HttpResponse } from 'msw';
 import { server } from '../mocks/node';
 
 import { afterAll, beforeAll, vi } from 'vitest';
-import { K } from 'vitest/dist/chunks/reporters.C_zwCd4j.js';
 
 describe('FluidIntakeForm', () => {
   it('should render the FluidIntakeForm component without errors', async () => {
@@ -19,19 +18,33 @@ describe('FluidIntakeForm', () => {
       </MemoryRouter>
     );
   });
-  it('should select a fluid type from the datalist', async () => {
-    const user = userEvent.setup();
+  it('should verify datalist options are present', async () => {
+    // GIVEN the user is on the Dashboard page in the FluidIntakeForm section
+
     render(
       <MemoryRouter>
         <FluidIntakeForm />
       </MemoryRouter>
     );
 
-    // // WHEN the user clicks on the datalist
-    // const fluidTypeInput = screen.getByTestId('fluid-type-input');
-    // // THEN the sees the Water option
-    // await user.type(fluidTypeInput, 'Water');
-    // expect(fluidTypeInput).toHaveValue('Water');
+    // WHEN the user clicks in the input and a dropdown list is shown
+    const datalist = screen.getByTestId('fluids-datalist');
+
+    const options = datalist.querySelectorAll('option');
+    const optionValues = Array.from(options).map((option) =>
+      option.getAttribute('value')
+    );
+    // THEN the sees the various fluid type options in the dropdown list
+    expect(Array.from(options)).toHaveLength(6);
+
+    expect(optionValues).toEqual([
+      'Water',
+      'Coffee',
+      'Tea',
+      'Mineral Water',
+      'Juice',
+      'Other',
+    ]);
   });
   it('should allow user to write a fluid type in the input field', async () => {
     const user = userEvent.setup();
@@ -159,5 +172,46 @@ describe('FluidIntakeForm on window.location.reload', () => {
       );
       expect(window.location.reload).toHaveBeenCalled();
     });
+  });
+});
+
+describe('FluidIntakeForm Error Handling', () => {
+  let mockConsoleError: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    // Mock console.error to avoid actual console logging during test
+    mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    // Restore mocks after each test
+    vi.restoreAllMocks();
+  });
+
+  it('should handle fetch error correctly', async () => {
+    // Mock fetch to throw an error
+    global.fetch = vi.fn().mockRejectedValue(new Error('Network Error'));
+
+    render(
+      <MemoryRouter>
+        <FluidIntakeForm />
+      </MemoryRouter>
+    );
+
+    // Fill out the form
+    const fluidTypeInput = screen.getByTestId('fluid-type-input');
+    const fluidAmountInput = screen.getByPlaceholderText('Amount');
+    const submitButton = screen.getByRole('button', {
+      name: /enter amount/i,
+    });
+
+    await userEvent.type(fluidTypeInput, 'Water');
+    await userEvent.type(fluidAmountInput, '500');
+
+    // Submit the form
+    await userEvent.click(submitButton);
+
+    // Assert that console.error was called
+    expect(mockConsoleError).toHaveBeenCalledWith('Error:', expect.any(Error));
   });
 });

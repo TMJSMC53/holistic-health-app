@@ -45,7 +45,11 @@ const FluidIntakeForm = () => {
               type="string"
               data-testid="fluid-type-input"
             />
-            <datalist className="sm:w-1/3" id="fluids">
+            <datalist
+              className="sm:w-1/3"
+              id="fluids"
+              data-testid="fluids-datalist"
+            >
               <option value="Water"></option>
               <option value="Coffee"></option>
               <option value="Tea"></option>
