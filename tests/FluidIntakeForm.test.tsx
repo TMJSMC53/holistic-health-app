@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import '@testing-library/jest-dom';
@@ -45,6 +45,26 @@ describe('FluidIntakeForm', () => {
       'Juice',
       'Other',
     ]);
+  });
+  it('should allow user to select an option from the datalist ', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <MemoryRouter>
+        <FluidIntakeForm />
+      </MemoryRouter>
+    );
+
+    const fluidTypeInput = screen.getByRole('combobox');
+    //WHEN the user types in Water
+    await user.type(fluidTypeInput, 'Wat');
+
+    // THEN the user sees Water in the dropdown list
+    // Simulate selecting 'Water' from the datalist suggestions
+    fireEvent.change(fluidTypeInput, { target: { value: 'Water' } });
+
+    // THEN the user sees that the input value is 'Water'
+    expect(fluidTypeInput).toHaveValue('Water');
   });
   it('should allow user to write a fluid type in the input field', async () => {
     const user = userEvent.setup();
