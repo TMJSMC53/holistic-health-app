@@ -1,8 +1,46 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 
 const FluidIntakeForm = () => {
   const [fluidAmount, setFluidAmount] = useState('');
   const [fluidType, setFluidType] = useState('');
+  const [fluids, setFluids] = useState([
+    'Water',
+    'Coffee',
+    'Tea',
+    'Mineral Water',
+    'Juice',
+  ]);
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const response = await fetch('/api/fluidIntakes', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+
+        const userFluidTypes = data.map((el: any) => el.fluidType);
+
+        const fluidTypesLists: Array<string> = [];
+        // add the old option items to the list
+        fluidTypesLists.push(...fluids);
+        // add the new option items to the list
+        fluidTypesLists.push(...userFluidTypes);
+        // remove any duplicates
+        const list = [...new Set(fluidTypesLists)];
+
+        setFluids(list);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    };
+
+    getList();
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,6 +65,7 @@ const FluidIntakeForm = () => {
   function handleFluidAmount(event: ChangeEvent<HTMLInputElement>) {
     setFluidAmount(event.target.value);
   }
+
   return (
     <>
       <div className="mt-6 mb-12 w-full">
@@ -50,12 +89,9 @@ const FluidIntakeForm = () => {
               id="fluids"
               data-testid="fluids-datalist"
             >
-              <option value="Water"></option>
-              <option value="Coffee"></option>
-              <option value="Tea"></option>
-              <option value="Mineral Water"></option>
-              <option value="Juice"></option>
-              <option value="Other"></option>
+              {fluids.map((fluid) => (
+                <option key={fluid} value={fluid} />
+              ))}
             </datalist>
             <input
               className="input input-bordered input-sm w-1/3 md:w-2/12 max-w-xs mr-1.5"

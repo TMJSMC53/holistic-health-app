@@ -35,7 +35,7 @@ describe('FluidIntakeForm', () => {
       option.getAttribute('value')
     );
     // THEN the sees the various fluid type options in the dropdown list
-    expect(Array.from(options)).toHaveLength(6);
+    expect(Array.from(options)).toHaveLength(5);
 
     expect(optionValues).toEqual([
       'Water',
@@ -43,9 +43,46 @@ describe('FluidIntakeForm', () => {
       'Tea',
       'Mineral Water',
       'Juice',
-      'Other',
     ]);
   });
+
+  it('should show the 5 populated items and a new item that the user adds', async () => {
+    // GIVEN the server responds with fluidType: 'Smoothie'
+    server.use(
+      http.get(`/api/fluidIntakes`, async () => {
+        // @ts-ignore
+        // this gets added to the list of items that are not in the prepopulated items
+        return HttpResponse.json([{ fluidType: 'Smoothie' }]);
+      })
+    );
+    // WHEN user comes to the datalist
+    render(
+      <MemoryRouter>
+        <FluidIntakeForm />
+      </MemoryRouter>
+    );
+
+    // THEN the datalist only contains 5 prepopulated items
+    const datalist = screen.getByTestId('fluids-datalist');
+
+    const options = datalist.querySelectorAll('option');
+    const optionValues = Array.from(options).map((option) =>
+      option.getAttribute('value')
+    );
+    expect(Array.from(optionValues)).toHaveLength(5);
+
+    // WHEN the user waits for the server to respond
+    await waitFor(() => {
+      // THEN the datalist now contains the prepopulated items AND the fluidType: 'Smoothie'
+      const options = datalist.querySelectorAll('option');
+      const optionValues = Array.from(options).map((option) =>
+        option.getAttribute('value')
+      );
+      expect(optionValues).toContain('Smoothie');
+      expect(Array.from(optionValues)).toHaveLength(6);
+    });
+  });
+
   it('should allow user to select an option from the datalist ', async () => {
     const user = userEvent.setup();
 
