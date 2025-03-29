@@ -48,7 +48,7 @@ const CalSliderButton = () => {
 
       {isOpen && (
         <div
-          className={`fixed w-68 right-4 mt-6 ml-4 md:absolute md:right-16 md:mt-2 md:w-68 bg-base-100 rounded-lg z-[1] shadow ${animationClass}`}
+          className={`fixed w-68 right-4 mt-6 ml-4 md:absolute md:right-16 md:mt-2 md:w-68 bg-base-100 rounded-full z-[1] shadow ${animationClass}`}
         >
           <HabitsCalendar />
         </div>

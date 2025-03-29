@@ -20,8 +20,8 @@ const HabitsCalendar = () => {
   };
   return (
     <>
-      {/* <Calendar onChange={onChange} value={value} /> */}
       <Calendar
+        className="font-poppins"
         onChange={setValue}
         value={value}
         locale="en-EN"
