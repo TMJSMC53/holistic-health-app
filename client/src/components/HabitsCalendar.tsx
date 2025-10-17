@@ -1,14 +1,19 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { HabitData } from '../habits';
+
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-const HabitsCalendar = () => {
+type HabitsCalendarProps = {
+  habits: HabitData[];
+};
+const HabitsCalendar = ({ habits }: HabitsCalendarProps) => {
   const [value, setValue] = useState<Value>(new Date());
 
-  const show = ({ date, view }: { date: Date; view: string }) => {
+  const show = useCallback(({ date, view }: { date: Date; view: string }) => {
     if (view === 'month') {
       if (date.getDate() % 2 === 0) {
         return <div>Even</div>;
@@ -17,7 +22,7 @@ const HabitsCalendar = () => {
       }
     }
     return null;
-  };
+  }, []);
   return (
     <>
       <Calendar

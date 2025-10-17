@@ -71,14 +71,17 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     setIsOpen((prev) => !prev);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsOpen(false);
-    }
-  };
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    },
+    [setIsOpen]
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -91,7 +94,7 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClickOutside]);
 
   const updateHabitTitle = (id: string, title: string) => {
     // GIVEN an id of a habit that exists in the habits array
@@ -164,7 +167,7 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     <div className="text-primary-600 font-poppins">
       <div className="flex justify-between md:justify-end ml-4">
         <BackButton />
-        <CalSliderButton />
+        <CalSliderButton habits={habits} />
       </div>
 
       <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">

@@ -1,23 +1,30 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import useClickOutside from '../hooks/useClickOutside';
 import HabitsCalendar from './HabitsCalendar';
+import { HabitData } from '../habits';
 
-const CalSliderButton = () => {
+type CalSliderButtonProps = { habits: HabitData[] };
+
+const CalSliderButton = ({ habits }: CalSliderButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [animationClass, setAnimationClass] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const closeWithAnimation = useCallback(() => {
+    // Start closing animation (left to right)
+    setAnimationClass('menu-slide-out');
+    // Wait for animation to complete before hiding
+    setTimeout(() => {
+      setIsOpen(false);
+      setAnimationClass('');
+    }, 300);
+  }, [setAnimationClass, setIsOpen]);
 
   const toggleDropdown = (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (isOpen) {
-      // Start closing animation (left to right)
-      setAnimationClass('menu-slide-out');
-      // Wait for animation to complete before hiding
-      setTimeout(() => {
-        setIsOpen(false);
-        setAnimationClass('');
-      }, 300);
+      closeWithAnimation();
     } else {
       setIsOpen(true);
       // Opening animation (right to left)
@@ -27,11 +34,7 @@ const CalSliderButton = () => {
 
   useClickOutside(dropdownRef, () => {
     if (isOpen) {
-      setAnimationClass('menu-slide-out');
-      setTimeout(() => {
-        setIsOpen(false);
-        setAnimationClass('');
-      }, 300);
+      closeWithAnimation();
     }
   });
 
@@ -50,7 +53,7 @@ const CalSliderButton = () => {
         <div
           className={`fixed w-68 right-4 mt-6 ml-4 md:absolute md:right-16 md:mt-2 md:w-68 bg-base-100 rounded-full z-[1] shadow ${animationClass}`}
         >
-          <HabitsCalendar />
+          <HabitsCalendar habits={habits} />
         </div>
       )}
     </div>
