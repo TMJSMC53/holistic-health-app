@@ -1,58 +1,71 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 
+// Constants
+const DEFAULT_FLUID_TYPES = [
+  'Water',
+  'Coffee',
+  'Tea',
+  'Mineral Water',
+  'Juice',
+];
+
+// Helper Functions
+const mergeFluidTypes = (
+  defaultFluids: string[],
+  userFluids: string[]
+): string[] => {
+  return [...new Set([...defaultFluids, ...userFluids])];
+};
+
+const fetchUserFluidTypes = async (): Promise<string[]> => {
+  try {
+    const response = await fetch('/api/fluidIntakes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data: Array<{ fluidType: string }> = await response.json();
+    return data.map((el) => el.fluidType);
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    return [];
+  }
+};
+
+const submitFluidIntake = async (
+  fluidType: string,
+  amount: string
+): Promise<void> => {
+  await fetch('/api/fluidIntakes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fluidType, amount }),
+  });
+};
+
 const FluidIntakeForm = () => {
   const [fluidAmount, setFluidAmount] = useState('');
   const [fluidType, setFluidType] = useState('');
-  const [fluids, setFluids] = useState([
-    'Water',
-    'Coffee',
-    'Tea',
-    'Mineral Water',
-    'Juice',
-  ]);
+  const [fluids, setFluids] = useState<string[]>([...DEFAULT_FLUID_TYPES]);
 
   useEffect(() => {
-    const getList = async () => {
-      try {
-        const response = await fetch('/api/fluidIntakes', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const data = await response.json();
-
-        const userFluidTypes = data.map((el: any) => el.fluidType);
-
-        const fluidTypesLists: Array<string> = [];
-        // add the old option items to the list
-        fluidTypesLists.push(...fluids);
-        // add the new option items to the list
-        fluidTypesLists.push(...userFluidTypes);
-        // remove any duplicates
-        const list = [...new Set(fluidTypesLists)];
-
-        setFluids(list);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-      }
+    const loadFluidTypes = async () => {
+      const userFluidTypes = await fetchUserFluidTypes();
+      setFluids(mergeFluidTypes(DEFAULT_FLUID_TYPES, userFluidTypes));
     };
 
-    getList();
+    loadFluidTypes();
   }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
-      await fetch('/api/fluidIntakes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fluidType: fluidType, amount: fluidAmount }),
-      });
+      await submitFluidIntake(fluidType, fluidAmount);
       window.location.reload();
     } catch (error) {
       console.error('Error:', error);

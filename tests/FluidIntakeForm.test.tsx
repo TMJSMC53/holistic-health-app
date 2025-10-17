@@ -10,6 +10,16 @@ import { server } from '../mocks/node';
 
 import { afterAll, beforeAll, vi } from 'vitest';
 
+// Add default handler for GET requests
+beforeEach(() => {
+  // Set up default handler that returns empty array
+  server.use(
+    http.get('/api/fluidIntakes', () => {
+      return HttpResponse.json([]);
+    })
+  );
+});
+
 describe('FluidIntakeForm', () => {
   it('should render the FluidIntakeForm component without errors', async () => {
     render(
@@ -50,7 +60,6 @@ describe('FluidIntakeForm', () => {
     // GIVEN the server responds with fluidType: 'Smoothie'
     server.use(
       http.get(`/api/fluidIntakes`, async () => {
-        // @ts-ignore
         // this gets added to the list of items that are not in the prepopulated items
         return HttpResponse.json([{ fluidType: 'Smoothie' }]);
       })
@@ -66,6 +75,7 @@ describe('FluidIntakeForm', () => {
     const datalist = screen.getByTestId('fluids-datalist');
 
     const options = datalist.querySelectorAll('option');
+
     const optionValues = Array.from(options).map((option) =>
       option.getAttribute('value')
     );
@@ -134,6 +144,10 @@ describe('FluidIntakeForm', () => {
   });
 
   it('should call POST method with the user data', async () => {
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { ...window.location, reload: vi.fn() },
+    });
     let userInput = {
       fluidType: '',
       amount: 0,
@@ -143,8 +157,7 @@ describe('FluidIntakeForm', () => {
     let submitBtnCalled = false;
     server.use(
       http.post(`/api/fluidIntakes`, async (context) => {
-        // @ts-ignore
-        userInput = await context.request.json();
+        userInput = (await context.request.json()) as typeof userInput;
         submitBtnCalled = true;
         return HttpResponse.json({});
       })
@@ -181,7 +194,7 @@ describe('FluidIntakeForm on window.location.reload', () => {
       () =>
         Promise.resolve({
           ok: true,
-          json: () => Promise.resolve({}),
+          json: () => Promise.resolve([]),
         }) as Promise<Response>
     );
   });
