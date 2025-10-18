@@ -20,6 +20,7 @@ const HabitsCalendar = ({ habits }: HabitsCalendarProps) => {
         const enactedHabits = habits.filter((habit) =>
           isHabitEnactedOnDate(habit, date)
         );
+
         // 2. Extract emojis from those habits
         const emojis = enactedHabits.map((habit) =>
           extractEmojiFromHabitTitle(habit.title)
@@ -43,10 +44,12 @@ const HabitsCalendar = ({ habits }: HabitsCalendarProps) => {
 
   const isHabitEnactedOnDate = (habit: HabitData, date: Date) => {
     // check if habit was done on this date
-    const dateString = date.toISOString().split('T')[0]; // Convert to "YYYY-MM-DD" format
+    const dateString = date.toLocaleDateString().split('T')[0];
 
     return habit.enactments.some((enactment) => {
-      const enactmentDate = new Date(enactment).toISOString().split('T')[0];
+      const enactmentDate = new Date(enactment)
+        .toLocaleDateString()
+        .split('T')[0];
       return enactmentDate === dateString;
     });
   };
