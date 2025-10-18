@@ -8,7 +8,7 @@ describe('CalSlider', () => {
   it('should render the Cal Slider Button information', async () => {
     render(
       <MemoryRouter>
-        <CalSliderButton />
+        <CalSliderButton habits={[]} />
       </MemoryRouter>
     );
 
@@ -32,7 +32,7 @@ describe('CalSlider', () => {
     // GIVEN the CalSliderButton is visible on the screen
     render(
       <MemoryRouter>
-        <CalSliderButton />
+        <CalSliderButton habits={[]} />
       </MemoryRouter>
     );
     const user = userEvent.setup();
@@ -50,7 +50,7 @@ describe('CalSlider', () => {
   it('should show the react-calendar__month-view__weekdays__weekday class when the menu is closing', async () => {
     render(
       <MemoryRouter>
-        <CalSliderButton />
+        <CalSliderButton habits={[]} />
       </MemoryRouter>
     );
 
@@ -66,38 +66,13 @@ describe('CalSlider', () => {
       'react-calendar__month-view__weekdays__weekday'
     );
   });
-  //   render(
-  //     <MemoryRouter>
-  //       <CalSliderButton />
-  //       <div data-testid="outside-element">Outside Element</div>
-  //     </MemoryRouter>
-  //   );
-  //   const user = userEvent.setup();
-
-  //   // Open the dropdown
-  //   const calButton = screen.getByRole('button', { name: '📅 Cal' });
-  //   await user.click(calButton);
-
-  //   // Verify it's open
-  //   expect(screen.getByText('Mon')).toBeInTheDocument();
-
-  //   // Click outside
-  //   const outsideElement = screen.getByTestId('outside-element');
-  //   await user.click(outsideElement);
-
-  //   // Check the closing animation class
-  //   const dropdown = screen.getByText('Mon').closest('div');
-  //   expect(dropdown).toHaveClass(
-  //     'react-calendar__month-view__weekdays__weekday'
-  //   );
-  // });
 });
 
 describe('CalSlider Animation Timeout', () => {
   it('should remove dropdown after animation timeout completes', async () => {
     render(
       <MemoryRouter>
-        <CalSliderButton />
+        <CalSliderButton habits={[]} />
       </MemoryRouter>
     );
 
@@ -130,7 +105,7 @@ describe('click outside of calendar', () => {
     render(
       <MemoryRouter>
         <div>
-          <CalSliderButton />
+          <CalSliderButton habits={[]} />
           <div data-testid="outside-element">Outside Element</div>
         </div>
       </MemoryRouter>
