@@ -92,11 +92,11 @@ export default function SortingDropdown({
       setAnimationClass('sort-fade-out');
       // Wait for animation to complete before hiding
       setTimeout(() => {
-        dropdownRef.current!.removeAttribute('open');
+        dropdownRef.current?.removeAttribute('open');
         setAnimationClass('');
       }, 300);
     } else {
-      dropdownRef.current!.setAttribute('open', '');
+      dropdownRef.current?.setAttribute('open', '');
       // Opening animation (right to left)
       setAnimationClass('sort-fade-in');
     }
@@ -106,7 +106,6 @@ export default function SortingDropdown({
 
   const handleSortOptionClick = useCallback(
     (_: React.MouseEvent, by: SortBy, direction: SortDirection) => {
-      dropdownRef.current?.removeAttribute('open');
       setSortingByWithDirection({ by, direction });
     },
     [setSortingByWithDirection]
