@@ -12,8 +12,12 @@ import BackButton from '../../components/BackButton';
 import { HabitData } from '../../habits';
 import { UserState } from '../../main.d';
 import sendAuthenticatedUserToLoginPage from '../../utils/sendAuthenticatedUserToLoginPage';
-import { useSortingByWithDirection, getSortedHabits } from './sortingByAndDirection';
+import {
+  useSortingByWithDirection,
+  getSortedHabits,
+} from './sortingByAndDirection';
 import SortingDropdown from './SortingDropdown';
+import CalSliderButton from '../../components/CalSliderButton';
 
 type HabitsProps = {
   habits: HabitData[];
@@ -30,9 +34,18 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
 
   const [title, setTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sortingByWithDirection, setSortingByWithDirection] = useSortingByWithDirection();
+  const [sortingByWithDirection, setSortingByWithDirection] =
+    useSortingByWithDirection();
 
-  const sortedHabits = useMemo(() => getSortedHabits(habits, sortingByWithDirection.by, sortingByWithDirection.direction), [habits, sortingByWithDirection])
+  const sortedHabits = useMemo(
+    () =>
+      getSortedHabits(
+        habits,
+        sortingByWithDirection.by,
+        sortingByWithDirection.direction
+      ),
+    [habits, sortingByWithDirection]
+  );
 
   const getHabits = useCallback(async () => {
     try {
@@ -58,14 +71,17 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     setIsOpen((prev) => !prev);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsOpen(false);
-    }
-  };
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    },
+    [setIsOpen]
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -78,7 +94,7 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClickOutside]);
 
   const updateHabitTitle = (id: string, title: string) => {
     // GIVEN an id of a habit that exists in the habits array
@@ -149,9 +165,11 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
 
   return (
     <div className="text-primary-600 font-poppins">
-      <div className="ml-4">
+      <div className="flex justify-between md:justify-end ml-4">
         <BackButton />
+        <CalSliderButton habits={habits} />
       </div>
+
       <div className={`modal ${isModalOpen && 'modal-open'}`} role="dialog">
         <div className="modal-box h-90 md:w-96 overflow-y-hidden px-4 bg-accents-500">
           <form onSubmit={handleSubmit}>
@@ -174,7 +192,7 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
           </button>
         </div>
       </div>
-      <div className='flex'>
+      <div className="flex">
         <div className="dropdown flex-1" ref={dropdownRef}>
           <button
             className="text-primary-600 btn bg-transparent hover:bg-transparent border-2 hover:border-primary-700 border-primary-600 m-4"
@@ -213,7 +231,11 @@ const Habits = ({ habits, setHabits, user }: HabitsProps) => {
             </ul>
           )}
         </div>
-        <SortingDropdown sortingByWithDirection={sortingByWithDirection} setSortingByWithDirection={setSortingByWithDirection} />
+
+        <SortingDropdown
+          sortingByWithDirection={sortingByWithDirection}
+          setSortingByWithDirection={setSortingByWithDirection}
+        />
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 habits-list">
         {sortedHabits.map((habit) => (

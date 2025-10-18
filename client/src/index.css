@@ -112,8 +112,121 @@ body {
   display: none;
 }
 
+/* Animation for dropdown menu with right-to-left opening and left-to-right closing */
+.menu-slide-in {
+  animation: slideInRightToLeft 0.3s ease-out forwards;
+}
+
+.menu-slide-out {
+  animation: slideOutLeftToRight 0.3s ease-in forwards;
+}
+
+@keyframes slideInRightToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px); /* Start from right */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeftToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px); /* End at right */
+  }
+}
+
+/* Animation for dropdown menu with right-to-left opening and left-to-right closing */
+.sort-fade-in {
+  animation: fadeInRightToLeft 0.3s ease-out forwards;
+}
+
+.sort-fade-out {
+  animation: fadeOutLeftToRight 0.3s ease-in forwards;
+}
+
+@keyframes fadeInRightToLeft {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutLeftToRight {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 1024px) {
   .backButtonToggle {
     display: block;
   }
+}
+
+/* REACT CALENDAR STYLES */
+.react-calendar {
+  width: 400px;
+  max-width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+
+  font-family: 'Poppins', sans-serif !important;
+  box-shadow: 0 12px 24px rgba(166, 19, 19, 0.2);
+  line-height: 1.125em;
+}
+
+/* Change header (month/year title & navigation buttons) */
+.react-calendar__navigation {
+  background-color: #ff7e67; /* Blue */
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.react-calendar__tile {
+  color: #35495e;
+  border-radius: 28px;
+}
+
+.react-calendar__tile:hover {
+  border-radius: 28px !important;
+}
+
+.react-calendar__tile--now {
+  background: #35495e !important;
+  color: #fff;
+  border-radius: 28px;
+  font-weight: bold;
+}
+
+.react-calendar__tile:hover,
+.react-calendar__navigation:hover,
+.react-calendar__navigation__arrow:hover {
+  background-color: #e0f2fe !important; /* Light blue */
+  border-radius: 8px;
+  color: #35495e;
+}
+.react-calendar__navigation__arrow:hover,
+.react-calendar__navigation__prev-button:hover,
+.react-calendar__navigation__prev2-button:hover,
+.react-calendar__navigation__label:hover {
+  background-color: #fdb927 !important;
+  border-radius: 8px;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #ff7e67 !important;
 }
