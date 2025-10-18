@@ -13,16 +13,44 @@ type HabitsCalendarProps = {
 const HabitsCalendar = ({ habits }: HabitsCalendarProps) => {
   const [value, setValue] = useState<Value>(new Date());
 
-  const show = useCallback(({ date, view }: { date: Date; view: string }) => {
-    if (view === 'month') {
-      if (date.getDate() % 2 === 0) {
-        return <div>Even</div>;
-      } else {
-        return <div>Odd</div>;
+  const show = useCallback(
+    ({ date, view }: { date: Date; view: string }) => {
+      if (view === 'month') {
+        //1. Find all habits that were enacted on this date
+        const enactedHabits = habits.filter((habit) =>
+          isHabitEnactedOnDate(habit, date)
+        );
+        // 2. Extract emojis from those habits
+        const emojis = enactedHabits.map((habit) =>
+          extractEmojiFromHabitTitle(habit.title)
+        );
+
+        // 3. Display the emojis (if any)
+        if (emojis.length > 0) {
+          return <div>{emojis.join('')}</div>;
+        }
       }
-    }
-    return null;
-  }, []);
+      return null;
+    },
+    [habits]
+  );
+
+  const extractEmojiFromHabitTitle = (habitTitle: string) => {
+    const emojiRegex = /[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu;
+    const emojis = habitTitle.match(emojiRegex);
+    return emojis ? emojis.join('') : '';
+  };
+
+  const isHabitEnactedOnDate = (habit: HabitData, date: Date) => {
+    // check if habit was done on this date
+    const dateString = date.toISOString().split('T')[0]; // Convert to "YYYY-MM-DD" format
+
+    return habit.enactments.some((enactment) => {
+      const enactmentDate = new Date(enactment).toISOString().split('T')[0];
+      return enactmentDate === dateString;
+    });
+  };
+
   return (
     <>
       <Calendar
